@@ -1,0 +1,19 @@
+# .gitignore
+
+# === .NET ===
+bin
+obj
+.user
+.suo
+.userosscache
+.sln.docstates
+
+# === Node.js  Vue ===
+node_modules
+dist
+.env
+.vite
+
+# === System Files ===
+.DS_Store
+Thumbs.db
