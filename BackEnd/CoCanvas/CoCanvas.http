@@ -1,0 +1,6 @@
+@CoCanvas_HostAddress = http://localhost:5036
+
+GET {{CoCanvas_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
