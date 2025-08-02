@@ -1,16 +1,16 @@
 <template>
-  <div id="LoginAId">
+  <div id="LoginAId" class="form-wrapper">
     <form @submit.prevent="handleLogin">
-      <label type="email">Email: </label>
-      <input v-model="email" />
+      <TextBox label="Email" v-model="email" />
+      <TextBox label="Password" type="password" v-model="password" />
 
-      <label>Password: </label>
-      <input type="password" v-model="password" />
+      <SpinnerButton>Log in</SpinnerButton>
     </form>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { TextBox, SpinnerButton } from '@/components/common'
 import { ref } from 'vue'
 const email = ref('')
 const password = ref('')
@@ -21,12 +21,19 @@ function handleLogin() {
 </script>
 
 <style scoped lang="scss">
+.form-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
 form {
   display: flex;
   justify-content: center;
   flex-direction: column;
+  gap: 10px;
   text-align: start;
-  max-width: 20rem;
+  max-width: 50rem;
+  width: 20rem;
 }
 
 input {
