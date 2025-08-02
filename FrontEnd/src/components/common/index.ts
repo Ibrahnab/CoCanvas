@@ -1,4 +1,5 @@
+import CheckBox from './CustomCheckBox.vue'
 import SpinnerButton from './SpinnerButton.vue'
 import TextBox from './TextBox.vue'
 
-export { TextBox, SpinnerButton }
+export { CheckBox, TextBox, SpinnerButton }

@@ -3,10 +3,17 @@
     <form @submit.prevent="signUp">
       <TextBox label="Email" v-model="email" />
       <TextBox label="Password" type="password" v-model="password" />
-      <TextBox label="Password" type="password" v-model="confirmPassword" />
+      <TextBox label="Confirm password" type="password" v-model="confirmPassword" />
+
+      <div class="terms">
+        <CheckBox
+          v-model="acceptedTOS"
+          description="I have read and accepted the terms and conditions"
+        />
+      </div>
 
       <div class="options">
-        <SpinnerButton :spinner="showSpinner" :disabled="true">Sign up</SpinnerButton>
+        <SpinnerButton :spinner="showSpinner" :disabled="!acceptedTOS">Sign up</SpinnerButton>
         <button type="button" class="cancel" @click="onCancel">Cancel</button>
       </div>
     </form>
@@ -14,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import { TextBox, SpinnerButton } from '@/components/common'
+import { TextBox, SpinnerButton, CheckBox } from '@/components/common'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 
@@ -22,6 +29,7 @@ const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
 const showSpinner = ref(false)
+const acceptedTOS = ref(false)
 const router = useRouter()
 
 async function signUp() {
