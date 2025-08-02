@@ -5,9 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
-namespace CoCanvas.Domain.Entities
-{
-    internal class User : IdentityUser
-    {
-    }
+namespace CoCanvas.Domain.Entities;
+
+public class User { 
+
+    public string Email { get; set;}
+    public string Password { get; set;}
 }
