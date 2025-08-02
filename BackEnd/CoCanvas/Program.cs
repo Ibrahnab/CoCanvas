@@ -7,9 +7,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAuthorization();
-builder.Services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme);
-builder.Services.AddIdentityCore<>();
+//builder.Services.AddAuthorization();
+//builder.Services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme);
+//builder.Services.AddIdentityCore<>();
 
 var app = builder.Build();
 
