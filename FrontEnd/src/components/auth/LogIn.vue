@@ -4,7 +4,7 @@
       <TextBox label="Email" v-model="email" />
       <TextBox label="Password" type="password" v-model="password" />
 
-      <SpinnerButton>Log in</SpinnerButton>
+      <SpinnerButton :spinner="showSpinner" @click="signIn">Log in</SpinnerButton>
     </form>
   </div>
 </template>
@@ -12,11 +12,18 @@
 <script lang="ts" setup>
 import { TextBox, SpinnerButton } from '@/components/common'
 import { ref } from 'vue'
+
 const email = ref('')
 const password = ref('')
+const showSpinner = ref(false)
 
 function handleLogin() {
   console.log('submitted!')
+}
+
+async function signIn() {
+  showSpinner.value = !showSpinner.value
+  console.log('signing in..', showSpinner.value)
 }
 </script>
 
