@@ -1,10 +1,11 @@
 <template>
   <div id="LoginAId" class="form-wrapper">
-    <form @submit.prevent="handleLogin">
+    <form @submit.prevent="signIn">
       <TextBox label="Email" v-model="email" />
       <TextBox label="Password" type="password" v-model="password" />
+      <router-link to="/signup">Create a new account</router-link>
 
-      <SpinnerButton :spinner="showSpinner" @click="signIn">Log in</SpinnerButton>
+      <SpinnerButton :spinner="showSpinner">Log in</SpinnerButton>
     </form>
   </div>
 </template>
@@ -17,13 +18,8 @@ const email = ref('')
 const password = ref('')
 const showSpinner = ref(false)
 
-function handleLogin() {
-  console.log('submitted!')
-}
-
 async function signIn() {
   showSpinner.value = !showSpinner.value
-  console.log('signing in..', showSpinner.value)
 }
 </script>
 
