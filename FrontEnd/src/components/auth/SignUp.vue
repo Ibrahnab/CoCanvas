@@ -6,7 +6,7 @@
       <TextBox label="Password" type="password" v-model="confirmPassword" />
 
       <div class="options">
-        <SpinnerButton :spinner="showSpinner">Sign up</SpinnerButton>
+        <SpinnerButton :spinner="showSpinner" :disabled="true">Sign up</SpinnerButton>
         <button type="button" class="cancel" @click="onCancel">Cancel</button>
       </div>
     </form>

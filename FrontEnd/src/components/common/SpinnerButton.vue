@@ -1,5 +1,5 @@
 <template>
-  <button @click="onClick">
+  <button :disabled="disabled" :class="{ disabled: disabled }" @click="onClick">
     <div v-if="!spinner">
       <slot />
     </div>
@@ -19,6 +19,10 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const emit = defineEmits(['click'])
@@ -28,4 +32,8 @@ function onClick() {
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.disabled {
+  background-color: $color-primary-light;
+}
+</style>
