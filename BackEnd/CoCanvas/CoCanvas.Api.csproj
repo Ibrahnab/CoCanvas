@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <InvariantGlobalization>true</InvariantGlobalization>
+    <InvariantGlobalization>false</InvariantGlobalization>
     <UserSecretsId>1e86757e-5b9e-44f1-b06a-4891d17e5e68</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CoCanvas.Domain\CoCanvas.Domain.csproj" />
+    <ProjectReference Include="..\CoCanvas.Infrastructure\CoCanvas.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

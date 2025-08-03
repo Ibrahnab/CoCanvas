@@ -22,7 +22,7 @@ const showSpinner = ref(false)
 async function signIn() {
   showSpinner.value = !showSpinner.value
   try {
-    const result = await axios.get('https://localhost:5003/WeatherForecast')
+    const result = await axios.get('https://localhost:44300/WeatherForecast')
     console.log('result: ', result)
   } finally {
     showSpinner.value = !showSpinner.value

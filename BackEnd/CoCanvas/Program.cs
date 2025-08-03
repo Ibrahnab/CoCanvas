@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using CoCanvas.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
+using CoCanvas.Domain.Entities;
+using CoCanvas.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +31,9 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme);
-//builder.Services.AddIdentityCore<>();
+builder.Services.AddIdentityCore<User>().AddEntityFrameworkStores<CCDbContext>().AddApiEndpoints();
+
+builder.Services.AddDbContext<CCDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
@@ -40,6 +44,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    app.ApplyMigrations();
 }
 
 app.UseHttpsRedirection();
@@ -47,5 +53,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapIdentityApi<User>();
 
 app.Run();
