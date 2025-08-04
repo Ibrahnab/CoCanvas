@@ -24,6 +24,7 @@
 import { TextBox, SpinnerButton, CheckBox } from '@/components/common'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+import { getAxiosInstance } from '@/apiCaller'
 
 const email = ref('')
 const password = ref('')
@@ -31,9 +32,19 @@ const confirmPassword = ref('')
 const showSpinner = ref(false)
 const acceptedTOS = ref(false)
 const router = useRouter()
+const api = getAxiosInstance()
 
 async function signUp() {
-  showSpinner.value = !showSpinner.value
+  showSpinner.value = true
+
+  try {
+    const response = await api.get('/WeatherForecast')
+    console.log('response: ', response)
+  } catch (error) {
+    console.error(error)
+  } finally {
+    showSpinner.value = false
+  }
 }
 
 function onCancel() {

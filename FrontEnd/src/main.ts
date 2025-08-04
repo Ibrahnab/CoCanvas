@@ -2,11 +2,14 @@ import './assets/main.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import * as api from './apiCaller'
 
 import App from './App.vue'
 import router from './router'
 
 import './styles/main.scss'
+
+api.initialize()
 
 const app = createApp(App)
 
