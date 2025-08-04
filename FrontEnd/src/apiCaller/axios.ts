@@ -30,6 +30,18 @@ const initialize = () => {
       return Promise.reject(error)
     },
   )
+
+  // TODO: Remove or add something useful
+  axiosInstance.interceptors.response.use(
+    (response) => {
+      return response
+    },
+    (error) => {
+      if (axios.isAxiosError(error)) {
+        return Promise.reject(error)
+      }
+    },
+  )
 }
 
 export { getAxiosInstance, initialize }

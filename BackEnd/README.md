@@ -1,8 +1,8 @@
 # CoCanvas Backend
 
-CoCanvas Backend is C# .NET Web Api project
+CoCanvas Backend is C# .NET Web Api project that exposes RESTful API for the frontend to use
 
-## Clean architecture
+## Clean Architecture
 
 The backend for this project applies Clean Architecture structure. The main application is the Api project (outer layer), and alongside it are class libraries for adopting clean architecture (Infrastructure, Application, Domain, Contract).
 
