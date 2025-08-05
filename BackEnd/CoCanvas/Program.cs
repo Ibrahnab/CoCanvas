@@ -30,8 +30,15 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddAuthorization();
-builder.Services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme);
-builder.Services.AddIdentityCore<User>().AddEntityFrameworkStores<CCDbContext>().AddApiEndpoints();
+
+// TODO: Use JWT in the future?
+builder.Services.AddAuthentication(IdentityConstants.BearerScheme)
+    .AddCookie(IdentityConstants.ApplicationScheme)
+    .AddBearerToken(IdentityConstants.BearerScheme);
+
+builder.Services.AddIdentityCore<User>()
+    .AddEntityFrameworkStores<CCDbContext>()
+    .AddApiEndpoints();
 
 builder.Services.AddDbContext<CCDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -50,6 +57,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
