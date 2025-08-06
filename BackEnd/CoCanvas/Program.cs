@@ -3,6 +3,8 @@ using CoCanvas.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using CoCanvas.Domain.Entities;
 using CoCanvas.Api.Extensions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,9 +25,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("http://localhost:5000") // your Vue frontend URL
+            policy.WithOrigins("http://localhost:5000") // Vue frontend URL
                   .AllowAnyMethod()
                   .AllowAnyHeader();
+                  //.AllowCredentials();    // For Cookie authentication
         });
 });
 
@@ -33,7 +36,6 @@ builder.Services.AddAuthorization();
 
 // TODO: Use JWT in the future?
 builder.Services.AddAuthentication(IdentityConstants.BearerScheme)
-    .AddCookie(IdentityConstants.ApplicationScheme)
     .AddBearerToken(IdentityConstants.BearerScheme);
 
 builder.Services.AddIdentityCore<User>()

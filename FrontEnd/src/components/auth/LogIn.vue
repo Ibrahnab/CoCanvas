@@ -8,19 +8,29 @@
 
       <SpinnerButton :spinner="showSpinner">Log in</SpinnerButton>
     </form>
+
+    <div v-if="retreivedEmail">
+      <SpinnerButton :spinner="showSpinnerSignout" @click="signOut">Sign Out</SpinnerButton>
+    </div>
+    <SpinnerButton @click="me">Call Me</SpinnerButton>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { TextBox, SpinnerButton, ErrorBox } from '@/components/common'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import * as api from '@/apiCaller'
 import axios from 'axios'
+import type { AxiosResponse } from 'axios'
 
 const email = ref('')
 const password = ref('')
 const showSpinner = ref(false)
 const errorItems = ref<string[]>([])
+
+const retreivedEmail = ref('')
+
+const showSpinnerSignout = ref(false)
 
 const apiCaller = api.getAxiosInstance()
 
@@ -35,9 +45,6 @@ async function signIn() {
 
     // Re-initialize axios instance to add accesstoken
     api.initialize()
-
-    const res2 = await apiCaller.get('/me')
-    console.log('ME: ', res2)
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const status = error.response?.data.status
@@ -50,6 +57,34 @@ async function signIn() {
     showSpinner.value = !showSpinner.value
   }
 }
+
+async function signOut() {
+  showSpinnerSignout.value = true
+  try {
+    await apiCaller.post('/logout', {})
+  } catch (error) {
+    console.error(error)
+  } finally {
+    showSpinnerSignout.value = false
+  }
+}
+
+interface UserResponse extends AxiosResponse {
+  email: string
+}
+
+async function me() {
+  try {
+    const response: UserResponse = await apiCaller.get('api/auth/me')
+    retreivedEmail.value = response.data.email
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+onMounted(() => {
+  me()
+})
 </script>
 
 <style scoped lang="scss">
