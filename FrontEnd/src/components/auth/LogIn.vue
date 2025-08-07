@@ -12,17 +12,15 @@
     <div v-if="retreivedEmail">
       <SpinnerButton :spinner="showSpinnerSignout" @click="signOut">Sign Out</SpinnerButton>
     </div>
-    <!-- <SpinnerButton @click="me">Call Me</SpinnerButton> -->
   </div>
 </template>
 
 <script lang="ts" setup>
 import { TextBox, SpinnerButton, ErrorBox } from '@/components/common'
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import * as api from '@/apiCaller'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
-import type { AxiosResponse } from 'axios'
 import { useUserStore } from '@/stores/userStore'
 
 const email = ref('')
@@ -78,19 +76,6 @@ async function signOut() {
     showSpinnerSignout.value = false
   }
 }
-
-// async function me() {
-//   try {
-//     const response: UserResponse = await apiCaller.get('api/auth/me')
-//     retreivedEmail.value = response.data.email
-//   } catch (error) {
-//     console.error(error)
-//   }
-// }
-
-// onMounted(() => {
-//   // me()
-// })
 </script>
 
 <style scoped lang="scss">
