@@ -1,3 +1,26 @@
+import { getAxiosInstance } from '@/apiCaller'
+import type { UserResponse } from '@/models/User'
+import { useState } from './state'
+
 export const useActions = () => {
-  return {}
+  const state = useState()
+  const apiCaller = getAxiosInstance()
+
+  async function getUserCredentials() {
+    const token = localStorage.getItem('accessToken')
+    if (token) {
+      try {
+        const result: UserResponse = await apiCaller.get('api/auth/me')
+        state.email.value = result.email
+        state.userName.value = result.email
+        console.log('email: ', state.email.value)
+        return true
+      } catch (error) {
+        // TODO: show popup
+        // console.error(error)
+        throw error
+      }
+    }
+  }
+  return { getUserCredentials }
 }

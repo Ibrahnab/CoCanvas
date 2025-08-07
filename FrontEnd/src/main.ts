@@ -9,7 +9,7 @@ import router from './router'
 
 import './styles/main.scss'
 
-api.initialize()
+await api.initialize()
 
 const app = createApp(App)
 

@@ -12,7 +12,7 @@
     <div v-if="retreivedEmail">
       <SpinnerButton :spinner="showSpinnerSignout" @click="signOut">Sign Out</SpinnerButton>
     </div>
-    <SpinnerButton @click="me">Call Me</SpinnerButton>
+    <!-- <SpinnerButton @click="me">Call Me</SpinnerButton> -->
   </div>
 </template>
 
@@ -21,18 +21,23 @@ import { TextBox, SpinnerButton, ErrorBox } from '@/components/common'
 import { ref, onMounted } from 'vue'
 import * as api from '@/apiCaller'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 import type { AxiosResponse } from 'axios'
+import { useUserStore } from '@/stores/userStore'
 
 const email = ref('')
 const password = ref('')
 const showSpinner = ref(false)
 const errorItems = ref<string[]>([])
+const router = useRouter()
 
 const retreivedEmail = ref('')
 
 const showSpinnerSignout = ref(false)
 
 const apiCaller = api.getAxiosInstance()
+
+const userStore = useUserStore()
 
 async function signIn() {
   showSpinner.value = !showSpinner.value
@@ -45,6 +50,11 @@ async function signIn() {
 
     // Re-initialize axios instance to add accesstoken
     api.initialize()
+
+    const isLoggedIn = await userStore.getUserCredentials()
+    if (isLoggedIn) {
+      router.push('/home')
+    }
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const status = error.response?.data.status
@@ -69,22 +79,18 @@ async function signOut() {
   }
 }
 
-interface UserResponse extends AxiosResponse {
-  email: string
-}
+// async function me() {
+//   try {
+//     const response: UserResponse = await apiCaller.get('api/auth/me')
+//     retreivedEmail.value = response.data.email
+//   } catch (error) {
+//     console.error(error)
+//   }
+// }
 
-async function me() {
-  try {
-    const response: UserResponse = await apiCaller.get('api/auth/me')
-    retreivedEmail.value = response.data.email
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-onMounted(() => {
-  me()
-})
+// onMounted(() => {
+//   // me()
+// })
 </script>
 
 <style scoped lang="scss">

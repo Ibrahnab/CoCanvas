@@ -6,8 +6,8 @@ import { useGetters } from './getters'
 
 export const useUserStore = defineStore('userStore', () => {
   return {
-    ...useState,
-    ...useActions,
-    ...useGetters,
+    ...useState(),
+    ...useActions(),
+    ...useGetters(),
   }
 })

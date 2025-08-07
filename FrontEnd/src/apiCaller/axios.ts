@@ -10,7 +10,7 @@ const getAxiosInstance = (): AxiosInstance => {
   return axiosInstance
 }
 
-const initialize = () => {
+const initialize = async () => {
   axiosInstance = axios.create({
     // TODO: Dynamically set this based on env variable checking prod or dev
     baseURL: 'https://localhost:44300/',
