@@ -14,8 +14,8 @@ const router = useRouter()
 onMounted(async () => {
   try {
     const loggedIn = await userStore.getUserCredentials()
-    if (loggedIn) {
-      router.push('/home')
+    if (!loggedIn) {
+      router.push('/auth')
     }
   } catch (error) {
     console.log('error: ', error)

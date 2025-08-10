@@ -74,7 +74,7 @@ async function signUp() {
 }
 
 function onCancel() {
-  router.push('/')
+  router.push('/auth')
 }
 </script>
 

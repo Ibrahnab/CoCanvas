@@ -51,7 +51,7 @@ async function signIn() {
 
     const isLoggedIn = await userStore.getUserCredentials()
     if (isLoggedIn) {
-      router.push('/home')
+      router.push('/')
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
