@@ -1,12 +1,14 @@
 <template>
   <div>
     <SpinnerButton :spinner="showSpinnerSignout" @click="signOut">Sign Out</SpinnerButton>
+    <UserPost />
   </div>
 </template>
 
 <script setup lang="ts">
 import { TextBox, SpinnerButton, ErrorBox } from '@/components/common'
 import { ref } from 'vue'
+import UserPost from '@/components/post/UserPost.vue'
 import { useUserStore } from '@/stores/userStore'
 import { useRouter } from 'vue-router'
 
