@@ -9,7 +9,7 @@
             </div>
             <img class="postimage" :src="item.image" />
           </div>
-          <h4>Title {{ index }}</h4>
+          <h4 class="title mt-0">Title {{ index }}</h4>
         </div>
       </template>
     </masonry-wall>
@@ -50,14 +50,9 @@ const items = [
     image: tall,
   },
 ]
-
-console.log(comic)
 </script>
 
 <style scoped lang="scss">
-.mansory-item {
-}
-
 .imageContainer {
   position: relative;
 }
@@ -69,18 +64,19 @@ console.log(comic)
   width: 100%;
   height: 100%;
   border-radius: 20px;
-  background-color: rgb(0, 0, 0);
   opacity: 0%;
 }
 
 .elementContainer:hover {
-  opacity: 60%;
+  background-color: rgb(0, 0, 0, 0.6);
+  opacity: 100%;
   transition: all 0.25s ease;
   cursor: pointer;
 }
 
 .imageText {
   color: white;
+  font-weight: $font-weight-bold;
 }
 
 .postimage {
@@ -91,6 +87,8 @@ console.log(comic)
   height: auto;
 }
 
-.postimage:hover {
+.title {
+  margin-top: 10px;
+  margin-bottom: 0px;
 }
 </style>
