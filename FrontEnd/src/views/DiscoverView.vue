@@ -3,7 +3,12 @@
     <masonry-wall :items="items" :ssr-columns="1" :column-width="250" :gap="16">
       <template #default="{ item, index }">
         <div class="mansory-item">
-          <img class="postimage" :src="item.image" />
+          <div class="imageContainer">
+            <div class="elementContainer">
+              <div class="imageText">Critique</div>
+            </div>
+            <img class="postimage" :src="item.image" />
+          </div>
           <h4>Title {{ index }}</h4>
         </div>
       </template>
@@ -50,17 +55,42 @@ console.log(comic)
 </script>
 
 <style scoped lang="scss">
-.mansory-image {
-  height: 200px;
-}
-
 .mansory-item {
 }
+
+.imageContainer {
+  position: relative;
+}
+.elementContainer {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  background-color: rgb(0, 0, 0);
+  opacity: 0%;
+}
+
+.elementContainer:hover {
+  opacity: 60%;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.imageText {
+  color: white;
+}
+
 .postimage {
   border-radius: 20px;
   display: block;
   object-fit: cover;
   width: 100%;
   height: auto;
+}
+
+.postimage:hover {
 }
 </style>
