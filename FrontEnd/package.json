@@ -22,6 +22,7 @@
     "bootstrap": "5.3.7",
     "fabric": "^6.7.1",
     "jwt-decode": "^4.0.0",
+    "lucide-vue-next": "^0.539.0",
     "pinia": "^3.0.3",
     "sass": "^1.89.2",
     "vue": "^3.5.17",

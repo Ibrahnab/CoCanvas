@@ -3,7 +3,11 @@
     <div class="upper">
       <SpinnerButton :spinner="showSpinnerSignout" @click="signOut">Sign Out</SpinnerButton>
     </div>
-    <div class="left"></div>
+    <div class="left">
+      <House :size="iconSize" />
+      <Compass :size="iconSize" />
+      <Bell class="icon" :size="iconSize" @onClick="goClick" />
+    </div>
     <div class="content">
       <slot />
     </div>
@@ -14,9 +18,14 @@
 import { TextBox, SpinnerButton, ErrorBox } from '@/components/common'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+
+import { House, Compass, Bell } from 'lucide-vue-next'
 const showSpinnerSignout = ref(false)
 
+const iconSize = 30
 const router = useRouter()
+
+function goClick() {}
 
 async function signOut() {
   try {
@@ -41,6 +50,15 @@ async function signOut() {
   height: 100%;
   position: fixed;
   width: 65px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+  padding-top: 20px;
+}
+
+.icon:hover {
+  cursor: pointer;
 }
 
 .content {
