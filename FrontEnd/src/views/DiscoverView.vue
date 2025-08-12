@@ -22,9 +22,11 @@ import tall from '@/assets/tall1.png'
 import batman from '@/assets/batman.png'
 import comic from '@/assets/comic1.png'
 import long from '@/assets/long.png'
+import guid from '@/utils/guid'
 
 const items = [
   {
+    id: guid.zero,
     title: 'First',
     image: tall,
   },
