@@ -18,6 +18,7 @@ onMounted(async () => {
       router.push('/auth')
     }
   } catch (error) {
+    // TODO: discard refresh + access tokens, keep for now for debugging
     console.log('error: ', error)
   }
 })
