@@ -22,6 +22,7 @@ import { faBell as faBellSolid } from '@fortawesome/free-solid-svg-icons'
 import { faBell as faBellRegular } from '@fortawesome/free-regular-svg-icons'
 import { faSquarePlus as faSquarePlusSolid } from '@fortawesome/free-solid-svg-icons'
 import { faSquarePlus as faSquarePlusRegular } from '@fortawesome/free-regular-svg-icons'
+import { faMagnifyingGlass as faMagnifyingGlassSolid } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
   faHeartSolid,
@@ -34,6 +35,7 @@ library.add(
   faBellRegular,
   faSquarePlusSolid,
   faSquarePlusRegular,
+  faMagnifyingGlassSolid,
 )
 
 import './styles/main.scss'
@@ -47,5 +49,6 @@ app.component('font-awesome-icon', FontAwesomeIcon)
 app.use(createPinia())
 app.use(router)
 app.use(MasonryWall)
+// app.use(PictureInput)
 
 app.mount('#app')

@@ -49,11 +49,6 @@ form {
   width: 20rem;
 }
 
-input {
-  max-width: 100%;
-  font-size: $font-size-xs;
-}
-
 label {
   font-size: $font-size-xs;
 }
@@ -77,6 +72,9 @@ button {
 button .cancel {
   background-color: grey;
 }
+// input {
+//   all: unset; /* removes all default browser styles */
+// }
 
 button:hover {
   background-color: $color-primary-dark;

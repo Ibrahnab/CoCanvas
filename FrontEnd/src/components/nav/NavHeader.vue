@@ -2,6 +2,7 @@
   <div>
     <div class="upper">
       <!-- <SpinnerButton :spinner="showSpinnerSignout" @click="signOut">Sign Out</SpinnerButton> -->
+      <TextBox icon="magnifying-glass" placeholder="Search" />
       <AvatarCircle :image="tall" />
     </div>
     <div class="left">
@@ -37,6 +38,7 @@ const route = useRoute()
 const router = useRouter()
 
 import tall from '@/assets/tall1.png'
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 
 const showSpinnerSignout = ref(false)
 const iconSize = 30
@@ -66,6 +68,7 @@ onMounted(() => {
   flex-direction: row;
   align-items: right;
   justify-content: right;
+  gap: 20px;
   padding-top: 10px;
   padding-bottom: 10px;
   padding-right: 20px;
