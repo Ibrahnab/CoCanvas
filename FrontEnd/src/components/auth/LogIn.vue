@@ -2,8 +2,8 @@
   <div id="LoginAId" class="form-wrapper">
     <ErrorBox :error-items="errorItems" />
     <form @submit.prevent="signIn">
-      <TextBox label="Email" v-model="email" />
-      <TextBox label="Password" type="password" v-model="password" />
+      <TextBox placeholder="Email" v-model="email" />
+      <TextBox placeholder="Password" type="password" v-model="password" />
       <router-link to="/signup">Create a new account</router-link>
 
       <SpinnerButton :spinner="showSpinner">Log in</SpinnerButton>

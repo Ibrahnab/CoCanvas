@@ -2,9 +2,9 @@
   <div class="form-wrapper">
     <ErrorBox :error-items="errorItems" />
     <form @submit.prevent="isValid">
-      <TextBox label="Email" v-model="email" />
-      <TextBox label="Password" type="password" v-model="password" />
-      <TextBox label="Confirm password" type="password" v-model="confirmPassword" />
+      <TextBox placeholder="Email" v-model="email" />
+      <TextBox placeholder="Password" type="password" v-model="password" />
+      <TextBox placeholder="Confirm password" type="password" v-model="confirmPassword" />
 
       <div class="terms">
         <CheckBox

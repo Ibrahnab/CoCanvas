@@ -60,7 +60,7 @@ label {
 
 button {
   width: fit-content;
-  min-width: 90px;
+  min-width: 100px;
   border-radius: $radius-lg;
   border-style: none;
   padding-left: 1rem;
@@ -69,7 +69,7 @@ button {
   padding-bottom: 0.3rem;
   transition: all 0.5s ease-out;
   background-color: $color-primary;
-  font-size: $font-size-xs;
+  font-size: $font-size-md;
   font-weight: $font-weight-bold;
   color: white;
 }
@@ -77,9 +77,11 @@ button {
 button .cancel {
   background-color: grey;
 }
-// input {
-//   all: unset; /* removes all default browser styles */
-// }
+
+input,
+textarea {
+  font-size: $font-size-md;
+}
 
 button:hover {
   background-color: $color-primary-dark;
