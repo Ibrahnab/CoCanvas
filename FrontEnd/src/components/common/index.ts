@@ -4,5 +4,6 @@ import TextBox from './TextBox.vue'
 import ErrorBox from './ErrorBox.vue'
 import IconButton from './IconButton.vue'
 import AvatarCircle from './AvatarCircle.vue'
+import TextArea from './TextArea.vue'
 
-export { CheckBox, TextBox, SpinnerButton, ErrorBox, IconButton, AvatarCircle }
+export { CheckBox, TextBox, SpinnerButton, ErrorBox, IconButton, AvatarCircle, TextArea }

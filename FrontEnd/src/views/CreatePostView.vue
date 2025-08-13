@@ -1,5 +1,5 @@
 <template>
-  <h1>Create Post</h1>
+  <h1 class="mt-4 ms-4">Create Post</h1>
   <div class="ctr mt-5">
     <div class="left">
       <picture-input
@@ -11,13 +11,14 @@
     </div>
     <div class="right">
       <TextBox class="textbox" placeholder="Enter a title" />
+      <TextArea placeholder="Enter a description (Max 256 characters)"></TextArea>
       <TextBox class="textbox" placeholder="Add tags" />
       <SpinnerButton>Submit</SpinnerButton>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { TextBox, SpinnerButton } from '@/components/common'
+import { TextBox, SpinnerButton, TextArea } from '@/components/common'
 // TODO: Fix this import issue
 import PictureInput from 'vue-picture-input'
 </script>
