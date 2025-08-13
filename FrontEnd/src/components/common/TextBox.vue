@@ -49,6 +49,7 @@ function onInput(event: Event) {
   line-height: 28px;
   align-items: center;
   position: relative;
+  width: 100%;
 }
 
 .input {
