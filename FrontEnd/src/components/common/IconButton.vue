@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="ctr">
     <font-awesome-icon :icon="[toggled ? 'fas' : 'far', icon]" :style="{ fontSize: size + 'px' }" />
   </div>
 </template>
@@ -24,12 +24,12 @@ defineProps({
 </script>
 
 <style scoped lang="scss">
-.container {
+.ctr {
   padding: 10px;
   border-radius: 10px;
 }
 
-.container:hover {
+.ctr:hover {
   background-color: $color-gray-200;
   cursor: pointer;
   transition: all 0.25s ease;

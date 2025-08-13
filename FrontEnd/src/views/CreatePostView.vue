@@ -1,6 +1,6 @@
 <template>
   <h1>Create Post</h1>
-  <div class="container mt-2">
+  <div class="ctr mt-5">
     <div class="left">
       <picture-input
         class="pictureInput"
@@ -23,7 +23,7 @@ import PictureInput from 'vue-picture-input'
 </script>
 
 <style scoped lang="scss">
-.container {
+.ctr {
   display: flex;
   justify-content: center;
   align-items: center;

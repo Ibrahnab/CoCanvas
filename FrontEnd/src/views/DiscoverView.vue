@@ -9,7 +9,7 @@
             </div>
             <img class="postimage" :src="item.image" />
           </div>
-          <h4 class="title mt-0">Title {{ index }}</h4>
+          <h4 class="title">Title {{ index }}</h4>
         </div>
       </template>
     </masonry-wall>
