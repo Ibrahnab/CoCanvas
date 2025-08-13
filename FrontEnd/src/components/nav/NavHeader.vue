@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="upper">
-      <SpinnerButton :spinner="showSpinnerSignout" @click="signOut">Sign Out</SpinnerButton>
+      <!-- <SpinnerButton :spinner="showSpinnerSignout" @click="signOut">Sign Out</SpinnerButton> -->
+      <AvatarCircle :image="tall" />
     </div>
     <div class="left">
       <IconButton
@@ -28,12 +29,14 @@
 </template>
 
 <script setup lang="ts">
-import { TextBox, SpinnerButton, IconButton } from '@/components/common'
+import { TextBox, SpinnerButton, IconButton, AvatarCircle } from '@/components/common'
 import { useRouter, useRoute } from 'vue-router'
 import { ref, onMounted } from 'vue'
 
 const route = useRoute()
 const router = useRouter()
+
+import tall from '@/assets/tall1.png'
 
 const showSpinnerSignout = ref(false)
 const iconSize = 30
@@ -54,11 +57,22 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .upper {
-  background-color: $color-gray-200;
+  background-color: white;
   height: 65px;
   padding-left: 80px;
   position: fixed;
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: right;
+  justify-content: right;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 20px;
+  box-shadow:
+    rgba(17, 17, 26, 0.1) 0px 3px 16px,
+    rgba(17, 17, 26, 0.1) 0px 3px 10px,
+    rgba(17, 17, 26, 0.1) 0px 3px 10px;
   z-index: 1;
 }
 
@@ -83,5 +97,6 @@ onMounted(() => {
 .content {
   padding-top: 80px;
   padding-left: 90px;
+  padding-right: 10px;
 }
 </style>
