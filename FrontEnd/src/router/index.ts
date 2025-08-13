@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import MainLayout from '../views/MainLayout.vue'
 import AuthLayout from '../views/AuthLayout.vue'
 import DiscoverView from '../views/DiscoverView.vue'
+import HomeView from '../views/HomeView.vue'
+import CreatePostView from '../views/CreatePostView.vue'
 import SignUp from '../components/auth/SignUp.vue'
 import LogIn from '../components/auth/LogIn.vue'
 import ForgotPassword from '../components/auth/ForgotPassword.vue'
@@ -11,13 +13,23 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'mainApplication',
       component: MainLayout,
       children: [
         {
           path: '/',
           name: 'discover',
           component: DiscoverView,
+        },
+        {
+          path: '/home',
+          name: 'home',
+          component: HomeView,
+        },
+        {
+          path: '/create-post',
+          name: 'create-post',
+          component: CreatePostView,
         },
         {
           path: '/about',

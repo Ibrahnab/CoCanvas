@@ -8,11 +8,41 @@ import MasonryWall from '@yeger/vue-masonry-wall'
 import App from './App.vue'
 import router from './router'
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+// TODO: Do this somewhere else to keep this file short
+import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons'
+import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons'
+import { faHouse as faHouseSolid } from '@fortawesome/free-solid-svg-icons'
+import { faHouse as faHouseRegular } from '@fortawesome/free-regular-svg-icons'
+import { faCompass as faCompassSolid } from '@fortawesome/free-solid-svg-icons'
+import { faCompass as faCompassRegular } from '@fortawesome/free-regular-svg-icons'
+import { faBell as faBellSolid } from '@fortawesome/free-solid-svg-icons'
+import { faBell as faBellRegular } from '@fortawesome/free-regular-svg-icons'
+import { faSquarePlus as faSquarePlusSolid } from '@fortawesome/free-solid-svg-icons'
+import { faSquarePlus as faSquarePlusRegular } from '@fortawesome/free-regular-svg-icons'
+
+library.add(
+  faHeartSolid,
+  faHeartRegular,
+  faHouseSolid,
+  faHouseRegular,
+  faCompassSolid,
+  faCompassRegular,
+  faBellSolid,
+  faBellRegular,
+  faSquarePlusSolid,
+  faSquarePlusRegular,
+)
+
 import './styles/main.scss'
 
 await api.initialize()
 
 const app = createApp(App)
+
+app.component('font-awesome-icon', FontAwesomeIcon)
 
 app.use(createPinia())
 app.use(router)
