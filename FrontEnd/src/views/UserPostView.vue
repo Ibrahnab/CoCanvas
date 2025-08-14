@@ -2,7 +2,7 @@
   <h2 class="mt-2 ms-2">Post</h2>
   <div class="ctr">
     <div class="left">
-      <UserPostCanvas /> <span>{{ route.params.id }}</span>
+      <UserPostCanvas :imageUrl="myImage" />
     </div>
     <div class="right">
       <CommentsPanel />
@@ -13,9 +13,10 @@
 <script setup lang="ts">
 import UserPostCanvas from '@/components/post/UserPostCanvas.vue'
 import CommentsPanel from '@/components/post/CommentsPanel.vue'
+import rkgk1 from '@/assets/rkgk1.png'
 
 import { useRoute, useRouter } from 'vue-router'
-
+import myImage from '@/assets/rkgk1.png'
 const router = useRouter()
 const route = useRoute()
 </script>

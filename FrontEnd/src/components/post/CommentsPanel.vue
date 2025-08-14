@@ -18,7 +18,7 @@ import CommentItem from './CommentItem.vue'
   min-height: 300px;
   padding: 15px;
   // background-color: $color-gray-100;
-  border-radius: $radius-lg;
-  border: solid 2px rgb(215, 215, 215);
+  // border-radius: $radius-lg;
+  border-left: solid 2px rgb(215, 215, 215);
 }
 </style>

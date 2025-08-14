@@ -1,44 +1,97 @@
 <template>
-  <canvas ref="canvasEl"></canvas>
+  <div class="image-annotator">
+    <canvas ref="canvasEl"></canvas>
+    <div class="tools">
+      <button @click="enableDrawingMode">Draw Mode</button>
+      <button @click="disableDrawingMode">Select Mode</button>
+      <button @click="saveAnnotations">Save</button>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { Canvas, PencilBrush, FabricImage } from 'fabric'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import * as fabric from 'fabric'
+import { FabricImage, Canvas } from 'fabric'
+
+const props = defineProps<{
+  imageUrl: string
+}>()
 
 const canvasEl = ref<HTMLCanvasElement | null>(null)
+let canvas: Canvas
 
 onMounted(async () => {
   if (!canvasEl.value) return
 
-  // Create Fabric canvas
-  const canvas = new Canvas(canvasEl.value, {
-    isDrawingMode: true, // enable freehand drawing
-    width: 800,
-    height: 600,
+  // Initialize fabric canvas
+  canvas = new Canvas(canvasEl.value, {
+    isDrawingMode: false,
+    selection: true,
   })
 
-  // Set up free drawing brush
-  const brush = new PencilBrush(canvas)
-  brush.width = 2
-  brush.color = 'red'
-  canvas.freeDrawingBrush = brush
+  // Load the image as background
+  const img = await FabricImage.fromURL(props.imageUrl, {
+    crossOrigin: 'anonymous',
+  })
 
-  // // Load background image
-  // const img = await FabricImage.fromURL('/uploads/sample-image.jpg', {
-  //   crossOrigin: 'anonymous', // if needed for CORS
-  // })
-  // img.selectable = false
+  const scaleFactor = 600 / img.width!
+  img.scale(scaleFactor)
 
-  // // Scale image to canvas
-  // img.scaleToWidth(canvas.getWidth()!)
-  // img.scaleToHeight(canvas.getHeight()!)
-  // canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas))
+  canvas.setDimensions({ width: img.width! * scaleFactor, height: img.height! * scaleFactor })
+  canvas.backgroundImage = img
+  canvas.requestRenderAll()
+
+  canvas.on('mouse:down', (opt) => {
+    const pointer = canvas.getViewportPoint(opt.e)
+    addCommentMarker(pointer.x, pointer.y)
+  })
 })
+
+onBeforeUnmount(() => {
+  canvas?.dispose()
+})
+
+function enableDrawingMode() {
+  canvas.isDrawingMode = true
+  canvas.freeDrawingBrush = new fabric.PencilBrush(canvas)
+  canvas.freeDrawingBrush.width = 3
+  canvas.freeDrawingBrush.color = '#ff0000'
+}
+
+function disableDrawingMode() {
+  canvas.isDrawingMode = false
+}
+
+function addCommentMarker(x: number, y: number) {
+  const circle = new fabric.Circle({
+    radius: 6,
+    fill: 'yellow',
+    stroke: 'black',
+    strokeWidth: 1,
+    left: x - 6,
+    top: y - 6,
+    selectable: false,
+  })
+  canvas.add(circle)
+
+  // TODO: open a modal or popup for user to type a comment
+  // Then save { x, y, text } to your backend
+}
+
+function saveAnnotations() {
+  const data = canvas.toJSON()
+  console.log('Annotations:', data)
+  // TODO: Send to backend
+}
 </script>
 
 <style>
-canvas {
-  border: 1px solid #ccc;
+.image-annotator {
+  display: inline-block;
+}
+
+.tools {
+  margin-top: 10px;
 }
 </style>
