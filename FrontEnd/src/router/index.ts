@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import MainLayout from '../views/MainLayout.vue'
 import AuthLayout from '../views/AuthLayout.vue'
 import DiscoverView from '../views/DiscoverView.vue'
+import UserPostView from '../views/UserPostView.vue'
 import HomeView from '../views/HomeView.vue'
 import CreatePostView from '../views/CreatePostView.vue'
 import SignUp from '../components/auth/SignUp.vue'
@@ -30,6 +31,11 @@ const router = createRouter({
           path: '/create-post',
           name: 'create-post',
           component: CreatePostView,
+        },
+        {
+          path: '/posts/:id',
+          name: 'posts',
+          component: UserPostView,
         },
         {
           path: '/about',

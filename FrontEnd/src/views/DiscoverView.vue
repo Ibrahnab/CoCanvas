@@ -5,7 +5,10 @@
         <div class="mansory-item">
           <div class="imageContainer">
             <div class="elementContainer">
-              <div class="imageText">Critique</div>
+              <!-- <div class="imageText">Critique</div> -->
+              <router-link :to="{ name: 'posts', params: { id: item.id } }" class="imageText"
+                >Critique</router-link
+              >
             </div>
             <img class="postimage" :src="item.image" />
           </div>
@@ -16,40 +19,46 @@
   </div>
 </template>
 <script setup lang="ts">
-import UserPost from '@/components/post/UserPost.vue'
+import UserPost from '@/views/UserPostView.vue'
 import wide from '@/assets/wide1.png'
 import tall from '@/assets/tall1.png'
 import batman from '@/assets/batman.png'
 import comic from '@/assets/comic1.png'
 import long from '@/assets/long.png'
+import rkgk1 from '@/assets/rkgk1.png'
 import guid from '@/utils/guid'
 
 const items = [
   {
-    id: guid.zero,
+    id: guid.zero(),
     title: 'First',
     image: tall,
   },
   {
+    id: guid.zero(),
     title: 'Second',
     image: wide,
   },
   {
+    id: guid.zero(),
     title: 'third',
     image: batman,
   },
   {
+    id: guid.zero(),
     title: 'third',
     image: long,
   },
+  {
+    id: guid.zero(),
+    title: 'rkgk1',
+    image: rkgk1,
+  },
 
   {
+    id: guid.zero(),
     title: 'third',
     image: comic,
-  },
-  {
-    title: 'First',
-    image: tall,
   },
 ]
 </script>
