@@ -29,8 +29,20 @@
         @click="commentMode"
       />
     </div>
-    <div class="image-annotator">
+    <div class="imageContainer">
       <canvas ref="canvasEl"></canvas>
+
+      <div
+        v-for="(comment, index) in selectedCritique?.comments"
+        :key="index"
+        :ref="comment.id"
+        class="comment-bubble"
+        :style="{ top: comment.y + 'px', left: comment.x + 'px' }"
+        @click="commentExpand"
+      >
+        <template v-if="expandedCommentId === comment.id">aa </template>
+        <template v-else> 💬 </template>
+      </div>
     </div>
   </div>
 </template>
@@ -40,6 +52,26 @@ import { SelectButton } from '@/components/common'
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import * as fabric from 'fabric'
 import { FabricImage, Canvas } from 'fabric'
+import type { Critique, Comment, Reply } from '@/models/critique'
+import guid from '@/utils/guid'
+import mockCritiques from '@/mockData/mockCritiques'
+
+enum tools {
+  PEN,
+  ERASE,
+  SELECT,
+  COMMENT,
+}
+
+const selected = ref(tools.PEN)
+const iconColor = ref('white')
+const critiques = ref<Critique[]>(mockCritiques) // TODO: Get from backend
+const selectedCritiqueId = ref<string>(guid.zero())
+const selectedCritique = ref<Critique>()
+const expandedCommentId = ref<string>()
+
+const canvasEl = ref<HTMLCanvasElement | null>(null)
+let canvas: Canvas
 
 const props = defineProps({
   imageUrl: {
@@ -48,20 +80,20 @@ const props = defineProps({
   },
 })
 
-enum tools {
-  PEN,
-  ERASE,
-  SELECT,
-  COMMENT,
+// TODO: Set the one with highest rating?
+function setSelectedCritique() {
+  if (critiques.value.length > 0) {
+    selectedCritique.value = critiques.value[0]
+  }
 }
-const selected = ref(tools.PEN)
-const iconColor = ref('white')
 
-const canvasEl = ref<HTMLCanvasElement | null>(null)
-let canvas: Canvas
+function commentExpand() {}
 
 onMounted(async () => {
   if (!canvasEl.value) return
+
+  // Check critiques
+  setSelectedCritique()
 
   // Initialize fabric canvas
   canvas = new Canvas(canvasEl.value, {
@@ -80,7 +112,19 @@ onMounted(async () => {
   canvas.setDimensions({ width: img.width! * scaleFactor, height: img.height! * scaleFactor })
   canvas.backgroundImage = img
   canvas.requestRenderAll()
+  enableDrawingMode()
 })
+
+function toolSelect(selectedTool: number) {
+  // TODO: Consider this?
+  switch (selectedTool) {
+    case tools.PEN:
+    case tools.COMMENT:
+    case tools.ERASE:
+    case tools.SELECT:
+    default:
+  }
+}
 
 function enableDrawingMode() {
   selected.value = tools.PEN
@@ -130,13 +174,14 @@ function eraseMode() {
 function commentMode() {
   selected.value = tools.COMMENT
   disableDrawingMode()
+  canvas.selection = false
 
-  canvas.on('mouse:down', (opt) => {
-    if (selected.value === tools.COMMENT) {
-      const pointer = canvas.getViewportPoint(opt.e)
-      addCommentMarker(pointer.x, pointer.y)
-    }
-  })
+  // canvas.on('mouse:down', (opt) => {
+  //   if (selected.value === tools.COMMENT) {
+  //     const pointer = canvas.getViewportPoint(opt.e)
+  //     addCommentMarker(pointer.x, pointer.y)
+  //   }
+  // })
 }
 
 onBeforeUnmount(() => {
@@ -145,8 +190,15 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
-.image-annotator {
+.imageContainer {
   display: inline-block;
+  position: relative;
+}
+
+.comment-bubble {
+  width: 25px;
+  background-color: rgb(46, 199, 202);
+  border-radius: 50%;
 }
 
 .tools {
