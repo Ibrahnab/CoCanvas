@@ -25,6 +25,8 @@ import { faSquarePlus as faSquarePlusSolid } from '@fortawesome/free-solid-svg-i
 import { faSquarePlus as faSquarePlusRegular } from '@fortawesome/free-regular-svg-icons'
 import { faMagnifyingGlass as faMagnifyingGlassSolid } from '@fortawesome/free-solid-svg-icons'
 
+import { faEraser, faBorderNone, faComment, faPen } from '@fortawesome/free-solid-svg-icons'
+
 library.add(
   faHeartSolid,
   faHeartRegular,
@@ -37,6 +39,10 @@ library.add(
   faSquarePlusSolid,
   faSquarePlusRegular,
   faMagnifyingGlassSolid,
+  faEraser,
+  faBorderNone,
+  faComment,
+  faPen,
 )
 
 import './styles/main.scss'
