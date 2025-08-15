@@ -2,31 +2,32 @@
   <div class="ctr">
     <!-- TODO: Make a component around this -->
     <div class="tools">
-      <SelectButton
-        icon="border-none"
-        :iconColor="iconColor"
-        :toggled="selected === tools.SELECT"
-        @click="selectMode"
-      ></SelectButton>
       <!-- TODO: Add selectable colors and width for the pen -->
       <SelectButton
         icon="pen"
         :iconColor="iconColor"
         :toggled="selected === tools.PEN"
         @click="enableDrawingMode"
-      ></SelectButton>
+      />
       <SelectButton
         icon="eraser"
         :iconColor="iconColor"
         :toggled="selected === tools.ERASE"
         @click="eraseMode"
-      ></SelectButton>
+      />
+      <SelectButton
+        icon="border-none"
+        :iconColor="iconColor"
+        :toggled="selected === tools.SELECT"
+        @click="selectMode"
+      />
+
       <SelectButton
         icon="comment"
         :iconColor="iconColor"
         :toggled="selected === tools.COMMENT"
         @click="commentMode"
-      ></SelectButton>
+      />
     </div>
     <div class="image-annotator">
       <canvas ref="canvasEl"></canvas>
