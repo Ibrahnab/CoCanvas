@@ -34,9 +34,7 @@ const props = defineProps({
   },
 })
 
-onMounted(() => {
-  console.log(props.toggled)
-})
+onMounted(() => {})
 </script>
 
 <style scoped lang="scss">

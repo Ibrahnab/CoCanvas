@@ -52,9 +52,7 @@ async function signOut() {
   } catch (error) {}
 }
 
-onMounted(() => {
-  console.log(route)
-})
+onMounted(() => {})
 </script>
 
 <style scoped lang="scss">

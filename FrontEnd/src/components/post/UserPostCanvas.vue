@@ -6,8 +6,9 @@
         icon="border-none"
         :iconColor="iconColor"
         :toggled="selected === tools.SELECT"
-        @click="disableDrawingMode"
+        @click="selectMode"
       ></SelectButton>
+      <!-- TODO: Add selectable colors and width for the pen -->
       <SelectButton
         icon="pen"
         :iconColor="iconColor"
@@ -35,7 +36,7 @@
 
 <script setup lang="ts">
 import { SelectButton } from '@/components/common'
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import * as fabric from 'fabric'
 import { FabricImage, Canvas } from 'fabric'
 
@@ -54,7 +55,6 @@ enum tools {
 }
 const selected = ref(tools.PEN)
 const iconColor = ref('white')
-const selectedColor = ref('#2a6ef0')
 
 const canvasEl = ref<HTMLCanvasElement | null>(null)
 let canvas: Canvas
@@ -79,11 +79,6 @@ onMounted(async () => {
   canvas.setDimensions({ width: img.width! * scaleFactor, height: img.height! * scaleFactor })
   canvas.backgroundImage = img
   canvas.requestRenderAll()
-
-  canvas.on('mouse:down', (opt) => {
-    const pointer = canvas.getViewportPoint(opt.e)
-    addCommentMarker(pointer.x, pointer.y)
-  })
 })
 
 function enableDrawingMode() {
@@ -94,19 +89,23 @@ function enableDrawingMode() {
   canvas.freeDrawingBrush.color = '#ff0000'
 }
 
-function disableDrawingMode() {
+function selectMode() {
   selected.value = tools.SELECT
+  disableDrawingMode()
+}
+
+function disableDrawingMode() {
   canvas.isDrawingMode = false
 }
 
 function addCommentMarker(x: number, y: number) {
+  const radius = 12
   const circle = new fabric.Circle({
-    radius: 6,
+    radius: radius,
     fill: 'yellow',
-    stroke: 'black',
     strokeWidth: 1,
-    left: x - 6,
-    top: y - 6,
+    left: x - radius,
+    top: y - radius,
     selectable: false,
   })
   canvas.add(circle)
@@ -126,9 +125,17 @@ function eraseMode() {
   selected.value = tools.ERASE
 }
 
+// TODO: Do this with html elements instead
 function commentMode() {
-  // TODO: Implement
   selected.value = tools.COMMENT
+  disableDrawingMode()
+
+  canvas.on('mouse:down', (opt) => {
+    if (selected.value === tools.COMMENT) {
+      const pointer = canvas.getViewportPoint(opt.e)
+      addCommentMarker(pointer.x, pointer.y)
+    }
+  })
 }
 
 onBeforeUnmount(() => {
