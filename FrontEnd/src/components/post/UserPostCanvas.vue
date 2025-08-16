@@ -44,20 +44,25 @@
         <template v-else> 💬 </template>
       </div>
 
-      <div v-if="unsavedComment?.id === guid.zero()">
-        <div
-          class="comment-bubble"
-          :style="{ top: unsavedComment.y + 'px', left: unsavedComment.x + 'px' }"
-        >
+      <div
+        v-if="unsavedComment?.id === guid.zero()"
+        :style="{
+          top: unsavedComment.y + 'px',
+          left: unsavedComment.x + 'px',
+          position: 'absolute',
+        }"
+      >
+        <div class="comment-bubble">
           <font-awesome-icon icon="comment" :style="{ color: 'white' }" />
         </div>
+        <TextBox class="ms-5"></TextBox>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { SelectButton } from '@/components/common'
+import { SelectButton, TextBox } from '@/components/common'
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import * as fabric from 'fabric'
 import { FabricImage, Canvas } from 'fabric'
