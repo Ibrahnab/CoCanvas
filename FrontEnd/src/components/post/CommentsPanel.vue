@@ -1,12 +1,12 @@
 <template>
   <div class="ctr2">
     <h3>Comments</h3>
-    <CommentItem></CommentItem>
+    <!-- <CommentItem></CommentItem> -->
   </div>
 </template>
 
 <script setup lang="ts">
-import CommentItem from './CommentItem.vue'
+import CommentItem from './CanvasComment.vue'
 </script>
 
 <style scope lang="scss">

@@ -51,11 +51,12 @@
           left: unsavedComment.x + 'px',
           position: 'absolute',
         }"
+        class="comment-container"
       >
         <div class="comment-bubble">
           <font-awesome-icon icon="comment" :style="{ color: 'white' }" />
         </div>
-        <TextBox class="ms-5"></TextBox>
+        <CanvasComment class="ms-5"></CanvasComment>
       </div>
     </div>
   </div>
@@ -68,6 +69,7 @@ import * as fabric from 'fabric'
 import { FabricImage, Canvas } from 'fabric'
 import type { Critique, Comment, Reply } from '@/models/critique'
 import guid from '@/utils/guid'
+import CanvasComment from './CanvasComment.vue'
 import mockCritiques from '@/mockData/mockCritiques'
 
 enum tools {
@@ -206,8 +208,6 @@ function addCommentMarker(posx: number, posy: number) {
   } else {
     unsavedComment.value = null
   }
-
-  console.log('adding comment', unsavedComment.value)
 }
 
 function saveAnnotations() {
@@ -251,6 +251,7 @@ onBeforeUnmount(() => {
   background-color: rgb(46, 199, 202);
   border-radius: 50%;
   padding: 5px;
+  box-shadow: 0 0 10px rgb(0, 0, 0, 0.3);
 }
 
 .tools {
