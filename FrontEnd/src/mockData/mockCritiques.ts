@@ -23,7 +23,7 @@ const mockCritique: Critique = {
     },
     {
       id: guid.zero(),
-      x: 40,
+      x: 60,
       y: 20,
       text: 'draw a better line',
       replies: [
@@ -40,7 +40,7 @@ const mockCritique: Critique = {
 
 const mockCritique2: Critique = {
   id: guid.zero(),
-  userId: guid.zero(),
+  userId: '00000000-0000-0000-0000-000000000001',
   username: 'username',
   rating: 30,
   comments: [

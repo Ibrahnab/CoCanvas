@@ -43,6 +43,15 @@
         <template v-if="expandedCommentId === comment.id">aa </template>
         <template v-else> 💬 </template>
       </div>
+
+      <div v-if="unsavedComment?.id === guid.zero()">
+        <div
+          class="comment-bubble"
+          :style="{ top: unsavedComment.y + 'px', left: unsavedComment.x + 'px' }"
+        >
+          <font-awesome-icon icon="comment" :style="{ color: 'white' }" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -65,10 +74,12 @@ enum tools {
 
 const selected = ref(tools.PEN)
 const iconColor = ref('white')
-const critiques = ref<Critique[]>(mockCritiques) // TODO: Get from backend
+const critiques = ref<Critique[]>([]) // TODO: Get from backend
 const selectedCritiqueId = ref<string>(guid.zero())
 const selectedCritique = ref<Critique>()
+const myCritique = ref<Critique>()
 const expandedCommentId = ref<string>()
+const unsavedComment = ref<Comment | null>(null)
 
 const canvasEl = ref<HTMLCanvasElement | null>(null)
 let canvas: Canvas
@@ -84,15 +95,40 @@ const props = defineProps({
 function setSelectedCritique() {
   if (critiques.value.length > 0) {
     selectedCritique.value = critiques.value[0]
+    console.log('setting', selectedCritique.value.comments)
   }
 }
 
 function commentExpand() {}
 
+function getData() {
+  // TODO: Get from api
+
+  const currentUserId = guid.zero() // TODO: Get from store
+  const currentUsername = 'Sample Name' // TODO: Get from store
+  critiques.value = mockCritiques // TODO: Get from api
+
+  const myCritIndex = critiques.value.findIndex((c) => c.userId === currentUserId)
+
+  if (myCritIndex < 0) {
+    critiques.value.unshift({
+      id: guid.zero(),
+      userId: currentUserId,
+      username: currentUsername,
+      rating: 0,
+      comments: [],
+    } as Critique)
+    myCritique.value = critiques.value[0]
+  } else {
+    myCritique.value = critiques.value[myCritIndex]
+  }
+}
+
 onMounted(async () => {
   if (!canvasEl.value) return
 
   // Check critiques
+  getData()
   setSelectedCritique()
 
   // Initialize fabric canvas
@@ -143,20 +179,30 @@ function disableDrawingMode() {
   canvas.isDrawingMode = false
 }
 
-function addCommentMarker(x: number, y: number) {
-  const radius = 12
-  const circle = new fabric.Circle({
-    radius: radius,
-    fill: 'yellow',
-    strokeWidth: 1,
-    left: x - radius,
-    top: y - radius,
-    selectable: false,
-  })
-  canvas.add(circle)
+async function saveComment(comment: Comment) {
+  try {
+    // const result = await backend.save(comment)
+    myCritique.value?.comments.push(comment)
+  } catch (error) {
+    console.error(error)
+    // TODO: implement globalmessagebox
+  }
+}
 
-  // TODO: open a modal or popup for user to type a comment
-  // Then save { x, y, text } to backend
+function addCommentMarker(posx: number, posy: number) {
+  if (!unsavedComment.value) {
+    unsavedComment.value = {
+      id: guid.zero(),
+      x: posx,
+      y: posy,
+      text: '',
+      replies: [],
+    }
+  } else {
+    unsavedComment.value = null
+  }
+
+  console.log('adding comment', unsavedComment.value)
 }
 
 function saveAnnotations() {
@@ -176,12 +222,12 @@ function commentMode() {
   disableDrawingMode()
   canvas.selection = false
 
-  // canvas.on('mouse:down', (opt) => {
-  //   if (selected.value === tools.COMMENT) {
-  //     const pointer = canvas.getViewportPoint(opt.e)
-  //     addCommentMarker(pointer.x, pointer.y)
-  //   }
-  // })
+  canvas.on('mouse:down', (opt) => {
+    if (selected.value === tools.COMMENT) {
+      const pointer = canvas.getViewportPoint(opt.e)
+      addCommentMarker(pointer.x, pointer.y)
+    }
+  })
 }
 
 onBeforeUnmount(() => {
@@ -196,9 +242,10 @@ onBeforeUnmount(() => {
 }
 
 .comment-bubble {
-  width: 25px;
+  position: absolute;
   background-color: rgb(46, 199, 202);
   border-radius: 50%;
+  padding: 5px;
 }
 
 .tools {
