@@ -39,6 +39,8 @@
         :posY="comment.y"
         :modelValue="comment.text"
         :ref="comment.id"
+        @send="updateComment"
+        @delete="deleteComment"
       >
       </CanvasComment>
 
@@ -46,6 +48,9 @@
         v-if="unsavedComment?.id === guid.zero()"
         :posX="unsavedComment.x"
         :posY="unsavedComment.y"
+        :modelValue="unsavedComment.text"
+        @send="saveComment(unsavedComment)"
+        @delete="deleteComment"
       ></CanvasComment>
     </div>
   </div>
@@ -175,15 +180,20 @@ function disableDrawingMode() {
   canvas.isDrawingMode = false
 }
 
+async function updateComment(comment: Comment) {}
+
 async function saveComment(comment: Comment) {
   try {
     // const result = await backend.save(comment)
     myCritique.value?.comments.push(comment)
+    console.log(myCritique.value?.comments)
   } catch (error) {
     console.error(error)
     // TODO: implement globalmessagebox
   }
 }
+
+function deleteComment() {}
 
 function addCommentMarker(posx: number, posy: number) {
   if (!unsavedComment.value) {

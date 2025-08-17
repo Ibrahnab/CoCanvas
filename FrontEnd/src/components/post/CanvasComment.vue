@@ -15,10 +15,10 @@
       </span>
 
       <div class="tools-container">
-        <SpinnerButton class="save-button">
+        <SpinnerButton class="save-button" @click="onDelete">
           <font-awesome-icon class="send-icon" icon="trash"></font-awesome-icon>
         </SpinnerButton>
-        <SpinnerButton class="save-button">
+        <SpinnerButton class="save-button" @click="onSend">
           <font-awesome-icon class="send-icon" icon="paper-plane"></font-awesome-icon>
         </SpinnerButton>
       </div>
@@ -34,7 +34,7 @@ const input = useTemplateRef('input')
 const commentBubble = useTemplateRef('comment-bubble')
 const toggled = ref(false)
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'send', 'delete'])
 const props = defineProps({
   modelValue: {
     type: String,
@@ -64,6 +64,14 @@ function onInput(event: Event) {
 
 function onClickBubble() {
   toggled.value = !toggled.value
+}
+
+function onSend() {
+  emit('send')
+}
+
+function onDelete() {
+  emit('delete')
 }
 
 onMounted(() => {
