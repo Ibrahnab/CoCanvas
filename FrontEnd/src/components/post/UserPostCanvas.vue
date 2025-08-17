@@ -44,20 +44,13 @@
         <template v-else> 💬 </template>
       </div>
 
-      <div
+      <CanvasComment :posX="150" :posY="300" modelValue="Sample comment" />
+
+      <CanvasComment
         v-if="unsavedComment?.id === guid.zero()"
-        :style="{
-          top: unsavedComment.y + 'px',
-          left: unsavedComment.x + 'px',
-          position: 'absolute',
-        }"
-        class="comment-container"
-      >
-        <div class="comment-bubble">
-          <font-awesome-icon icon="comment" :style="{ color: 'white' }" />
-        </div>
-        <CanvasComment class="ms-5"></CanvasComment>
-      </div>
+        :posX="unsavedComment.x"
+        :posY="unsavedComment.y"
+      ></CanvasComment>
     </div>
   </div>
 </template>

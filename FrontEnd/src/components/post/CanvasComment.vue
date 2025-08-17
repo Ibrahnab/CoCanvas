@@ -1,39 +1,61 @@
 <template>
-  <div class="group">
-    <span
-      contenteditable="true"
-      class="input"
-      ref="input"
-      style="min-width: 200px; max-width: 200px"
-    >
-    </span>
+  <div class="comment-container" :style="{ top: posY + 'px', left: posX + 'px' }">
+    <div class="comment-bubble p-2" ref="comment-bubble" @click="onClickBubble">
+      <font-awesome-icon class="icon" icon="comment" :style="{ color: 'white' }" />
+    </div>
+    <div v-if="toggled" class="group">
+      <span
+        contenteditable="true"
+        class="input"
+        ref="input"
+        style="min-width: 200px; max-width: 200px"
+        @input="onInput"
+      >
+        {{ modelValue }}
+      </span>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
 import { ref, useTemplateRef, onMounted } from 'vue'
 
 const input = useTemplateRef('input')
+const commentBubble = useTemplateRef('comment-bubble')
+const toggled = ref(false)
 
 const emit = defineEmits(['update:modelValue'])
-defineProps({
+const props = defineProps({
   modelValue: {
     type: String,
+    default: '',
   },
   placeholder: {
     type: String,
     default: '',
   },
+  posX: {
+    type: Number,
+    default: 0,
+  },
+  posY: {
+    type: Number,
+    default: 0,
+  },
 })
 
 function onInput(event: Event) {
+  console.log('input')
   const target = event.target as HTMLInputElement | null
   if (target) {
     emit('update:modelValue', target.value)
   }
 }
 
+function onClickBubble() {
+  toggled.value = !toggled.value
+}
+
 onMounted(() => {
-  console.log('mounted comment', input.value)
   if (input.value) {
     // TODO: Fix, this is not focusing
     input.value.focus()
@@ -42,7 +64,28 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+.comment-container {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+}
+
+.comment-bubble {
+  background-color: rgb(46, 199, 202);
+  border-radius: 50%;
+  cursor: pointer;
+  width: fit-content;
+  height: fit-content;
+
+  box-shadow: 0 0 10px rgb(0, 0, 0, 0.3);
+}
+.icon {
+  left: 1rem;
+  fill: #9e9ea7;
+}
+
 .group {
+  margin-left: 5px;
   display: flex;
   line-height: 28px;
   align-items: center;
@@ -77,6 +120,7 @@ span.input[contenteditable]:empty::before {
   content: 'Add a comment';
   color: gray;
   display: inline-block;
+  cursor: text;
 }
 
 .input:focus,
@@ -85,13 +129,5 @@ input:hover {
   border-color: rgba(234, 76, 137, 0.4);
 
   box-shadow: 0 0 0 4px rgb(234 76 137 / 10%);
-}
-
-.icon {
-  position: absolute;
-  left: 1rem;
-  fill: #9e9ea7;
-  width: 1rem;
-  height: 1rem;
 }
 </style>
