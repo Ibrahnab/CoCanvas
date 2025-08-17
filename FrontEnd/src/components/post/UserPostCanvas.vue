@@ -1,5 +1,5 @@
 <template>
-  <div class="ctr">
+  <div class="canvas-container">
     <!-- TODO: Make a component around this -->
     <div class="tools">
       <!-- TODO: Add selectable colors and width for the pen -->
@@ -33,7 +33,7 @@
       <canvas ref="canvasEl"></canvas>
 
       <CanvasComment
-        v-for="(comment, index) in selectedCritique?.comments"
+        v-for="(comment, index) in critiques?.find((c) => c.id === selectedCritiqueId)?.comments"
         :key="index"
         :posX="comment.x"
         :posY="comment.y"
@@ -59,12 +59,13 @@
 <script setup lang="ts">
 import { SelectButton, TextBox } from '@/components/common'
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
+import type { PropType } from 'vue'
 import * as fabric from 'fabric'
 import { FabricImage, Canvas } from 'fabric'
 import type { Critique, Comment, Reply } from '@/models/critique'
 import guid from '@/utils/guid'
 import CanvasComment from './CanvasComment.vue'
-import mockCritiques from '@/mockData/mockCritiques'
+// import mockCritiques from '@/mockData/mockCritiques'
 
 enum tools {
   PEN,
@@ -75,10 +76,10 @@ enum tools {
 
 const selected = ref(tools.PEN)
 const iconColor = ref('white')
-const critiques = ref<Critique[]>([]) // TODO: Get from backend
-const selectedCritiqueId = ref<string>(guid.zero())
-const selectedCritique = ref<Critique>()
-const myCritique = ref<Critique>()
+// const critiques = ref<Critique[]>([]) // TODO: Get from backend
+// const selectedCritiqueId = ref<string>(guid.zero())
+// const selectedCritique = ref<Critique>()
+// const myCritique = ref<Critique>()
 const expandedCommentId = ref<string>()
 const unsavedComment = ref<Comment | null>(null)
 
@@ -90,47 +91,24 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  critiques: {
+    type: Object as PropType<Critique[]>,
+  },
+  myCritique: {
+    type: Object as PropType<Critique>,
+  },
+  selectedCritique: {
+    type: Object as PropType<Critique>,
+  },
+  selectedCritiqueId: {
+    type: String,
+  },
 })
-
-// TODO: Set the one with highest rating?
-function setSelectedCritique() {
-  if (critiques.value.length > 0) {
-    selectedCritique.value = critiques.value[0]
-    console.log('setting', selectedCritique.value.comments)
-  }
-}
 
 function commentExpand() {}
 
-function getData() {
-  // TODO: Get from api
-
-  const currentUserId = guid.zero() // TODO: Get from store
-  const currentUsername = 'Sample Name' // TODO: Get from store
-  critiques.value = mockCritiques // TODO: Get from api
-
-  const myCritIndex = critiques.value.findIndex((c) => c.userId === currentUserId)
-
-  if (myCritIndex < 0) {
-    critiques.value.unshift({
-      id: guid.zero(),
-      userId: currentUserId,
-      username: currentUsername,
-      rating: 0,
-      comments: [],
-    } as Critique)
-    myCritique.value = critiques.value[0]
-  } else {
-    myCritique.value = critiques.value[myCritIndex]
-  }
-}
-
 onMounted(async () => {
   if (!canvasEl.value) return
-
-  // Check critiques
-  getData()
-  setSelectedCritique()
 
   // Initialize fabric canvas
   canvas = new Canvas(canvasEl.value, {
@@ -183,30 +161,31 @@ function disableDrawingMode() {
 async function updateComment(comment: Comment) {}
 
 async function saveComment(comment: Comment) {
-  try {
-    // const result = await backend.save(comment)
-    myCritique.value?.comments.push(comment)
-    console.log(myCritique.value?.comments)
-  } catch (error) {
-    console.error(error)
-    // TODO: implement globalmessagebox
-  }
+  //TODO: Emit to parent
+  // try {
+  //   // const result = await backend.save(comment)
+  //   myCritique.value?.comments.push(comment)
+  //   console.log(myCritique.value?.comments)
+  // } catch (error) {
+  //   console.error(error)
+  //   // TODO: implement globalmessagebox
+  // }
 }
 
 function deleteComment() {}
 
 function addCommentMarker(posx: number, posy: number) {
-  if (!unsavedComment.value) {
-    unsavedComment.value = {
-      id: guid.zero(),
-      x: posx,
-      y: posy,
-      text: '',
-      replies: [],
-    }
-  } else {
-    unsavedComment.value = null
-  }
+  // if (!unsavedComment.value) {
+  //   unsavedComment.value = {
+  //     id: guid.zero(),
+  //     x: posx,
+  //     y: posy,
+  //     text: '',
+  //     replies: [],
+  //   }
+  // } else {
+  //   unsavedComment.value = null
+  // }
 }
 
 function saveAnnotations() {
@@ -245,6 +224,12 @@ onBeforeUnmount(() => {
   position: relative;
 }
 
+.canvas-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .tools {
   position: fixed;
   bottom: 10px;
@@ -259,6 +244,6 @@ onBeforeUnmount(() => {
 
   background-color: rgb(73, 73, 73);
   border-radius: $radius-lg;
-  box-shadow: 0 2px 10px rgb(160, 160, 160);
+  box-shadow: 0 2px 20px rgb(0, 0, 0, 0.4);
 }
 </style>
