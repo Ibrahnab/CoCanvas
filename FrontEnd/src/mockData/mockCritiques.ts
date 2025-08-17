@@ -10,8 +10,8 @@ const mockCritique: Critique = {
     {
       id: guid.zero(),
       x: 50,
-      y: 50,
-      text: 'sample comment',
+      y: 120,
+      text: 'Sample comment',
       replies: [
         {
           id: guid.zero(),
@@ -23,8 +23,8 @@ const mockCritique: Critique = {
     },
     {
       id: guid.zero(),
-      x: 60,
-      y: 20,
+      x: 230,
+      y: 200,
       text: 'draw a better line',
       replies: [
         {

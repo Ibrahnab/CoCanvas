@@ -13,11 +13,22 @@
       >
         {{ modelValue }}
       </span>
+
+      <div class="tools-container">
+        <SpinnerButton class="save-button">
+          <font-awesome-icon class="send-icon" icon="trash"></font-awesome-icon>
+        </SpinnerButton>
+        <SpinnerButton class="save-button">
+          <font-awesome-icon class="send-icon" icon="paper-plane"></font-awesome-icon>
+        </SpinnerButton>
+      </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import { ref, useTemplateRef, onMounted } from 'vue'
+
+import { SpinnerButton } from '@/components/common'
 
 const input = useTemplateRef('input')
 const commentBubble = useTemplateRef('comment-bubble')
@@ -68,6 +79,27 @@ onMounted(() => {
   display: flex;
   flex-direction: row;
   position: absolute;
+  padding: 5px;
+}
+
+.tools-container {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.save-button {
+  width: fit-content;
+  height: fit-content;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-radius: 10px;
+}
+
+.send-icon {
+  font-size: $font-size-xs;
 }
 
 .comment-bubble {
@@ -79,17 +111,15 @@ onMounted(() => {
 
   box-shadow: 0 0 10px rgb(0, 0, 0, 0.3);
 }
-.icon {
-  left: 1rem;
-  fill: #9e9ea7;
-}
 
 .group {
   margin-left: 5px;
   display: flex;
   line-height: 28px;
-  align-items: center;
-  position: relative;
+  flex-direction: column;
+  justify-content: start;
+  gap: 5px;
+  align-items: end;
   background-color: $color-gray-650;
   border-radius: $radius-md;
   padding: 5px;
@@ -99,8 +129,8 @@ onMounted(() => {
 .input {
   width: 100%;
   height: auto;
-  line-height: 28px;
-  padding: 0 1rem;
+  line-height: 18px;
+  padding: 0 0.5rem;
   border: 2px solid transparent;
   border-radius: 8px;
   outline: none;

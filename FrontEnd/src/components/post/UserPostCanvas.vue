@@ -32,19 +32,15 @@
     <div class="imageContainer">
       <canvas ref="canvasEl"></canvas>
 
-      <div
+      <CanvasComment
         v-for="(comment, index) in selectedCritique?.comments"
         :key="index"
+        :posX="comment.x"
+        :posY="comment.y"
+        :modelValue="comment.text"
         :ref="comment.id"
-        class="comment-bubble"
-        :style="{ top: comment.y + 'px', left: comment.x + 'px' }"
-        @click="commentExpand"
       >
-        <template v-if="expandedCommentId === comment.id">aa </template>
-        <template v-else> 💬 </template>
-      </div>
-
-      <CanvasComment :posX="150" :posY="300" modelValue="Sample comment" />
+      </CanvasComment>
 
       <CanvasComment
         v-if="unsavedComment?.id === guid.zero()"
@@ -237,14 +233,6 @@ onBeforeUnmount(() => {
 .imageContainer {
   display: inline-block;
   position: relative;
-}
-
-.comment-bubble {
-  position: absolute;
-  background-color: rgb(46, 199, 202);
-  border-radius: 50%;
-  padding: 5px;
-  box-shadow: 0 0 10px rgb(0, 0, 0, 0.3);
 }
 
 .tools {
