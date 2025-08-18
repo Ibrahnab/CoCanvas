@@ -6,7 +6,7 @@
         <div class="user-wrapper">
           <div class="rating-wrapper">
             <font-awesome-icon icon="fa-chevron-up" class="arrow" />
-            <span :style="{ padding: '2px' }"> {{ critique.rating }}</span>
+            <h5 class="mb-0">{{ critique.rating }}</h5>
             <font-awesome-icon icon="fa-chevron-up" class="arrow fa-rotate-180" />
           </div>
           <avatar-circle :image="tempImage" />
@@ -18,7 +18,21 @@
           v-for="(comment, comIndex) in critique.comments"
           :key="comIndex"
         >
-          {{ comment.text }}
+          <div class="pb-2">
+            {{ comment.text }}
+          </div>
+
+          <div
+            class="reply-wrapper"
+            v-for="(reply, replyIndex) in comment.replies"
+            :key="replyIndex"
+          >
+            <avatar-circle class="reply-image" :image="tempImage2" />
+            <div class="reply-content-wrapper">
+              <h5>{{ reply.username }}</h5>
+              <div>{{ reply.text }}</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -33,6 +47,7 @@ import guid from '@/utils/guid'
 import { TextBox, AvatarCircle } from '@/components/common'
 import type { PropType } from 'vue'
 import tempImage from '@/assets/tall1.png'
+import tempImage2 from '@/assets/Comic1.png'
 
 const props = defineProps({
   critiques: {
@@ -53,7 +68,7 @@ async function downVote() {}
   flex-direction: column;
   border-left: solid 2px rgb(173, 173, 173);
   gap: 10px;
-  padding: 15px;
+  padding: 20px;
   cursor: pointer;
 }
 .critiques-container {
@@ -84,6 +99,7 @@ async function downVote() {}
 .rating-wrapper {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 5px;
 }
 
@@ -99,10 +115,26 @@ async function downVote() {}
 
 .comment-wrapper {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   background-color: $color-gray-200;
   padding: 10px;
   margin-top: 10px;
   border-radius: 10px;
+}
+
+.reply-wrapper {
+  display: flex;
+  flex-direction: row;
+  border-top: solid 1px rgb(186, 186, 186);
+  padding-top: 10px;
+  gap: 10px;
+}
+.reply-content-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.reply-image {
+  min-width: 45px;
 }
 </style>
