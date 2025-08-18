@@ -45,10 +45,10 @@ const mockCritique: Critique = {
 }
 
 const mockCritique2: Critique = {
-  id: guid.zero(),
+  id: '00000000-0000-0000-0000-000000000001',
   userId: '00000000-0000-0000-0000-000000000001',
   username: 'Someone',
-  rating: -300,
+  rating: 10,
   comments: [
     {
       id: guid.zero(),
@@ -66,8 +66,8 @@ const mockCritique2: Critique = {
     },
     {
       id: guid.zero(),
-      x: 30,
-      y: 15,
+      x: 200,
+      y: 14,
       text: 'Comment with no replies',
       replies: [],
     },

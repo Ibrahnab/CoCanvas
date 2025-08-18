@@ -11,7 +11,11 @@
       />
     </div>
     <div class="right-side">
-      <CritiquesPanel :critiques="critiques" @setSelected="selectedCritiqueId = $event" />
+      <CritiquesPanel
+        :critiques="critiques"
+        :selectedCritiqueId="selectedCritiqueId"
+        @selected="selectedCritiqueId = $event"
+      />
     </div>
   </div>
 </template>
