@@ -4,7 +4,7 @@ import guid from '@/utils/guid'
 const mockCritique: Critique = {
   id: guid.zero(),
   userId: guid.zero(),
-  username: 'username',
+  username: 'Exathy',
   rating: 30,
   comments: [
     {
@@ -41,7 +41,7 @@ const mockCritique: Critique = {
 const mockCritique2: Critique = {
   id: guid.zero(),
   userId: '00000000-0000-0000-0000-000000000001',
-  username: 'username',
+  username: 'Someone',
   rating: 30,
   comments: [
     {

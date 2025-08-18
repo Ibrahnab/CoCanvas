@@ -32,6 +32,8 @@ import {
   faPen,
   faPaperPlane,
   faTrash,
+  faChevronUp,
+  faEllipsis,
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -52,6 +54,8 @@ library.add(
   faPen,
   faPaperPlane,
   faTrash,
+  faChevronUp,
+  faEllipsis,
 )
 
 import './styles/main.scss'
