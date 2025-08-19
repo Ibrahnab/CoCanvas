@@ -53,7 +53,7 @@ const mockCritique2: Critique = {
     {
       id: guid.zero(),
       x: 30,
-      y: 15,
+      y: 250,
       text: 'sample comment',
       replies: [
         {
@@ -69,6 +69,13 @@ const mockCritique2: Critique = {
       x: 200,
       y: 14,
       text: 'Comment with no replies',
+      replies: [],
+    },
+    {
+      id: guid.zero(),
+      x: 200,
+      y: 200,
+      text: 'third comment',
       replies: [],
     },
   ],

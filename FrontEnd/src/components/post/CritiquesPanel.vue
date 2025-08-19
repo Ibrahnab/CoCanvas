@@ -98,6 +98,8 @@ async function downVote() {}
   gap: 10px;
   padding: 20px;
   cursor: pointer;
+  height: 80vh;
+  overflow-y: auto;
 }
 .critiques-container {
   display: flex;
