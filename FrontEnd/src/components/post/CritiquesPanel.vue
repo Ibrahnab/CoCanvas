@@ -66,6 +66,10 @@ import tempImage2 from '@/assets/Comic1.png'
 const emit = defineEmits(['selected'])
 
 function setSelected(critiqueId: string) {
+  if (props.selectedCritiqueId === critiqueId) {
+    emit('selected', '')
+    return
+  }
   emit('selected', critiqueId)
 }
 
