@@ -38,7 +38,7 @@ const route = useRoute()
 
 // TODO: Make into a map instead of array and look up selected with id
 const critiques = ref<Critique[]>([]) // TODO: Get from backend
-const selectedCritiqueId = ref<string>(guid.zero())
+const selectedCritiqueId = ref<string>('')
 const selectedCritique = ref<Critique>()
 const myCritique = ref<Critique>()
 
@@ -46,7 +46,7 @@ const myCritique = ref<Critique>()
 function setSelectedCritique() {
   if (critiques.value.length > 0) {
     selectedCritique.value = critiques.value[0]
-    selectedCritiqueId.value = critiques.value[0].id
+    // selectedCritiqueId.value = critiques.value[0].id
   }
 }
 

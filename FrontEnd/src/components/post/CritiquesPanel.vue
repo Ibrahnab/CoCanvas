@@ -8,7 +8,6 @@
         v-for="(critique, critIndex) in critiques"
         :key="critIndex"
         :class="{ toggled: selectedCritiqueId === critique.id }"
-        @click="setSelected(critique.id)"
       >
         <div class="user-wrapper">
           <div class="rating-wrapper">
@@ -26,7 +25,7 @@
             v-for="(comment, comIndex) in critique.comments"
             :key="comIndex"
           >
-            <div class="pb-2">
+            <div class="pb-2" @click="setSelected(critique.id)">
               {{ comment.text }}
             </div>
 
@@ -45,6 +44,11 @@
               <TextBox :placeholder="'Add a reply'" />
               <SpinnerButton class="mt-3 reply-button"> Reply </SpinnerButton>
             </div>
+          </div>
+          <div class="bottom" @click="setSelected(critique.id)">
+            <font-awesome-icon
+              :icon="selectedCritiqueId === critique.id ? 'fa-chevron-up' : 'fa-chevron-down'"
+            />
           </div>
         </div>
       </div>
@@ -169,5 +173,16 @@ async function downVote() {}
 
 .reply-image {
   min-width: 45px;
+}
+
+.bottom {
+  display: fleX;
+  margin-top: 10px;
+  justify-content: center;
+  padding: 10px;
+  gap: 10px;
+  &:hover {
+    background-color: $color-gray-100;
+  }
 }
 </style>

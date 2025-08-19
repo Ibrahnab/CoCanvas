@@ -33,6 +33,7 @@ import {
   faPaperPlane,
   faTrash,
   faChevronUp,
+  faChevronDown,
   faEllipsis,
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -56,6 +57,7 @@ library.add(
   faTrash,
   faChevronUp,
   faEllipsis,
+  faChevronDown,
 )
 
 import './styles/main.scss'
