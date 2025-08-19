@@ -42,6 +42,8 @@
                   <div>{{ reply.text }}</div>
                 </div>
               </div>
+              <TextBox :placeholder="'Add a reply'" />
+              <SpinnerButton class="mt-3 reply-button"> Reply </SpinnerButton>
             </div>
           </div>
         </div>
@@ -55,10 +57,11 @@ import CritiqueItem from './CritiqueItem.vue'
 import { ref, onMounted, onBeforeUnmount, watch, computed } from 'vue'
 import type { Critique, Comment, Reply } from '@/models/critique'
 import guid from '@/utils/guid'
-import { TextBox, AvatarCircle } from '@/components/common'
+import { TextBox, AvatarCircle, SpinnerButton } from '@/components/common'
 import type { PropType } from 'vue'
 import tempImage from '@/assets/tall1.png'
 import tempImage2 from '@/assets/Comic1.png'
+// import SpinnerButton from '../common/SpinnerButton.vue'
 
 const emit = defineEmits(['selected'])
 
@@ -154,6 +157,10 @@ async function downVote() {}
 .reply-content-wrapper {
   display: flex;
   flex-direction: column;
+}
+
+.reply-button {
+  float: inline-end;
 }
 
 .reply-image {
