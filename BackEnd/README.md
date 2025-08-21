@@ -14,6 +14,21 @@ this is done with AspNetCore.Identity library which exposes endpoints for all th
 
 The database is created using Entity Framework ORM, which creates a SQL Database
 
+```mermaid
+
+erDiagram
+    User ||--o{ Post : "has"
+    User ||--o{ Critique : "writes"
+    User ||--o{ Reply : "writes"
+
+    Post ||--o{ Critique : "has"
+    Post }o--o{ Tag : "tagged with"
+
+    Critique ||--o{ Comment : "has"
+    Comment ||--o{ Reply : "has"
+
+```
+
 ### Migrations
 
 To add or update migrations, run the following

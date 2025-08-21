@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace CoCanvas.Infrastructure.Persistance.Migrations
+namespace CoCanvas.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -13,6 +13,9 @@ namespace CoCanvas.Infrastructure.Persistance.Migrations
         {
             migrationBuilder.EnsureSchema(
                 name: "identity");
+
+            migrationBuilder.EnsureSchema(
+                name: "app");
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
@@ -54,6 +57,19 @@ namespace CoCanvas.Infrastructure.Persistance.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tags",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tags", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -173,6 +189,138 @@ namespace CoCanvas.Infrastructure.Persistance.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Posts",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Posts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Posts_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "identity",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Critiques",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Critiques", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Critiques_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "identity",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Critiques_Posts_PostId",
+                        column: x => x.PostId,
+                        principalSchema: "app",
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PostTags",
+                schema: "app",
+                columns: table => new
+                {
+                    PostsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TagsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostTags", x => new { x.PostsId, x.TagsId });
+                    table.ForeignKey(
+                        name: "FK_PostTags_Posts_PostsId",
+                        column: x => x.PostsId,
+                        principalSchema: "app",
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PostTags_Tags_TagsId",
+                        column: x => x.TagsId,
+                        principalSchema: "app",
+                        principalTable: "Tags",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    X = table.Column<int>(type: "int", nullable: false),
+                    Y = table.Column<int>(type: "int", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CritiqueId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_Critiques_CritiqueId",
+                        column: x => x.CritiqueId,
+                        principalSchema: "app",
+                        principalTable: "Critiques",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Replies",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CommentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Replies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Replies_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "identity",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Replies_Comments_CommentId",
+                        column: x => x.CommentId,
+                        principalSchema: "app",
+                        principalTable: "Comments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 schema: "identity",
@@ -218,6 +366,48 @@ namespace CoCanvas.Infrastructure.Persistance.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_CritiqueId",
+                schema: "app",
+                table: "Comments",
+                column: "CritiqueId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Critiques_PostId",
+                schema: "app",
+                table: "Critiques",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Critiques_UserId",
+                schema: "app",
+                table: "Critiques",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_UserId",
+                schema: "app",
+                table: "Posts",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PostTags_TagsId",
+                schema: "app",
+                table: "PostTags",
+                column: "TagsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Replies_CommentId",
+                schema: "app",
+                table: "Replies",
+                column: "CommentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Replies_UserId",
+                schema: "app",
+                table: "Replies",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -244,8 +434,32 @@ namespace CoCanvas.Infrastructure.Persistance.Migrations
                 schema: "identity");
 
             migrationBuilder.DropTable(
+                name: "PostTags",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "Replies",
+                schema: "app");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles",
                 schema: "identity");
+
+            migrationBuilder.DropTable(
+                name: "Tags",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "Comments",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "Critiques",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "Posts",
+                schema: "app");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers",

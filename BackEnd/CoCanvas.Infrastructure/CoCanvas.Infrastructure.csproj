@@ -15,4 +15,8 @@
     <ProjectReference Include="..\CoCanvas.Domain\CoCanvas.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistance\Migrations\" />
+  </ItemGroup>
+
 </Project>

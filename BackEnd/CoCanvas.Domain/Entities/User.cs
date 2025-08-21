@@ -10,5 +10,6 @@ namespace CoCanvas.Domain.Entities;
 public class User : IdentityUser { 
 
     public string? Initials { get; set; }
+    public List<Post> Posts { get; set; } = null!;
 
 }
