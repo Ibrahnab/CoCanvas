@@ -62,13 +62,12 @@ library.add(
 
 import './styles/main.scss'
 
-await api.initialize()
-
 const app = createApp(App)
 
 app.component('font-awesome-icon', FontAwesomeIcon)
-
 app.use(createPinia())
+
+await api.initialize()
 app.use(router)
 app.use(MasonryWall)
 // app.use(PictureInput)

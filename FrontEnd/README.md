@@ -1,6 +1,6 @@
 # CoCanvas Frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+CoCanvas frontend is developed with Vue 3 + TypeScript and Vite. Axios package is used for making REST calls throughout the application
 
 ## Recommended IDE Setup
 

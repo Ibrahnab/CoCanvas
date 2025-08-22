@@ -10,17 +10,48 @@
       ></picture-input>
     </div>
     <div class="right">
-      <TextBox class="textbox" placeholder="Enter a title" />
-      <TextArea placeholder="Enter a description (Max 256 characters)"></TextArea>
-      <TextBox class="textbox" placeholder="Add tags" />
+      <TextBox v-model="title" class="textbox" placeholder="Enter a title" />
+      <TextArea
+        v-model="description"
+        placeholder="Enter a description (Max 256 characters)"
+      ></TextArea>
+      <TextBox v-model="tags" class="textbox" placeholder="Add tags" />
+      <div class="tags-wrapper">
+        <span v-for="(tag, index) in splitTags" :key="index"> #{{ tag }} </span>
+      </div>
+
       <SpinnerButton>Submit</SpinnerButton>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import { TextBox, SpinnerButton, TextArea } from '@/components/common'
+import { getAxiosInstance } from '@/apiCaller'
+import { ref, computed, onMounted } from 'vue'
+import { useUserStore } from '@/stores/userStore'
 // TODO: Fix this import issue
 import PictureInput from 'vue-picture-input'
+
+const api = getAxiosInstance()
+
+const image = ref('')
+
+const userStore = useUserStore()
+
+userStore.getUserCredentials()
+
+const title = ref('')
+const description = ref('')
+const tags = ref('')
+
+// TODO: add limit
+const splitTags = computed(() => tags.value.split(','))
+
+async function createPost() {}
+
+onMounted(() => {
+  console.log(userStore.currentUserId)
+})
 </script>
 
 <style scoped lang="scss">
@@ -50,5 +81,11 @@ import PictureInput from 'vue-picture-input'
 
 .textbox {
   max-width: 300px;
+}
+
+.tags-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }
 </style>

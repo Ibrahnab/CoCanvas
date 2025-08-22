@@ -11,8 +11,10 @@ export const useActions = () => {
     if (token) {
       try {
         const result: UserResponse = await apiCaller.get('api/auth/me')
-        state.email.value = result.email
-        state.userName.value = result.email
+
+        state.currentUserId.value = result.data.id
+        state.email.value = result.data.email
+        state.userName.value = result.data.email
         return true
       } catch (error) {
         throw error
