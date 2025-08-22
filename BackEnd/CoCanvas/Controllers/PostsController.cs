@@ -1,11 +1,12 @@
-﻿using CoCanvas.Infrastructure.Persistance;
+﻿using CoCanvas.Application.DTO;
+using CoCanvas.Domain.Entities;
+using CoCanvas.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using CoCanvas.Application.DTO;
-using CoCanvas.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
+using System.Security.Claims;
 
 namespace CoCanvas.Api.Controllers
 {
@@ -18,6 +19,43 @@ namespace CoCanvas.Api.Controllers
         public PostsController(CCDbContext context)
         {
             _context = context;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<PostDto>> CreatePost([FromForm] IFormFile image, [FromForm] CreatePostDto dto)
+        {
+            // TODO: Do these things outside of the controller
+            var filePath = Path.Combine("wwwroot/images", Guid.NewGuid() + Path.GetExtension(image.FileName));
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await image.CopyToAsync(stream);
+            }
+
+            var post = new Post
+            {
+                Id = Guid.NewGuid(),
+                Title = dto.Title,
+                Description = dto.Description,
+                ImageUrl = filePath,
+                UserId = dto.UserId,
+                Tags = new List<Tag>()
+            };
+
+            foreach (var tagName in dto.Tags)
+            {
+                var tag = await _context.Tags.FirstOrDefaultAsync(t => t.Name == tagName);
+                if (tag == null)
+                {
+                    tag = new Tag { Id = Guid.NewGuid(), Name = tagName };
+                    _context.Tags.Add(tag);
+                }
+                post.Tags.Add(tag);
+            }
+
+            _context.Posts.Add(post);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetPost), new { id = post.Id }, MapToPostDto(post));
         }
 
         // GET: api/posts
@@ -51,6 +89,7 @@ namespace CoCanvas.Api.Controllers
             return Ok(MapToPostDto(post));
         }
 
+        // TODO: Move these to a mapper service?
         private PostDto MapToPostDto(Post post)
         {
             return new PostDto
