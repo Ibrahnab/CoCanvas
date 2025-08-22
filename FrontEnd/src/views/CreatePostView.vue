@@ -6,7 +6,8 @@
         class="pictureInput"
         width="375"
         height="375"
-        ref="pictureInput"
+        ref="pictureInputRef"
+        @change="updateImage"
       ></picture-input>
     </div>
     <div class="right">
@@ -20,12 +21,12 @@
         <span v-for="(tag, index) in splitTags" :key="index"> #{{ tag }} </span>
       </div>
 
-      <SpinnerButton>Submit</SpinnerButton>
+      <SpinnerButton :spinner="showSpinner" @click="createPost">Submit</SpinnerButton>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { TextBox, SpinnerButton, TextArea } from '@/components/common'
+import { TextBox, SpinnerButton, TextArea, ErrorBox } from '@/components/common'
 import { getAxiosInstance } from '@/apiCaller'
 import { ref, computed, onMounted } from 'vue'
 import { useUserStore } from '@/stores/userStore'
@@ -34,7 +35,8 @@ import PictureInput from 'vue-picture-input'
 
 const api = getAxiosInstance()
 
-const image = ref('')
+const pictureInputRef = ref(null)
+const image = ref<string | Blob>()
 
 const userStore = useUserStore()
 
@@ -44,14 +46,49 @@ const title = ref('')
 const description = ref('')
 const tags = ref('')
 
+const showSpinner = ref(false)
+
 // TODO: add limit
 const splitTags = computed(() => tags.value.split(','))
 
-async function createPost() {}
+function updateImage(newImage: string) {
+  console.log('New picture selected!')
+  if (newImage) {
+    console.log('Picture loaded.')
+    image.value = newImage
+  } else {
+    console.log('FileReader API not supported: use the <form>, Luke!')
+  }
+}
 
-onMounted(() => {
-  console.log(userStore.currentUserId)
-})
+function valid() {
+  return image.value ? true : false
+}
+
+async function createPost() {
+  if (valid()) {
+    showSpinner.value = true
+    const formData = new FormData()
+    formData.append('title', title.value)
+    formData.append('description', description.value)
+    formData.append('userId', userStore.currentUserId)
+    splitTags.value.forEach((tag) => formData.append('tags', tag))
+    if (image.value) {
+      formData.append('image', image.value)
+    }
+
+    try {
+      const response = await api.post('api/Posts', formData)
+      console.log(response)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      showSpinner.value = false
+    }
+  }
+}
+
+onMounted(() => {})
 </script>
 
 <style scoped lang="scss">
