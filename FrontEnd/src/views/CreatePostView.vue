@@ -51,11 +51,20 @@ const showSpinner = ref(false)
 // TODO: add limit
 const splitTags = computed(() => tags.value.split(','))
 
+// TODO: Move this to utilities?
+function base64ToBlob(base64: string, mimeType = 'image/png'): Blob {
+  const byteString = atob(base64.split(',')[1]) // decode base64
+  const arrayBuffer = new ArrayBuffer(byteString.length)
+  const intArray = new Uint8Array(arrayBuffer)
+  for (let i = 0; i < byteString.length; i++) {
+    intArray[i] = byteString.charCodeAt(i)
+  }
+  return new Blob([intArray], { type: mimeType })
+}
+
 function updateImage(newImage: string) {
-  console.log('New picture selected!')
   if (newImage) {
-    console.log('Picture loaded.')
-    image.value = newImage
+    image.value = base64ToBlob(newImage, 'image/png')
   } else {
     console.log('FileReader API not supported: use the <form>, Luke!')
   }
@@ -73,12 +82,16 @@ async function createPost() {
     formData.append('description', description.value)
     formData.append('userId', userStore.currentUserId)
     splitTags.value.forEach((tag) => formData.append('tags', tag))
-    if (image.value) {
-      formData.append('image', image.value)
+    if (image.value instanceof Blob) {
+      formData.append('image', image.value, 'upload.png')
     }
 
     try {
-      const response = await api.post('api/Posts', formData)
+      const response = await api.post('api/Posts', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
       console.log(response)
     } catch (error) {
       console.error(error)

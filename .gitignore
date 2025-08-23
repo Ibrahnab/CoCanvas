@@ -27,3 +27,6 @@ Backend/.idea/
 # 🔑 Env files
 Frontend/.env
 Backend/.env
+
+# Stored images by users
+Backend/CoCanvas/wwwroot
