@@ -1,7 +1,8 @@
 ﻿using CoCanvas.Application.DTO;
 using CoCanvas.Domain.Entities;
 using CoCanvas.Infrastructure.Persistance;
-using Microsoft.AspNetCore.Http;
+
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,10 +16,12 @@ namespace CoCanvas.Api.Controllers
     public class PostsController : ControllerBase
     {
         private readonly CCDbContext _context;
+        private readonly IWebHostEnvironment _env;
 
-        public PostsController(CCDbContext context)
+        public PostsController(CCDbContext context, IWebHostEnvironment  env)
         {
             _context = context;
+            _env = env;
         }
 
         [HttpPost]
@@ -71,6 +74,17 @@ namespace CoCanvas.Api.Controllers
             }).ToListAsync();
 
             return Ok(posts);
+        }
+
+        [HttpGet("images/{fileName}")]
+        public IActionResult GetImage(string fileName)
+        {
+            var filePath = Path.Combine(_env.ContentRootPath, "wwwroot/images", fileName);
+
+            if (!System.IO.File.Exists(filePath))
+                return NotFound();
+            var image = System.IO.File.OpenRead(filePath);
+            return File(image, "image/jpeg");
         }
 
 

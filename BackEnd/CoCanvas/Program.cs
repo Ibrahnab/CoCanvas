@@ -62,6 +62,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseStaticFiles(); // Enables serving from wwwroot by default
+
 app.MapControllers();
 
 app.MapIdentityApi<User>();
