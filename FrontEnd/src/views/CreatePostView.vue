@@ -5,7 +5,7 @@
       <picture-input
         class="pictureInput"
         width="375"
-        height="375"
+        :crop="false"
         ref="pictureInputRef"
         @change="updateImage"
       ></picture-input>
@@ -92,6 +92,7 @@ async function createPost() {
           'Content-Type': 'multipart/form-data',
         },
       })
+      // TODO: Create success visual
       console.log(response)
     } catch (error) {
       console.error(error)

@@ -1,18 +1,18 @@
 <template>
   <div>
-    <masonry-wall :items="items" :ssr-columns="1" :column-width="250" :gap="16">
-      <template #default="{ item, index }">
+    <masonry-wall :items="posts" :ssr-columns="1" :column-width="250" :gap="16">
+      <template #default="{ item }">
         <div class="mansory-item">
           <div class="imageContainer">
             <div class="elementContainer">
               <!-- <div class="imageText">Critique</div> -->
-              <router-link :to="{ name: 'posts', params: { id: item.id } }" class="imageText"
+              <router-link :to="{ name: 'posts', params: { id: item.postId } }" class="imageText"
                 >Critique</router-link
               >
             </div>
-            <img class="postimage" :src="item.image" />
+            <img class="postimage" :src="baseURL + 'api/Posts/images/' + item.imageUrl" />
           </div>
-          <h4 class="title">Title {{ index }}</h4>
+          <h4 class="title">{{ item.postTitle }}</h4>
         </div>
       </template>
     </masonry-wall>
@@ -61,6 +61,31 @@ const items = [
     image: comic,
   },
 ]
+
+import { ref, onMounted } from 'vue'
+import type { DisplayPost } from '@/models/Post'
+import { getAxiosInstance, baseURL } from '@/apiCaller'
+
+const posts = ref<DisplayPost[]>([])
+
+const apiCaller = getAxiosInstance()
+
+async function getPosts() {
+  try {
+    const result = await apiCaller.get<DisplayPost[]>('/api/Posts')
+    // const url = result.data[0].imageUrl.split('\\')
+    console.log(result.data)
+
+    posts.value = result.data
+  } catch (error) {
+    // TODO: Create user feedback?
+    console.error(error)
+  }
+}
+
+onMounted(async () => {
+  await getPosts()
+})
 </script>
 
 <style scoped lang="scss">

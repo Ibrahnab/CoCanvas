@@ -3,6 +3,8 @@ import type { AxiosInstance } from 'axios'
 
 let axiosInstance: AxiosInstance | null = null
 
+const baseURL = 'https://localhost:44300/'
+
 const getAxiosInstance = (): AxiosInstance => {
   if (!axiosInstance) {
     throw new Error('Axios instance not initialized')
@@ -13,7 +15,7 @@ const getAxiosInstance = (): AxiosInstance => {
 const initialize = async () => {
   axiosInstance = axios.create({
     // TODO: Dynamically set this based on env variable checking prod or dev
-    baseURL: 'https://localhost:44300/',
+    baseURL: baseURL,
   })
 
   axiosInstance.interceptors.request.use(
@@ -43,4 +45,4 @@ const initialize = async () => {
   )
 }
 
-export { getAxiosInstance, initialize }
+export { getAxiosInstance, initialize, baseURL }

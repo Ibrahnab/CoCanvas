@@ -28,7 +28,8 @@ namespace CoCanvas.Api.Controllers
         public async Task<ActionResult<PostDto>> CreatePost([FromForm] IFormFile image, [FromForm] CreatePostDto dto)
         {
             // TODO: Do these things outside of the controller
-            var filePath = Path.Combine("wwwroot/images", Guid.NewGuid() + Path.GetExtension(image.FileName));
+            var fileName = Guid.NewGuid() + Path.GetExtension(image.FileName);
+            var filePath = Path.Combine("wwwroot/images", fileName);
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
                 await image.CopyToAsync(stream);
@@ -39,7 +40,7 @@ namespace CoCanvas.Api.Controllers
                 Id = Guid.NewGuid(),
                 Title = dto.Title,
                 Description = dto.Description,
-                ImageUrl = filePath,
+                ImageUrl = fileName,
                 UserId = dto.UserId,
                 Tags = new List<Tag>()
             };
