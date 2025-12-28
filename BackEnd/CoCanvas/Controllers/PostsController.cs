@@ -1,4 +1,6 @@
 ﻿using CoCanvas.Application.DTO;
+using CoCanvas.Application.Mappers;
+using CoCanvas.Application.Services;
 using CoCanvas.Domain.Entities;
 using CoCanvas.Infrastructure.Persistance;
 
@@ -17,11 +19,12 @@ namespace CoCanvas.Api.Controllers
     {
         private readonly CCDbContext _context;
         private readonly IWebHostEnvironment _env;
-
-        public PostsController(CCDbContext context, IWebHostEnvironment  env)
+        private readonly PostsService _postsService;
+        public PostsController(CCDbContext context, IWebHostEnvironment  env, PostsService postsService )
         {
             _context = context;
             _env = env;
+            _postsService = postsService;
         }
 
         [HttpPost]
@@ -59,7 +62,7 @@ namespace CoCanvas.Api.Controllers
             _context.Posts.Add(post);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetPost), new { id = post.Id }, MapToPostDto(post));
+            return CreatedAtAction(nameof(GetPost), new { id = post.Id }, PostMapper.ToDto(post));
         }
 
         // GET: api/posts
@@ -93,66 +96,78 @@ namespace CoCanvas.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<PostDto>> GetPost(Guid id)
         {
-            var post = await _context.Posts
-                .Include(p => p.Critiques)
-                    .ThenInclude(c => c.Comments)
-                        .ThenInclude(cm => cm.Replies)
-                .FirstOrDefaultAsync(p => p.Id == id);
+            //var post = await _context.Posts
+            //    .Include(p => p.Critiques)
+            //        .ThenInclude(c => c.Comments)
+            //            .ThenInclude(cm => cm.Replies)
+            //    .FirstOrDefaultAsync(p => p.Id == id);
 
-            if (post == null) return NotFound();
+            //if (post == null) return NotFound();
 
-            return Ok(MapToPostDto(post));
-        }
+            //return Ok(MapToPostDto(post));
 
-        // TODO: Move these to a mapper service?
-        private PostDto MapToPostDto(Post post)
-        {
-            return new PostDto
+            var result = await _postsService.GetPost(id); 
+            if ( result == null)
             {
-                Id = post.Id,
-                UserId = post.UserId,
-                Title = post.Title,
-                Description = post.Description,
-                CreatedAt = post.CreatedAt,
-                Critiques = post.Critiques.Select( critique => MapToCritiqueDto(critique)).ToList(),
-                Tags = post.Tags.Select(tag => tag.Name).ToList(),
+                return NotFound();
+            }
 
-            };
-        }
-
-        private CritiqueDto MapToCritiqueDto(Critique critique)
-        {
-            return new CritiqueDto
+            else
             {
-                Id = critique.Id,
-                UserId = critique.UserId,
-                Username = critique.User.UserName,
-                Rating = critique.Rating,
-                Comments = critique.Comments.Select(comment => MapToCommentDto(comment)).ToList(),
-            };
+                return Ok(result);
+            }
         }
 
-        private CommentDto MapToCommentDto(Comment comment) {
-            return new CommentDto
-            {
-                Id = comment.Id,
-                X = comment.X,
-                Y = comment.Y,
-                Text = comment.Text,
-                Replies = comment.Replies.Select( reply => MapToReplyDto(reply)).ToList(),
-            };
-        }
+        //// TODO: Move these to a mapper service?
+        //private PostDto MapToPostDto(Post post)
+        //{
+        //    return new PostDto
+        //    {
+        //        Id = post.Id,
+        //        UserId = post.UserId,
+        //        Title = post.Title,
+        //        Description = post.Description,
+        //        CreatedAt = post.CreatedAt,
+        //        ImageUrl = post.ImageUrl,
+        //        Critiques = post.Critiques.Select( critique => MapToCritiqueDto(critique)).ToList(),
+        //        Tags = post.Tags.Select(tag => tag.Name).ToList(),
 
-        private ReplyDto MapToReplyDto(Reply reply) {
+        //    };
+        //}
 
-            return new ReplyDto
-            {
-                Id = reply.Id,
-                UserId = reply.UserId,
-                Username = reply.User.UserName,
-                Text = reply.Text,
-            };
-        }
+        //private CritiqueDto MapToCritiqueDto(Critique critique)
+        //{
+        //    return new CritiqueDto
+        //    {
+        //        Id = critique.Id,
+        //        UserId = critique.UserId,
+        //        Username = critique.User.UserName,
+        //        Rating = critique.Rating,
+        //        Comments = critique.Comments.Select(comment => MapToCommentDto(comment)).ToList(),
+        //    };
+        //}
+
+        //private CommentDto MapToCommentDto(Comment comment) {
+        //    return new CommentDto
+        //    {
+        //        Id = comment.Id,
+        //        X = comment.X,
+        //        Y = comment.Y,
+        //        Text = comment.Text,
+        //        Replies = comment.Replies.Select( reply => MapToReplyDto(reply)).ToList(),
+        //    };
+        //}
+
+        //private ReplyDto MapToReplyDto(Reply reply) {
+
+        //    return new ReplyDto
+        //    {
+        //        Id = reply.Id,
+        //        UserId = reply.UserId,
+        //        Username = reply.User.UserName,
+        //        Text = reply.Text,
+        //    };
+        //}
 
     }
 }

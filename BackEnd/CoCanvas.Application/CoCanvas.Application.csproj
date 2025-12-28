@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CoCanvas.Domain\CoCanvas.Domain.csproj" />
+    <ProjectReference Include="..\CoCanvas.Infrastructure\CoCanvas.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

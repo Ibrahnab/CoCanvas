@@ -17,7 +17,7 @@ namespace CoCanvas.Infrastructure.Persistance
         {
         }
 
-        // Your domain entities
+        // Domain entities
         public DbSet<Post> Posts { get; set; } = null!;
         public DbSet<Critique> Critiques { get; set; } = null!;
         public DbSet<Comment> Comments { get; set; } = null!;
