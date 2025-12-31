@@ -1,11 +1,16 @@
 using Microsoft.AspNetCore.Identity;
-using CoCanvas.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
-using CoCanvas.Domain.Entities;
-using CoCanvas.Api.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OpenApi;
+
 using CoCanvas.Application.Services;
+using CoCanvas.Application.Interfaces.Repositories;
+using CoCanvas.Application.Interfaces;
+using CoCanvas.Infrastructure.Persistance;
+using CoCanvas.Infrastructure.Repositories;
+using CoCanvas.Infrastructure.Services;
+using CoCanvas.Domain.Entities;
+using CoCanvas.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +50,13 @@ builder.Services.AddIdentityCore<User>()
 
 builder.Services.AddDbContext<CCDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Repositories from infrastructure
+builder.Services.AddScoped<IPostsRepository, PostsRepository>();
+builder.Services.AddScoped<ITagRepository, TagRepository >();
+
+// Application services
+
+builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<PostsService>();
 
 var app = builder.Build();

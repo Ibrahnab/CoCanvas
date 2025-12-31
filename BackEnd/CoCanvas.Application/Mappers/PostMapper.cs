@@ -27,7 +27,16 @@ namespace CoCanvas.Application.Mappers
             };
         }
 
+        // TODO: Consider instead, create a getter in the postsRepository that gets DisplayPost?
+        public static DisplayPostDto ToDisplayPostDto(Post post)
+        {
+            return new DisplayPostDto
+            {
+                ImageUrl = post.ImageUrl,
+                PostId = post.Id,
+                PostTitle = post.Title,
+                CreatedAt = post.CreatedAt
+            };
+        }
     }
-   
-    
 }
