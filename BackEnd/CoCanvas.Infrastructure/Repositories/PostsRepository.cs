@@ -20,7 +20,7 @@ namespace CoCanvas.Infrastructure.Repositories
             _dbContext = dbcontext;
         }
 
-        public async Task<Post> GetPost(Guid guid)
+        public async Task<Post?> GetPost(Guid guid)
         {
             var post = await _dbContext.Posts
             .Include(p => p.Critiques)

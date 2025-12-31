@@ -1,4 +1,5 @@
 ﻿using CoCanvas.Application.DTO;
+using CoCanvas.Application.Interfaces;
 using CoCanvas.Application.Mappers;
 using CoCanvas.Application.Services;
 using CoCanvas.Domain.Entities;
@@ -17,14 +18,12 @@ namespace CoCanvas.Api.Controllers
     [ApiController]
     public class PostsController : ControllerBase
     {
-        private readonly CCDbContext _context;
-        private readonly IWebHostEnvironment _env;
         private readonly PostsService _postsService;
-        public PostsController(CCDbContext context, IWebHostEnvironment  env, PostsService postsService )
+        private readonly IFileService _fileService;
+        public PostsController(PostsService postsService, IFileService fileService)
         {
-            _context = context;
-            _env = env;
             _postsService = postsService;
+            _fileService = fileService;
         }
 
         [HttpPost]
@@ -47,15 +46,15 @@ namespace CoCanvas.Api.Controllers
         }
 
         [HttpGet("images/{fileName}")]
-        public IActionResult GetImage(string fileName)
+        public  ActionResult GetImage(string fileName)
         {
-            // TODO: Call the file service
-            var filePath = Path.Combine(_env.ContentRootPath, "wwwroot/images", fileName);
+            var fileData = _fileService.GetImageAsync(fileName);
 
-            if (!System.IO.File.Exists(filePath))
+            if (fileData == null)
+            {
                 return NotFound();
-            var image = System.IO.File.OpenRead(filePath);
-            return File(image, "image/jpeg");
+            }
+            return File(fileData.Stream, fileData.ContentType);
         }
 
 
