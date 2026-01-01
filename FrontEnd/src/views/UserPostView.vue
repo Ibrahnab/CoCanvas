@@ -68,7 +68,6 @@ function getData() {
       published: true,
       replies: [],
       rating: 0,
-      canvasJson: '',
       comments: [],
     } as Critique)
     myCritique.value = critiques.value[0]

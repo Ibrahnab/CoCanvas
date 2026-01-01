@@ -7,7 +7,6 @@ const mockCritique: Critique = {
   username: 'Exathy',
   rating: 30,
   description: 'Here are my thoughts on your stuff, overall really good',
-  canvasJson: '',
   published: true,
   replies: [
     {
@@ -63,7 +62,6 @@ const mockCritique2: Critique = {
   description: 'pretty good',
   published: true,
   replies: [],
-  canvasJson: '',
   comments: [
     {
       id: guid.zero(),

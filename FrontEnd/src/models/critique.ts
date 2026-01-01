@@ -6,7 +6,6 @@ export interface Critique {
   description: string
   published: boolean
   replies: Reply[]
-  canvasJson: string
   comments: Comment[]
 }
 
