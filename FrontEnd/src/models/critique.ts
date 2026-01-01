@@ -3,6 +3,10 @@ export interface Critique {
   userId: string
   username: string
   rating: number
+  description: string
+  published: boolean
+  replies: Reply[]
+  canvasJson: string
   comments: Comment[]
 }
 

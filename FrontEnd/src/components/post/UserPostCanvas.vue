@@ -147,6 +147,7 @@ function enableDrawingMode() {
   canvas.freeDrawingBrush = new fabric.PencilBrush(canvas)
   canvas.freeDrawingBrush.width = 2
   canvas.freeDrawingBrush.color = '#ff0000'
+  console.log(canvas.toJSON())
 }
 
 function selectMode() {
@@ -188,6 +189,8 @@ function addCommentMarker(posx: number, posy: number) {
   // }
 }
 
+// TODO: Consider canvas.freeDrawingBrush.decimate = 8; // try 4–10
+// For optimization
 function saveAnnotations() {
   const data = canvas.toJSON()
   console.log('Annotations:', data)

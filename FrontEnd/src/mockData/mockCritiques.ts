@@ -6,6 +6,17 @@ const mockCritique: Critique = {
   userId: guid.zero(),
   username: 'Exathy',
   rating: 30,
+  description: 'Here are my thoughts on your stuff, overall really good',
+  canvasJson: '',
+  published: true,
+  replies: [
+    {
+      id: guid.zero(),
+      userId: guid.zero(),
+      username: 'Adam',
+      text: 'Agreed with most of your points, good feedback',
+    },
+  ],
   comments: [
     {
       id: guid.zero(),
@@ -49,6 +60,10 @@ const mockCritique2: Critique = {
   userId: '00000000-0000-0000-0000-000000000001',
   username: 'Someone',
   rating: 10,
+  description: 'pretty good',
+  published: true,
+  replies: [],
+  canvasJson: '',
   comments: [
     {
       id: guid.zero(),

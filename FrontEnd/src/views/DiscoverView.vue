@@ -63,7 +63,7 @@ const items = [
 ]
 
 import { ref, onMounted } from 'vue'
-import type { DisplayPost } from '@/models/Post'
+import type { DisplayPost } from '@/models/post'
 import { getAxiosInstance, baseURL } from '@/apiCaller'
 
 const posts = ref<DisplayPost[]>([])

@@ -64,11 +64,16 @@ function getData() {
       id: guid.zero(),
       userId: currentUserId,
       username: currentUsername,
+      description: 'sample desc',
+      published: true,
+      replies: [],
       rating: 0,
+      canvasJson: '',
       comments: [],
     } as Critique)
     myCritique.value = critiques.value[0]
   } else {
+    // Why even do this?
     myCritique.value = critiques.value[myCritIndex]
   }
 }
