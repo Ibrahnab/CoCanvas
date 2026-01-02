@@ -28,21 +28,23 @@
             <div class="pb-2" @click="setSelected(critique.id)">
               {{ comment.text }}
             </div>
+          </div>
 
-            <div v-if="selectedCritiqueId === critique.id">
-              <div
-                class="reply-wrapper pt-3 pb-3"
-                v-for="(reply, replyIndex) in comment.replies"
-                :key="replyIndex"
-              >
-                <avatar-circle class="reply-image" :image="tempImage2" />
-                <div class="reply-content-wrapper">
-                  <h5>{{ reply.username }}</h5>
-                  <div>{{ reply.text }}</div>
-                </div>
+          <div class="mt-3" v-if="selectedCritiqueId === critique.id">
+            <div
+              class="reply-wrapper pt-3 pb-3"
+              v-for="(reply, replyIndex) in critique.replies"
+              :key="replyIndex"
+            >
+              <avatar-circle class="reply-image" :image="tempImage2" />
+              <div class="reply-content-wrapper">
+                <h5>{{ reply.username }}</h5>
+                <div>{{ reply.text }}</div>
               </div>
+            </div>
+            <div class="replytools-container">
               <TextBox :placeholder="'Add a reply'" />
-              <SpinnerButton class="mt-3 reply-button"> Reply </SpinnerButton>
+              <SpinnerButton class="reply-button"> Reply </SpinnerButton>
             </div>
           </div>
           <div class="bottom" @click="setSelected(critique.id)">
@@ -59,7 +61,7 @@
 <script setup lang="ts">
 import CritiqueItem from './CritiqueItem.vue'
 import { ref, onMounted, onBeforeUnmount, watch, computed } from 'vue'
-import type { Critique, Comment, Reply } from '@/DTO/critique'
+import type { CritiqueDto, CommentDto, ReplyDto } from '@/DTO/critique'
 import guid from '@/utils/guid'
 import { TextBox, AvatarCircle, SpinnerButton } from '@/components/common'
 import type { PropType } from 'vue'
@@ -79,7 +81,7 @@ function setSelected(critiqueId: string) {
 
 const props = defineProps({
   critiques: {
-    type: Object as PropType<Critique[]>,
+    type: Object as PropType<CritiqueDto[]>,
   },
   selectedCritiqueId: {
     type: String,
@@ -123,6 +125,13 @@ async function downVote() {}
 
 .toggled {
   box-shadow: 0 0 10px rgba(94, 58, 255, 0.3);
+}
+
+.replytools-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
 }
 
 .user-wrapper {

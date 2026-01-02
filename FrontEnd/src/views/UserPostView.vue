@@ -71,6 +71,7 @@ function getData() {
       replies: [],
       rating: 0,
       comments: [],
+      createdAt: '2030-01-01T23:15:33.008Z',
     } as CritiqueDto)
     myCritique.value = critiques.value[0]
   } else {

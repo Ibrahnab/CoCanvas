@@ -7,6 +7,7 @@ export interface CritiqueDto {
   published: boolean
   replies: ReplyDto[]
   comments: CommentDto[]
+  createdAt: string
 }
 
 export interface CommentDto {
@@ -14,11 +15,13 @@ export interface CommentDto {
   x: number
   y: number
   text: string
+  createdAt: string
 }
 
 export interface ReplyDto {
   id: string
   userId: string
   username: string
+  createdAt: string
   text: string
 }
