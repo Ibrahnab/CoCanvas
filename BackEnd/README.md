@@ -25,19 +25,19 @@ erDiagram
     Post }o--o{ Tag : "tagged with"
 
     Critique ||--o{ Comment : "has"
-    Comment ||--o{ Reply : "has"
+    Critique ||--o{ Reply : "has"
 
 ```
 
 ### Migrations
 
-To add or update migrations, run the following
+To add or update migrations, run the following, while standing in BackEnd
 
 ```
 // Add
-dotnet ef migrations add MigrationName --project ../CoCanvas.Infrastructure --startup-project ../CoCanvas.Api
+dotnet ef migrations add MigrationName --project CoCanvas.Infrastructure --startup-project CoCanvas
 
 // Update
-dotnet ef database update --project ../CoCanvas.Infrastructure --startup-project ../CoCanvas.Api
+dotnet ef database update --project CoCanvas.Infrastructure --startup-project CoCanvas
 
 ```

@@ -22,6 +22,7 @@ namespace CoCanvas.Application.Mappers
                 Username = critique.User.UserName,
                 Rating = critique.Rating,
                 Comments = critique.Comments.Select(comment => CommentMapper.ToDto(comment)).ToList(),
+                Replies = critique.Replies.Select(reply=> ReplyMapper.ToDto(reply)).ToList(),
             };
         }
     }

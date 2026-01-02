@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoCanvas.Application.DTO
+namespace CoCanvas.Domain.Entities
 {
-    public class CanvasDto
-    {
-        public Guid Id { get; set; }
-        public Guid PostId { get; set; }
-        public Guid UserId { get; set; }
+    public class CritiqueCanvas
+    {   
+        public Guid CritiqueId { get; set; }
         public string CanvasJson { get; set; } = string.Empty;
+        public Critique Critique { get; set; } = null!;
     }
 }

@@ -1,6 +1,4 @@
-export interface Canvas {
-  id: string
-  postId: string
-  userId: string
+export interface CritiqueCanvas {
+  critiqueId: string
   canvasJson: string
 }

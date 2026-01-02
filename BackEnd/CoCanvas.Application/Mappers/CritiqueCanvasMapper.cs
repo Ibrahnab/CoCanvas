@@ -9,15 +9,13 @@ using CoCanvas.Domain.Entities;
 
 namespace CoCanvas.Application.Mappers
 {
-    public static class CanvasMapper
+    public static class CritiqueCanvasMapper
     {
-        public static CanvasDto ToDto(Canvas canvas)
+        public static CritiqueCanvasDto ToDto(CritiqueCanvas canvas)
         {
-            return new CanvasDto
+            return new CritiqueCanvasDto
             {
-                Id = canvas.Id,
-                PostId = canvas.PostId,
-                UserId = canvas.UserId,
+                CritiqueId = canvas.CritiqueId,
                 CanvasJson = canvas.CanvasJson,
             };
         }

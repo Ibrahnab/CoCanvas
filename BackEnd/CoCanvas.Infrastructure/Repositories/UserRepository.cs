@@ -33,7 +33,7 @@ namespace CoCanvas.Infrastructure.Repositories
 
         public  async Task<User> GetSelf()
         {
-            string userId = _claimsPrincipal.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var userId = _claimsPrincipal.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
             return await _dbContext.Users.FindAsync(userId);
         }
     }

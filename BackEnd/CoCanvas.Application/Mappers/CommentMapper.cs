@@ -20,7 +20,6 @@ namespace CoCanvas.Application.Mappers
                 X = comment.X,
                 Y = comment.Y,
                 Text = comment.Text,
-                Replies = comment.Replies.Select(reply => ReplyMapper.ToDto(reply)).ToList(),
             };
         }
     }

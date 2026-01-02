@@ -25,6 +25,7 @@ namespace CoCanvas.Infrastructure.Repositories
             var post = await _dbContext.Posts
             .Include(p => p.Critiques)
                 .ThenInclude(c => c.Comments)
+            .Include(p => p.Critiques)
                     .ThenInclude(cm => cm.Replies)
             .FirstOrDefaultAsync(p => p.Id == guid);
 

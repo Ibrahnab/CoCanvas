@@ -9,7 +9,7 @@ namespace CoCanvas.Application.DTO
     public class ReplyDto
     {
         public Guid Id { get; set; }
-        public string UserId { get; set; } = null!;
+        public string UserId { get; set; } = string.Empty;
         public string Username { get; set; } = null!;
         public string Text { get; set; } = null!;
     }

@@ -10,10 +10,11 @@ namespace CoCanvas.Application.DTO
     public class CritiqueDto
     {
         public Guid Id { get; set; }
-        public string UserId { get; set; } = null!;
-        public string Username { get; set; } = null!;
         public int Rating { get; set; }
+        public string UserId { get; set; } = string.Empty;
+        public string Username { get; set; } = null!;
         public List<CommentDto> Comments { get; set; } = new();
+        public List<ReplyDto> Replies { get; set; } = new();
     }
 
 }

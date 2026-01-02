@@ -23,6 +23,7 @@ namespace CoCanvas.Infrastructure.Persistance
         public DbSet<Comment> Comments { get; set; } = null!;
         public DbSet<Reply> Replies { get; set; } = null!;
         public DbSet<Tag> Tags { get; set; } = null!;
+        public DbSet<CritiqueCanvas> CritiqueCanvas { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -36,7 +37,7 @@ namespace CoCanvas.Infrastructure.Persistance
             builder.Entity<Comment>().ToTable("Comments", "app");
             builder.Entity<Reply>().ToTable("Replies", "app");
             builder.Entity<Tag>().ToTable("Tags", "app");
-
+            builder.Entity<CritiqueCanvas>().ToTable("CritiqueCanvases", "app");
 
             // Post → User
             builder.Entity<Post>()
@@ -66,11 +67,11 @@ namespace CoCanvas.Infrastructure.Persistance
                 .HasForeignKey(c => c.CritiqueId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Comment → Replies (Restrict to avoid cascade cycle)
+            // Critique → Replies (Restrict to avoid cascade cycle)
             builder.Entity<Reply>()
-                .HasOne(r => r.Comment)
-                .WithMany(c => c.Replies)
-                .HasForeignKey(r => r.CommentId)
+                .HasOne(r => r.Critique)
+                .WithMany(r => r.Replies)
+                .HasForeignKey(r => r.CritiqueId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Reply → User (Restrict too)
@@ -85,6 +86,22 @@ namespace CoCanvas.Infrastructure.Persistance
                 .HasMany(p => p.Tags)
                 .WithMany(t => t.Posts)
                 .UsingEntity(j => j.ToTable("PostTags", "app"));
+
+            // Critique -> Canvas (One to One)
+            // Need to specify HasKey because PK = FK 
+            builder.Entity<CritiqueCanvas>()
+                .HasKey(cc => cc.CritiqueId);
+
+            builder.Entity<CritiqueCanvas>()
+                .HasOne(cc => cc.Critique)
+                .WithOne(c => c.Canvas)
+                .HasForeignKey<CritiqueCanvas>(c => c.CritiqueId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Just to be specific about this column holding a lot of data
+            builder.Entity<CritiqueCanvas>()
+                .Property(cc => cc.CanvasJson)
+                .HasColumnType("nvarchar(max)");
         }
     }
 }
