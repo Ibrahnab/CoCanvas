@@ -10,6 +10,7 @@ namespace CoCanvas.Application.DTO
     {
         public Guid Id { get; set; }
         public string UserId { get; set; } = string.Empty;
+        public int Rating { get; set; } = 0;
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
         public string ImageUrl { get; set; } = null!;

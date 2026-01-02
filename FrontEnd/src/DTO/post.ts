@@ -4,6 +4,7 @@ export interface PostDto {
   id: string
   userId: string
   title: string
+  rating: number
   description: string
   imageUrl: string
   critiques: CritiqueDto[]

@@ -14,6 +14,7 @@ namespace CoCanvas.Domain.Entities
 
         // Image storage (either file path, URL, or blob reference)
         public string ImageUrl { get; set; } = string.Empty;
+        public int Rating { get; set; } = 0;
         public DateTime CreatedAt { get; set; }
         public string UserId { get; set; } = string.Empty;
         public User User { get; set; } = null!;
