@@ -1,7 +1,7 @@
-import type { Critique, Comment, Reply } from '@/models/critique'
+import type { CritiqueDto, CommentDto, ReplyDto } from '@/DTO/critique'
 import guid from '@/utils/guid'
 
-const mockCritique: Critique = {
+const mockCritique: CritiqueDto = {
   id: guid.zero(),
   userId: guid.zero(),
   username: 'Exathy',
@@ -12,8 +12,14 @@ const mockCritique: Critique = {
     {
       id: guid.zero(),
       userId: guid.zero(),
-      username: 'Adam',
-      text: 'Agreed with most of your points, good feedback',
+      username: 'Blake',
+      text: 'no',
+    },
+    {
+      id: guid.zero(),
+      userId: guid.zero(),
+      username: 'Exathy',
+      text: 'ok, got it',
     },
   ],
   comments: [
@@ -22,39 +28,17 @@ const mockCritique: Critique = {
       x: 50,
       y: 120,
       text: 'Lorem ipsum erdum turpis. Pellentesque scelerisque eu erat eget lobortis. Vivamus eleifend',
-      replies: [
-        {
-          id: guid.zero(),
-          userId: guid.zero(),
-          username: 'someoneElse',
-          text: 'Lorem ipsum erdum turpis. Pellentesque scelerisque eu erat eget lobortis. Vivamus eleifend velit at eros laoreet, non viverra nulla sollicitudin. Sed tincidunt non nunc ut finibus. Nulla consequat id nunc eu ultrices. Donec at velit quam. Phasellus libero lorem, pharetra sit amet leo nec, auctor auctor quam. Vivamus lore',
-        },
-      ],
     },
     {
       id: guid.zero(),
       x: 230,
       y: 250,
       text: 'draw a better line',
-      replies: [
-        {
-          id: guid.zero(),
-          userId: guid.zero(),
-          username: 'Blake',
-          text: 'no',
-        },
-        {
-          id: guid.zero(),
-          userId: guid.zero(),
-          username: 'Exathy',
-          text: 'ok, got it',
-        },
-      ],
     },
   ],
 }
 
-const mockCritique2: Critique = {
+const mockCritique2: CritiqueDto = {
   id: '00000000-0000-0000-0000-000000000001',
   userId: '00000000-0000-0000-0000-000000000001',
   username: 'Someone',
@@ -68,28 +52,18 @@ const mockCritique2: Critique = {
       x: 30,
       y: 250,
       text: 'sample comment',
-      replies: [
-        {
-          id: guid.zero(),
-          userId: guid.zero(),
-          username: 'someoneElse',
-          text: 'sample repy',
-        },
-      ],
     },
     {
       id: guid.zero(),
       x: 200,
       y: 14,
-      text: 'Comment with no replies',
-      replies: [],
+      text: 'Comment sample',
     },
     {
       id: guid.zero(),
       x: 200,
       y: 200,
       text: 'third comment',
-      replies: [],
     },
   ],
 }

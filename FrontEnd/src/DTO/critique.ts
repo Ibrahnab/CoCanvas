@@ -1,23 +1,22 @@
-export interface Critique {
+export interface CritiqueDto {
   id: string
   userId: string
   username: string
   rating: number
   description: string
   published: boolean
-  replies: Reply[]
-  comments: Comment[]
+  replies: ReplyDto[]
+  comments: CommentDto[]
 }
 
-export interface Comment {
+export interface CommentDto {
   id: string
   x: number
   y: number
   text: string
-  replies: Reply[]
 }
 
-export interface Reply {
+export interface ReplyDto {
   id: string
   userId: string
   username: string

@@ -28,7 +28,7 @@ import rkgk1 from '@/assets/rkgk1.png'
 import { useRoute, useRouter } from 'vue-router'
 import myImage from '@/assets/rkgk1.png'
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
-import type { Critique, Comment, Reply } from '@/models/critique'
+import type { CritiqueDto, CommentDto, ReplyDto } from '@/DTO/critique'
 import mockCritiques from '@/mockData/mockCritiques'
 
 import guid from '@/utils/guid'
@@ -37,10 +37,10 @@ const router = useRouter()
 const route = useRoute()
 
 // TODO: Make into a map instead of array and look up selected with id
-const critiques = ref<Critique[]>([]) // TODO: Get from backend
+const critiques = ref<CritiqueDto[]>([]) // TODO: Get from backend
 const selectedCritiqueId = ref<string>('')
-const selectedCritique = ref<Critique>()
-const myCritique = ref<Critique>()
+const selectedCritique = ref<CritiqueDto>()
+const myCritique = ref<CritiqueDto>()
 
 // TODO: Set the one with highest rating?
 function setSelectedCritique() {
@@ -59,6 +59,8 @@ function getData() {
 
   const myCritIndex = critiques.value.findIndex((c) => c.userId === currentUserId)
 
+  // If the viewing user hasn't made a critique on this post,
+  // create an empty one to be filled and put in the beginning
   if (myCritIndex < 0) {
     critiques.value.unshift({
       id: guid.zero(),
@@ -69,7 +71,7 @@ function getData() {
       replies: [],
       rating: 0,
       comments: [],
-    } as Critique)
+    } as CritiqueDto)
     myCritique.value = critiques.value[0]
   } else {
     // Why even do this?

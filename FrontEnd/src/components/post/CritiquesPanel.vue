@@ -59,7 +59,7 @@
 <script setup lang="ts">
 import CritiqueItem from './CritiqueItem.vue'
 import { ref, onMounted, onBeforeUnmount, watch, computed } from 'vue'
-import type { Critique, Comment, Reply } from '@/models/critique'
+import type { Critique, Comment, Reply } from '@/DTO/critique'
 import guid from '@/utils/guid'
 import { TextBox, AvatarCircle, SpinnerButton } from '@/components/common'
 import type { PropType } from 'vue'

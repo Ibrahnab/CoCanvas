@@ -62,7 +62,7 @@ import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import type { PropType } from 'vue'
 import * as fabric from 'fabric'
 import { FabricImage, Canvas } from 'fabric'
-import type { Critique, Comment, Reply } from '@/models/critique'
+import type { CritiqueDto, CommentDto, ReplyDto } from '@/DTO/critique'
 import guid from '@/utils/guid'
 import CanvasComment from './CanvasComment.vue'
 // import mockCritiques from '@/mockData/mockCritiques'
@@ -81,7 +81,7 @@ const iconColor = ref('white')
 // const selectedCritique = ref<Critique>()
 // const myCritique = ref<Critique>()
 const expandedCommentId = ref<string>()
-const unsavedComment = ref<Comment | null>(null)
+const unsavedComment = ref<CommentDto | null>(null)
 
 const canvasEl = ref<HTMLCanvasElement | null>(null)
 let canvas: Canvas
@@ -92,13 +92,13 @@ const props = defineProps({
     default: '',
   },
   critiques: {
-    type: Object as PropType<Critique[]>,
+    type: Object as PropType<CritiqueDto[]>,
   },
   myCritique: {
-    type: Object as PropType<Critique>,
+    type: Object as PropType<CritiqueDto>,
   },
   selectedCritique: {
-    type: Object as PropType<Critique>,
+    type: Object as PropType<CritiqueDto>,
   },
   selectedCritiqueId: {
     type: String,
@@ -159,9 +159,9 @@ function disableDrawingMode() {
   canvas.isDrawingMode = false
 }
 
-async function updateComment(comment: Comment) {}
+async function updateComment(comment: CommentDto) {}
 
-async function saveComment(comment: Comment) {
+async function saveComment(comment: CommentDto) {
   //TODO: Emit to parent
   // try {
   //   // const result = await backend.save(comment)
