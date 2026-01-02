@@ -2,6 +2,7 @@
   <div class="form-wrapper">
     <ErrorBox :error-items="errorItems" />
     <form @submit.prevent="isValid">
+      <TextBox placeholder="Username" v-model="username" />
       <TextBox placeholder="Email" v-model="email" />
       <TextBox placeholder="Password" type="password" v-model="password" />
       <TextBox placeholder="Confirm password" type="password" v-model="confirmPassword" />
@@ -28,6 +29,7 @@ import { ref } from 'vue'
 import { getAxiosInstance } from '@/apiCaller'
 import axios from 'axios'
 
+const username = ref('')
 const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
@@ -60,8 +62,8 @@ async function isValid() {
 async function signUp() {
   showSpinner.value = true
   try {
-    const dto = { email: email.value, password: password.value }
-    const response = await api.post('/register', dto)
+    const dto = { username: username.value, email: email.value, password: password.value }
+    const response = await api.post('api/register', dto)
     console.log('response: ', response)
   } catch (error) {
     if (axios.isAxiosError(error)) {

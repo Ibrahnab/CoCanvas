@@ -9,7 +9,8 @@ namespace CoCanvas.Application.DTO
     public class PostDto
     {
         public Guid Id { get; set; }
-        public string UserId { get; set; } = string.Empty;
+        public string UserId { get; set; } = null!;
+        public string Username { get; set; } = null!;
         public int Rating { get; set; } = 0;
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;

@@ -17,6 +17,7 @@ namespace CoCanvas.Application.Mappers
             {
                 Id = post.Id,
                 UserId = post.UserId,
+                Username = post.User.UserName,
                 Rating = post.Rating,
                 Title = post.Title,
                 Description = post.Description,
