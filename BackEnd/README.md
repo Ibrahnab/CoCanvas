@@ -31,13 +31,13 @@ erDiagram
 
 ### Migrations
 
-To add or update migrations, run the following, while standing in BackEnd
+To add or update migrations, run the following, while standing in Infrastructure
 
 ```
 // Add
-dotnet ef migrations add MigrationName --project CoCanvas.Infrastructure --startup-project CoCanvas
+dotnet ef migrations add MigrationName --project ../CoCanvas.Infrastructure --startup-project ../CoCanvas
 
 // Update
-dotnet ef database update --project CoCanvas.Infrastructure --startup-project CoCanvas
+dotnet ef database update --project ../CoCanvas.Infrastructure --startup-project ../CoCanvas
 
 ```
