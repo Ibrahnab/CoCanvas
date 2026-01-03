@@ -29,12 +29,11 @@ namespace CoCanvas.Application.Services
 
         public async Task<PostDto?> GetPost(Guid guid)
         {
-            // Done
             var result = await _postsRepository.GetPost(guid);
 
             if(result != null)
             {
-                return PostMapper.ToDto(result);
+                return result;
             }   
             return null;
         }

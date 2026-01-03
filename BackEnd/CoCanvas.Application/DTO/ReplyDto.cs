@@ -12,6 +12,7 @@ namespace CoCanvas.Application.DTO
         public string UserId { get; set; } = string.Empty;
         public string Username { get; set; } = null!;
         public string Text { get; set; } = null!;
+        public DateTime CreatedAt { get; set; }
     }
 
 }

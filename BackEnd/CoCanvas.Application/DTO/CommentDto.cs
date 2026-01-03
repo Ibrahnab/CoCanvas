@@ -12,6 +12,6 @@ namespace CoCanvas.Application.DTO
         public int X { get; set; }
         public int Y { get; set; }
         public string Text { get; set; } = null!;
-        public List<ReplyDto> Replies { get; set; } = new();
+        public DateTime CreatedAt { get; set; }
     }
 }

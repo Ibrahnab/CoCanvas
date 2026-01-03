@@ -13,6 +13,7 @@ namespace CoCanvas.Application.DTO
         public int Rating { get; set; }
         public string UserId { get; set; } = string.Empty;
         public string Username { get; set; } = null!;
+        public DateTime CreatedAt { get; set; }
         public List<CommentDto> Comments { get; set; } = new();
         public List<ReplyDto> Replies { get; set; } = new();
     }

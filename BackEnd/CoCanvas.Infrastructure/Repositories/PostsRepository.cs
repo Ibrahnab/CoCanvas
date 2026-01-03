@@ -1,5 +1,6 @@
 ﻿using CoCanvas.Infrastructure.Persistance;
 using CoCanvas.Application.Interfaces.Repositories;
+using CoCanvas.Application.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,14 +21,61 @@ namespace CoCanvas.Infrastructure.Repositories
             _dbContext = dbcontext;
         }
 
-        public async Task<Post?> GetPost(Guid guid)
+        public async Task<PostDto?> GetPost(Guid guid)
         {
+            // Other approach, which is not recommended but keeping for reference
+            //var post = await _dbContext.Posts
+            //.Include(p => p.User)
+            //.Include(p => p.Critiques)
+            //    .ThenInclude(c => c.Comments)
+            //.Include(p => p.Critiques)
+            //        .ThenInclude(cm => cm.Replies)
+            //            .ThenInclude(cm => cm.User)
+            //.Include(p => p.Critiques)
+            //    .ThenInclude(c => c.User)
+            //.FirstOrDefaultAsync(p => p.Id == guid);
+
+
             var post = await _dbContext.Posts
-            .Include(p => p.Critiques)
-                .ThenInclude(c => c.Comments)
-            .Include(p => p.Critiques)
-                    .ThenInclude(cm => cm.Replies)
-            .FirstOrDefaultAsync(p => p.Id == guid);
+                .Where(p => p.Id == guid)
+                .Select(p => new PostDto
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Description = p.Description,
+                    Rating = p.Rating,
+                    Username = p.User.UserName,
+                    UserId = p.User.Id,
+                    ImageUrl = p.ImageUrl,
+                    CreatedAt = p.CreatedAt,
+                    Tags = p.Tags.Select( t => t.Name).ToList(),
+                    Critiques = p.Critiques.Select(c => new CritiqueDto
+                    {
+                        Id = c.Id,
+                        Username = c.User.UserName,
+                        UserId = c.UserId,
+                        Rating = c.Rating,
+                        CreatedAt = c.CreatedAt,
+                        Comments = c.Comments.Select(
+                            com => new CommentDto
+                            {
+                                Id = com.Id,
+                                X = com.X,
+                                Y = com.Y,
+                                Text = com.Text,
+                                CreatedAt = com.CreatedAt,
+                            }).ToList(),
+                        Replies = c.Replies.Select(r => new ReplyDto
+                        {
+                            Id = r.Id,
+                            Text = r.Text,
+                            Username = r.User.UserName,
+                            UserId = r.UserId,
+                            CreatedAt = r.CreatedAt
+                        }).ToList()
+                    }).ToList()
+                })
+                .FirstOrDefaultAsync();
 
             return post;
         }
@@ -38,6 +86,7 @@ namespace CoCanvas.Infrastructure.Repositories
             return await _dbContext.Posts.ToListAsync();
         }
 
+        // TODO: Really Post?
         public async Task CreatePost(Post post)
         {
             await _dbContext.AddAsync(post);
