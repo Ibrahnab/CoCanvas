@@ -3,6 +3,7 @@ import type { CritiqueDto } from '@/DTO/critique'
 export interface PostDto {
   id: string
   userId: string
+  username: string
   title: string
   rating: number
   description: string

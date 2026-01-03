@@ -23,19 +23,7 @@ namespace CoCanvas.Infrastructure.Repositories
 
         public async Task<PostDto?> GetPost(Guid guid)
         {
-            // Other approach, which is not recommended but keeping for reference
-            //var post = await _dbContext.Posts
-            //.Include(p => p.User)
-            //.Include(p => p.Critiques)
-            //    .ThenInclude(c => c.Comments)
-            //.Include(p => p.Critiques)
-            //        .ThenInclude(cm => cm.Replies)
-            //            .ThenInclude(cm => cm.User)
-            //.Include(p => p.Critiques)
-            //    .ThenInclude(c => c.User)
-            //.FirstOrDefaultAsync(p => p.Id == guid);
-
-
+            // TODO: Revise this maybe, looks like a very loaded request, maybe ok though
             var post = await _dbContext.Posts
                 .Where(p => p.Id == guid)
                 .Select(p => new PostDto
@@ -82,7 +70,7 @@ namespace CoCanvas.Infrastructure.Repositories
 
         public async Task<List<Post>> GetPosts()
         {
-            // TODO: dont do this
+            // TODO: dont do this, get by time and chunks
             return await _dbContext.Posts.ToListAsync();
         }
 

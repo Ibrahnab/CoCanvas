@@ -55,7 +55,6 @@ const props = defineProps({
 })
 
 function onInput(event: Event) {
-  console.log('input')
   const target = event.target as HTMLInputElement | null
   if (target) {
     emit('update:modelValue', target.value)

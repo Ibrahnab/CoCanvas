@@ -63,8 +63,7 @@ async function signUp() {
   showSpinner.value = true
   try {
     const dto = { username: username.value, email: email.value, password: password.value }
-    const response = await api.post('api/register', dto)
-    console.log('response: ', response)
+    await api.post('api/register', dto)
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const errors = error.response?.data.errors

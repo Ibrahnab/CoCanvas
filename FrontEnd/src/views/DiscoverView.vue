@@ -63,18 +63,18 @@ const items = [
 ]
 
 import { ref, onMounted } from 'vue'
-import type { DisplayPost } from '@/models/post'
+import type { DisplayPostDto } from '@/DTO/post'
 import { getAxiosInstance, baseURL } from '@/apiCaller'
 
-const posts = ref<DisplayPost[]>([])
+const posts = ref<DisplayPostDto[]>([])
 
 const apiCaller = getAxiosInstance()
 
 async function getPosts() {
   try {
-    const result = await apiCaller.get<DisplayPost[]>('/api/Posts')
+    const result = await apiCaller.get<DisplayPostDto[]>('/api/Posts')
     // const url = result.data[0].imageUrl.split('\\')
-    console.log(result.data)
+    // console.log(result.data)
 
     posts.value = result.data
   } catch (error) {

@@ -65,7 +65,10 @@ import { FabricImage, Canvas } from 'fabric'
 import type { CritiqueDto, CommentDto, ReplyDto } from '@/DTO/critique'
 import guid from '@/utils/guid'
 import CanvasComment from './CanvasComment.vue'
+import { getAxiosInstance, baseURL } from '@/apiCaller'
 // import mockCritiques from '@/mockData/mockCritiques'
+
+const axios = getAxiosInstance()
 
 enum tools {
   PEN,
@@ -91,6 +94,9 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  image: {
+    type: FabricImage,
+  },
   critiques: {
     type: Object as PropType<CritiqueDto[]>,
   },
@@ -107,7 +113,7 @@ const props = defineProps({
 
 function commentExpand() {}
 
-onMounted(async () => {
+async function createCanvas() {
   if (!canvasEl.value) return
 
   // Initialize fabric canvas
@@ -117,7 +123,7 @@ onMounted(async () => {
   })
 
   // Load the image as background
-  const img = await FabricImage.fromURL(props.imageUrl, {
+  const img = await FabricImage.fromURL(baseURL + 'api/Posts/images/' + props.imageUrl, {
     crossOrigin: 'anonymous',
   })
 
@@ -128,7 +134,18 @@ onMounted(async () => {
   canvas.backgroundImage = img
   canvas.requestRenderAll()
   enableDrawingMode()
-})
+}
+
+onMounted(async () => {})
+
+watch(
+  () => props.imageUrl,
+  () => {
+    if (props.imageUrl !== '') {
+      createCanvas()
+    }
+  },
+)
 
 function toolSelect(selectedTool: number) {
   // TODO: Consider this?
@@ -147,7 +164,7 @@ function enableDrawingMode() {
   canvas.freeDrawingBrush = new fabric.PencilBrush(canvas)
   canvas.freeDrawingBrush.width = 2
   canvas.freeDrawingBrush.color = '#ff0000'
-  console.log(canvas.toJSON())
+  // console.log(canvas.toJSON())
 }
 
 function selectMode() {
