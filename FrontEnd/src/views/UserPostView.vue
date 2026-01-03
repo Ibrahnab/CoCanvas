@@ -12,7 +12,7 @@
     </div>
     <div class="right-side">
       <PostAndCritiquesPanel
-        :critiques="critiques"
+        :post="postData"
         :selectedCritiqueId="selectedCritiqueId"
         @selected="selectedCritiqueId = $event"
       />

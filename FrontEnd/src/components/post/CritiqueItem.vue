@@ -4,16 +4,14 @@
     class="critique-wrapper"
     :class="{ toggled: selectedCritiqueId === critique.id }"
   >
-    <div class="user-wrapper">
-      <div class="rating-wrapper">
-        <font-awesome-icon icon="fa-chevron-up" class="arrow" />
-        <h5 class="mb-0">{{ critique.rating }}</h5>
-        <font-awesome-icon icon="fa-chevron-up" class="arrow fa-rotate-180" />
-      </div>
-      <!-- TODO: Add skeleton loading for everything and this image -->
-      <avatar-circle :image="userImage" />
-      <h5>{{ critique.username }}</h5>
-    </div>
+    <!-- TODO: Add slots to the below with options -->
+    <RateableUserHeader
+      :rateable-item-id="critique.id"
+      :user-image-url="'defaultProfilePicture.jpg'"
+      :username="critique.username"
+      :created-at="critique.createdAt"
+      :rating="critique.rating"
+    ></RateableUserHeader>
 
     <div>
       <div class="comment-wrapper" v-for="(comment, comIndex) in critique.comments" :key="comIndex">
@@ -45,6 +43,7 @@ import type { PropType } from 'vue'
 import { watch, onMounted, ref } from 'vue'
 import { getAxiosInstance } from '@/apiCaller'
 import UserReply from '@/components/post/UserReply.vue'
+import RateableUserHeader from '@/components/post/RateableUserHeader.vue'
 import { TextBox, AvatarCircle, SpinnerButton } from '@/components/common'
 
 const axios = getAxiosInstance()
@@ -77,14 +76,14 @@ async function loadData() {
 }
 
 onMounted(() => {
-  loadData()
+  // loadData()
 })
 
 watch(
   () => props.critique,
   (newValue) => {
     if (newValue) {
-      loadData()
+      // loadData()
     }
   },
 )

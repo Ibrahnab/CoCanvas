@@ -1,9 +1,11 @@
 <template>
-  <div class="panel-container">
-    <!-- TODO: Make smaller components out of this structure -->
-    <h3 class="">Critiques</h3>
+  <div v-if="post" class="panel-container">
+    <div class="post-container">
+      <PostBox :post="post" />
+    </div>
+    <h3 class="my-2">Critiques</h3>
     <div class="critiques-container">
-      <div v-for="(critique, critIndex) in critiques" :key="critIndex">
+      <div v-for="(critique, critIndex) in post.critiques" :key="critIndex">
         <CritiqueItem
           :critique="critique"
           :selected-critique-id="selectedCritiqueId"
@@ -15,10 +17,11 @@
 </template>
 
 <script setup lang="ts">
-import type { CritiqueDto } from '@/DTO/critique'
+import type { CritiqueDto, PostDto } from '@/DTO'
 
 import type { PropType } from 'vue'
 import CritiqueItem from '@/components/post/CritiqueItem.vue'
+import PostBox from '@/components/post/PostBox.vue'
 
 const emit = defineEmits(['selected'])
 
@@ -31,8 +34,8 @@ function setSelected(critiqueId: string) {
 }
 
 const props = defineProps({
-  critiques: {
-    type: Object as PropType<CritiqueDto[]>,
+  post: {
+    type: Object as PropType<PostDto>,
   },
   selectedCritiqueId: {
     type: String,
