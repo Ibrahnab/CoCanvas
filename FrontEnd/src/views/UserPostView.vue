@@ -24,7 +24,6 @@
 import UserPostCanvas from '@/components/post/UserPostCanvas.vue'
 import PostAndCritiquesPanel from '@/components/post/PostAndCritiquesPanel.vue'
 import { getAxiosInstance } from '@/apiCaller'
-import rkgk1 from '@/assets/rkgk1.png'
 
 import { useRoute, useRouter } from 'vue-router'
 // import myImage from '@/assets/rkgk1.png'
@@ -35,8 +34,6 @@ import mockCritiques from '@/mockData/mockCritiques'
 
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
-
-import guid from '@/utils/guid'
 
 const router = useRouter()
 const route = useRoute()
@@ -78,28 +75,6 @@ async function getData() {
   const { currentUserId, userName } = storeToRefs(userStore) // TODO: Get from store
   // const currentUsername = 'Sample Name' // TODO: Get from store
   critiques.value = mockCritiques // TODO: Get from api
-
-  const myCritIndex = critiques.value.findIndex((c) => c.userId === currentUserId.value)
-
-  // If the viewing user hasn't made a critique on this post,
-  // create an empty one to be filled and put in the beginning
-  if (myCritIndex < 0) {
-    critiques.value.unshift({
-      id: guid.zero(),
-      userId: currentUserId.value,
-      username: userName.value,
-      description: 'sample desc',
-      published: true,
-      replies: [],
-      rating: 0,
-      comments: [],
-      createdAt: '2030-01-01T23:15:33.008Z',
-    } as CritiqueDto)
-    myCritique.value = critiques.value[0]
-  } else {
-    // Why even do this?
-    myCritique.value = critiques.value[myCritIndex]
-  }
 }
 
 onMounted(() => {
@@ -108,7 +83,7 @@ onMounted(() => {
 })
 </script>
 
-<style scope lang="scss">
+<style scoped lang="scss">
 .post-container {
   display: flex;
   justify-content: center;
