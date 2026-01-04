@@ -7,6 +7,7 @@
       :created-at="post.createdAt"
       :rating="post.rating"
     />
+    <p class="p-3">{{ post.description }}</p>
   </div>
 </template>
 

@@ -1,9 +1,11 @@
 <template>
   <div v-if="post" class="panel-container">
+    <h3>{{ post.title }}</h3>
     <div class="post-container">
       <PostBox :post="post" />
     </div>
     <h3 class="my-2">Critiques</h3>
+
     <div class="critiques-container">
       <div v-for="(critique, critIndex) in post.critiques" :key="critIndex">
         <CritiqueItem
