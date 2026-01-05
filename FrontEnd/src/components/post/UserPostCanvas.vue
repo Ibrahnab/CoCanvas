@@ -1,7 +1,8 @@
 <template>
   <div class="canvas-container">
     <!-- TODO: Make a component around this -->
-    <div class="tools">
+    <!--TODO: Make sure if the user is signed out, it doesnt show -->
+    <div v-if="postStore.isSelectedCritiqueMine()" class="tools">
       <!-- TODO: Add selectable colors and width for the pen -->
       <SelectButton
         icon="pen"
@@ -31,25 +32,40 @@
     </div>
     <div class="imageContainer">
       <canvas ref="canvasEl"></canvas>
-
+      <!--TODO: DRY  -->
       <CanvasComment
         v-for="(comment, index) in critiques?.find((c) => c.id === selectedCritiqueId)?.comments"
         :key="index"
         :posX="comment.x"
         :posY="comment.y"
-        :modelValue="comment.text"
+        v-model="comment.text"
+        :comment="comment"
         :ref="comment.id"
-        @send="updateComment"
+        @update="updateComment"
         @delete="deleteComment"
       >
       </CanvasComment>
 
       <CanvasComment
-        v-if="unsavedComment?.id === guid.zero()"
+        v-for="(unsavedComment, index) in unsavedComments"
+        :key="index"
         :posX="unsavedComment.x"
         :posY="unsavedComment.y"
-        :modelValue="unsavedComment.text"
-        @send="saveComment(unsavedComment)"
+        v-model="unsavedComment.text"
+        :comment="unsavedComment"
+        :isUnsaved="true"
+        @send="addComment(unsavedComment)"
+        @delete="deleteComment"
+      ></CanvasComment>
+
+      <CanvasComment
+        v-if="unsavedComment"
+        :posX="unsavedComment.x"
+        :posY="unsavedComment.y"
+        v-model="unsavedComment.text"
+        :comment="unsavedComment"
+        :isUnsaved="true"
+        @send="addComment(unsavedComment)"
         @delete="deleteComment"
       ></CanvasComment>
     </div>
@@ -66,9 +82,15 @@ import type { CritiqueDto, CommentDto, ReplyDto } from '@/DTO/critique'
 import guid from '@/utils/guid'
 import CanvasComment from './CanvasComment.vue'
 import { getAxiosInstance, baseURL } from '@/apiCaller'
+import { usePostStore } from '@/stores'
+import { storeToRefs } from 'pinia'
+import { Guid } from 'guid-typescript'
 // import mockCritiques from '@/mockData/mockCritiques'
 
 const axios = getAxiosInstance()
+const postStore = usePostStore()
+
+// const { isSelectedCritiqueMine } = storeToRefs(postStore)
 
 enum tools {
   PEN,
@@ -83,8 +105,11 @@ const iconColor = ref('white')
 // const selectedCritiqueId = ref<string>(guid.zero())
 // const selectedCritique = ref<Critique>()
 // const myCritique = ref<Critique>()
+
+// const unsavedComments = ref<CommentDto[]>([])
 const expandedCommentId = ref<string>()
-const unsavedComment = ref<CommentDto | null>(null)
+const unsavedComment = ref<CommentDto | null>()
+const { unsavedComments } = storeToRefs(postStore)
 
 const canvasEl = ref<HTMLCanvasElement | null>(null)
 let canvas: Canvas
@@ -178,7 +203,7 @@ function disableDrawingMode() {
 
 async function updateComment(comment: CommentDto) {}
 
-async function saveComment(comment: CommentDto) {
+async function addComment(comment: CommentDto) {
   //TODO: Emit to parent
   // try {
   //   // const result = await backend.save(comment)
@@ -188,22 +213,26 @@ async function saveComment(comment: CommentDto) {
   //   console.error(error)
   //   // TODO: implement globalmessagebox
   // }
+  // postStore.addComment(unsavedComment.value)
+  if (unsavedComment.value) {
+    unsavedComments.value.push(unsavedComment.value)
+  }
 }
 
 function deleteComment() {}
 
-function addCommentMarker(posx: number, posy: number) {
-  // if (!unsavedComment.value) {
-  //   unsavedComment.value = {
-  //     id: guid.zero(),
-  //     x: posx,
-  //     y: posy,
-  //     text: '',
-  //     replies: [],
-  //   }
-  // } else {
-  //   unsavedComment.value = null
-  // }
+function createCommentMarker(posx: number, posy: number) {
+  if (!unsavedComment.value) {
+    unsavedComment.value = {
+      id: Guid.create().toString(),
+      x: posx,
+      y: posy,
+      text: '',
+      createdAt: '',
+    }
+  } else {
+    unsavedComment.value = null
+  }
 }
 
 // TODO: Consider canvas.freeDrawingBrush.decimate = 8; // try 4–10
@@ -228,7 +257,7 @@ function commentMode() {
   canvas.on('mouse:down', (opt) => {
     if (selected.value === tools.COMMENT) {
       const pointer = canvas.getViewportPoint(opt.e)
-      addCommentMarker(pointer.x, pointer.y)
+      createCommentMarker(pointer.x, pointer.y)
     }
   })
 }

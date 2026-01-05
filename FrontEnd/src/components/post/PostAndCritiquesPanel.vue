@@ -5,7 +5,7 @@
       <PostBox :post="post" />
     </div>
     <h3 class="my-2">Critiques</h3>
-
+    <CritiqueCompose />
     <div class="critiques-container">
       <div v-for="(critique, critIndex) in post.critiques" :key="critIndex">
         <CritiqueItem
@@ -24,6 +24,7 @@ import type { CritiqueDto, PostDto } from '@/DTO'
 import type { PropType } from 'vue'
 import CritiqueItem from '@/components/post/CritiqueItem.vue'
 import PostBox from '@/components/post/PostBox.vue'
+import CritiqueCompose from '@/components/post/CritiqueCompose.vue'
 
 const emit = defineEmits(['selected'])
 
@@ -60,7 +61,7 @@ const props = defineProps({
   display: flex;
   flex-direction: column;
   gap: 15px;
-  width: 500px;
+  width: 600px;
   min-height: 300px;
   transition: all 0.25s;
 }

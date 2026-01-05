@@ -10,6 +10,13 @@ export interface CritiqueDto {
   createdAt: string
 }
 
+export interface CreateCritiqueDto {
+  userId: string
+  description: string
+  comments: CommentDto[]
+  critiqueCanvas: string
+}
+
 export interface CommentDto {
   id: string
   x: number

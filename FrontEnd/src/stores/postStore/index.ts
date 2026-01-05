@@ -4,7 +4,7 @@ import { useState } from './state'
 import { useActions } from './actions'
 import { useGetters } from './getters'
 
-export const usePostStore = defineStore('usePostSTore', () => {
+export const usePostStore = defineStore('usePostStore', () => {
   return {
     ...useState(),
     ...useActions(),

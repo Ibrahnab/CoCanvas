@@ -1,6 +1,5 @@
 <template>
-  <h2 class="mt-2 ms-2">Post</h2>
-  <div class="post-container">
+  <div class="post-container mt-2">
     <div class="left-side">
       <UserPostCanvas
         :imageUrl="imageUrl"
@@ -32,13 +31,14 @@ import type { CritiqueDto, CommentDto, ReplyDto } from '@/DTO/critique'
 import type { PostDto } from '@/DTO/post'
 import mockCritiques from '@/mockData/mockCritiques'
 
-import { useUserStore } from '@/stores/userStore'
+import { useUserStore, usePostStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 
 const router = useRouter()
 const route = useRoute()
 
 const userStore = useUserStore()
+const postStore = usePostStore()
 
 const axios = getAxiosInstance()
 
@@ -61,13 +61,11 @@ function setSelectedCritique() {
 
 function mapData(post: PostDto) {
   postData.value = post
-  console.log('imageUrl: ')
   imageUrl.value = post.imageUrl
+  postStore.setPost(post)
 }
 
 async function getData() {
-  // TODO: Get from api
-
   const result = await axios.get<PostDto>(`api/posts/${route.params.id}`)
   // const imageUrl.value = await axios.get(`api/Posts/images/${result.data.imageUrl}`)
   mapData(result.data)
@@ -79,7 +77,7 @@ async function getData() {
 
 onMounted(() => {
   getData()
-  setSelectedCritique()
+  // setSelectedCritique()
 })
 </script>
 

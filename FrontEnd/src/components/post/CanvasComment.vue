@@ -1,5 +1,9 @@
 <template>
-  <div class="comment-container" :style="{ top: posY + 'px', left: posX + 'px' }">
+  <div
+    v-if="comment"
+    class="comment-container"
+    :style="{ top: comment.y + 'px', left: comment.x + 'px' }"
+  >
     <div class="comment-bubble p-2" ref="comment-bubble" @click="onClickBubble">
       <font-awesome-icon class="icon" icon="comment" :style="{ color: 'white' }" />
     </div>
@@ -11,14 +15,14 @@
         style="min-width: 200px; max-width: 200px"
         @input="onInput"
       >
-        {{ modelValue }}
+        {{ comment.text }}
       </span>
 
       <div class="tools-container">
-        <SpinnerButton class="save-button" @click="onDelete">
+        <SpinnerButton class="save-button" @click="onCancel">
           <font-awesome-icon class="send-icon" icon="trash"></font-awesome-icon>
         </SpinnerButton>
-        <SpinnerButton class="save-button" @click="onSend">
+        <SpinnerButton class="save-button" @click="onUpdate">
           <font-awesome-icon class="send-icon" icon="paper-plane"></font-awesome-icon>
         </SpinnerButton>
       </div>
@@ -29,12 +33,24 @@
 import { ref, useTemplateRef, onMounted } from 'vue'
 
 import { SpinnerButton } from '@/components/common'
+import type { CommentDto } from '@/DTO'
+import type { PropType } from 'vue'
+import guid from '@/utils/guid'
+import { usePostStore } from '@/stores'
 
+const postStore = usePostStore()
 const input = useTemplateRef('input')
 const commentBubble = useTemplateRef('comment-bubble')
 const toggled = ref(false)
 
-const emit = defineEmits(['update:modelValue', 'send', 'delete'])
+const emit = defineEmits([
+  'update:modelValue',
+  'delete',
+  'update',
+  'add',
+  'discard',
+  'remove-unsaved',
+])
 const props = defineProps({
   modelValue: {
     type: String,
@@ -52,10 +68,18 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  comment: {
+    type: Object as PropType<CommentDto>,
+  },
+  isUnsaved: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 function onInput(event: Event) {
   const target = event.target as HTMLInputElement | null
+  console.log('input pressed')
   if (target) {
     emit('update:modelValue', target.value)
   }
@@ -65,12 +89,28 @@ function onClickBubble() {
   toggled.value = !toggled.value
 }
 
-function onSend() {
-  emit('send')
+function onUpdate() {
+  if (props.isUnsaved) {
+    if (props.comment?.id === guid.zero()) {
+      emit('add')
+    }
+  } else {
+    emit('update')
+  }
 }
 
-function onDelete() {
-  emit('delete')
+function onCancel() {
+  if (props.isUnsaved) {
+    if (props.comment?.id === guid.zero()) {
+      emit('discard')
+    }
+    emit('remove-unsaved')
+    if (props.comment?.id !== undefined) {
+      postStore.removeUnsavedComment(props.comment.id)
+    }
+  } else {
+    emit('discard')
+  }
 }
 
 onMounted(() => {

@@ -47,7 +47,7 @@ function onInput(event: Event) {
 
 .input {
   width: 100%;
-  height: 150px;
+  height: 100px;
   line-height: 28px;
   padding: 0 1rem;
   border: 2px solid transparent;
