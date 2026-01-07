@@ -10,10 +10,11 @@ export interface CritiqueDto {
   createdAt: string
 }
 
-export interface CreateCritiqueDto {
+export interface CreateOrEditCritiqueDto {
   userId: string
   description: string
   comments: CommentDto[]
+  deletedCommentIds?: string[]
   critiqueCanvas: string
 }
 
@@ -23,6 +24,15 @@ export interface CommentDto {
   y: number
   text: string
   createdAt: string
+}
+
+export interface AddedOrEditedComment {
+  clientId?: string
+  id: string
+  x: number
+  y: number
+  text: string
+  isDeleted: boolean
 }
 
 export interface ReplyDto {

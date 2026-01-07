@@ -78,11 +78,12 @@ import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import type { PropType } from 'vue'
 import * as fabric from 'fabric'
 import { FabricImage, Canvas } from 'fabric'
-import type { CritiqueDto, CommentDto, ReplyDto } from '@/DTO/critique'
+import type { CritiqueDto, CommentDto, ReplyDto, AddedOrEditedComment } from '@/DTO/critique'
 import guid from '@/utils/guid'
 import CanvasComment from './CanvasComment.vue'
 import { getAxiosInstance, baseURL } from '@/apiCaller'
 import { usePostStore } from '@/stores'
+import { onBeforeRouteLeave } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { Guid } from 'guid-typescript'
 // import mockCritiques from '@/mockData/mockCritiques'
@@ -108,8 +109,10 @@ const iconColor = ref('white')
 
 // const unsavedComments = ref<CommentDto[]>([])
 const expandedCommentId = ref<string>()
-const unsavedComment = ref<CommentDto | null>()
-const { unsavedComments } = storeToRefs(postStore)
+const unsavedComment = ref<AddedOrEditedComment | null>()
+// const { unsavedComments } = storeToRefs(postStore)
+
+const unsavedComments = postStore.getUnsavedComments()
 
 const canvasEl = ref<HTMLCanvasElement | null>(null)
 let canvas: Canvas
@@ -203,7 +206,7 @@ function disableDrawingMode() {
 
 async function updateComment(comment: CommentDto) {}
 
-async function addComment(comment: CommentDto) {
+async function addComment(comment: CommentDto | AddedOrEditedComment) {
   //TODO: Emit to parent
   // try {
   //   // const result = await backend.save(comment)
@@ -214,9 +217,9 @@ async function addComment(comment: CommentDto) {
   //   // TODO: implement globalmessagebox
   // }
   // postStore.addComment(unsavedComment.value)
-  if (unsavedComment.value) {
-    unsavedComments.value.push(unsavedComment.value)
-  }
+  // if (unsavedComment.value) {
+  //   unsavedComments.value.push(unsavedComment.value)
+  // }
 }
 
 function deleteComment() {}
@@ -224,11 +227,11 @@ function deleteComment() {}
 function createCommentMarker(posx: number, posy: number) {
   if (!unsavedComment.value) {
     unsavedComment.value = {
-      id: Guid.create().toString(),
+      id: guid.zero(),
       x: posx,
       y: posy,
       text: '',
-      createdAt: '',
+      isDeleted: false,
     }
   } else {
     unsavedComment.value = null
@@ -261,6 +264,10 @@ function commentMode() {
     }
   })
 }
+
+onBeforeRouteLeave(() => {
+  // postStore.$reset()
+})
 
 onBeforeUnmount(() => {
   canvas?.dispose()

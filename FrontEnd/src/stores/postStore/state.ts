@@ -1,18 +1,27 @@
 import { ref } from 'vue'
-import type { CritiqueDto, PostDto, CreateCritiqueDto, CommentDto } from '@/DTO'
+import type {
+  CritiqueDto,
+  PostDto,
+  CreateOrEditCritiqueDto,
+  CommentDto,
+  AddedOrEditedComment,
+} from '@/DTO'
 import { useUserStore } from '../userStore'
 
 const currentPost = ref<PostDto>()
 const currentCritique = ref<CritiqueDto>()
 const selectedCritiqueId = ref<string>('')
 const critiques = ref<Record<string, CritiqueDto>>({})
-const unsavedComments = ref<CommentDto[]>([])
-const deletedComments = ref<CommentDto[]>([])
+const deletedCommentIds = ref<string[]>([])
+const addedOrEditedComments = ref<AddedOrEditedComment[]>([])
+// const unsavedComments = ref<CommentDto[]>([])
+// const deletedComments = ref<CommentDto[]>([])
 
-const composedCritique = ref<CreateCritiqueDto>({
+const composedCritique = ref<CreateOrEditCritiqueDto>({
   userId: '',
   description: '',
   comments: [],
+  deletedCommentIds: [],
   critiqueCanvas: '',
 })
 
@@ -25,7 +34,9 @@ export function useState() {
     selectedCritiqueId,
     critiques,
     composedCritique,
-    unsavedComments,
-    deletedComments,
+    deletedCommentIds,
+    addedOrEditedComments,
+    // unsavedComments,
+    // deletedComments,
   }
 }

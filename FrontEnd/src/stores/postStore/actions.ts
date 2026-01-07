@@ -1,5 +1,5 @@
 import { useState } from './state'
-import type { CritiqueDto, PostDto, CommentDto } from '@/DTO'
+import type { CritiqueDto, PostDto, CommentDto, AddedOrEditedComment } from '@/DTO'
 import guid from '@/utils/guid'
 
 export function useActions() {
@@ -23,30 +23,32 @@ export function useActions() {
         state.critiques.value[c.id] = c
       })
     },
-    addComment: (comment: CommentDto) => {
+    addComment: (comment: AddedOrEditedComment) => {
       console.log('adding: ', comment)
       // if (state.selectedCritiqueId.value === guid.zero()) {
       //   state.composedCritique.value.comments.push(comment)
       // } else {
       //   state.critiques.value[state.selectedCritiqueId.value].comments.push(comment)
       // }
-      state.unsavedComments.value.push(comment)
+      // state.unsavedComments.value.push(comment)
+      console.log('adding comment')
+      state.addedOrEditedComments.value.push(comment)
+      console.log('adding comment', state.addedOrEditedComments.value)
     },
     removeUnsavedComment: (id: string) => {
-      state.unsavedComments.value.filter((comment) => comment.id !== id)
+      // state.unsavedComments.value.filter((comment) => comment.id !== id)
     },
 
     // TODO: Simplify, by using record maybe
     deleteComment: (id: string) => {
       // Remove
-      state.critiques.value[state.selectedCritiqueId.value].comments.filter((c) => c.id !== id)
-
-      //Add to removed list
-      const selectedCritique = state.critiques.value[state.selectedCritiqueId.value]
-      const commentToPush = selectedCritique.comments.find((c) => c.id == id)
-      if (commentToPush !== undefined) {
-        state.deletedComments.value.push(commentToPush)
-      }
+      // state.critiques.value[state.selectedCritiqueId.value].comments.filter((c) => c.id !== id)
+      // //Add to removed list
+      // const selectedCritique = state.critiques.value[state.selectedCritiqueId.value]
+      // const commentToPush = selectedCritique.comments.find((c) => c.id == id)
+      // if (commentToPush !== undefined) {
+      //   state.deletedComments.value.push(commentToPush)
+      // }
     },
   }
 }

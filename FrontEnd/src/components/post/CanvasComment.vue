@@ -33,10 +33,11 @@
 import { ref, useTemplateRef, onMounted } from 'vue'
 
 import { SpinnerButton } from '@/components/common'
-import type { CommentDto } from '@/DTO'
+import type { AddedOrEditedComment, CommentDto } from '@/DTO'
 import type { PropType } from 'vue'
 import guid from '@/utils/guid'
 import { usePostStore } from '@/stores'
+import { Guid } from 'guid-typescript'
 
 const postStore = usePostStore()
 const input = useTemplateRef('input')
@@ -47,9 +48,10 @@ const emit = defineEmits([
   'update:modelValue',
   'delete',
   'update',
+  'update-unsaved',
   'add',
   'discard',
-  'remove-unsaved',
+  'delete-unsaved',
 ])
 const props = defineProps({
   modelValue: {
@@ -69,7 +71,8 @@ const props = defineProps({
     default: 0,
   },
   comment: {
-    type: Object as PropType<CommentDto>,
+    type: Object as PropType<CommentDto | AddedOrEditedComment>,
+    required: true,
   },
   isUnsaved: {
     type: Boolean,
@@ -79,9 +82,9 @@ const props = defineProps({
 
 function onInput(event: Event) {
   const target = event.target as HTMLInputElement | null
-  console.log('input pressed')
+  console.log('input pressed', event)
   if (target) {
-    emit('update:modelValue', target.value)
+    emit('update:modelValue', target.innerText)
   }
 }
 
@@ -89,10 +92,23 @@ function onClickBubble() {
   toggled.value = !toggled.value
 }
 
+// TODO: Improve? not biggest priority though
 function onUpdate() {
+  console.log(props.comment.text, props.modelValue)
   if (props.isUnsaved) {
     if (props.comment?.id === guid.zero()) {
-      emit('add')
+      // emit('add')
+      postStore.addComment({
+        clientId: Guid.create().toString(),
+        id: guid.zero(),
+        x: props.comment.x,
+        y: props.comment.y,
+        text: props.comment.text,
+        isDeleted: false,
+      })
+    } else {
+      emit('update-unsaved')
+      postStore.removeUnsavedComment(props.comment.id)
     }
   } else {
     emit('update')
@@ -101,15 +117,18 @@ function onUpdate() {
 
 function onCancel() {
   if (props.isUnsaved) {
+    // New comment, not added
     if (props.comment?.id === guid.zero()) {
       emit('discard')
     }
-    emit('remove-unsaved')
+    // Unsaved comment
+    emit('delete-unsaved')
     if (props.comment?.id !== undefined) {
       postStore.removeUnsavedComment(props.comment.id)
     }
   } else {
-    emit('discard')
+    // Saved comment
+    emit('delete')
   }
 }
 
