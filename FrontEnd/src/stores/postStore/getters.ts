@@ -33,7 +33,6 @@ export function useGetters() {
   // TODO: This will trigger for all critique items, do pagination when rendering critiques
   function getAllComments(critId: string) {
     return computed(() => {
-      console.log('getter triggered with id: ', critId)
       if (critId === '') {
         return []
       }
@@ -45,7 +44,6 @@ export function useGetters() {
       }
       // If no critique is selected
       if (critId === '') {
-        console.log('returning this: ', resultCommentList)
         return resultCommentList
       }
 
@@ -55,7 +53,7 @@ export function useGetters() {
         )
         resultCommentList = [...addedOrEditedComments, ...resultCommentList]
       }
-      console.log('returning this: ', resultCommentList)
+
       // Get added or edited comments, this applies only to the user who is viewing the posts
       return resultCommentList
     })

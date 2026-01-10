@@ -11,7 +11,7 @@ export function useActions() {
     //   state.selectedCritiqueId.value = ''
     //   return
     // }
-    console.log('setting to ', id)
+
     state.selectedCritiqueId.value = id
   }
   function setCritiques(critiques: CritiqueDto[]) {

@@ -7,7 +7,7 @@
     <div class="comment-bubble p-2" ref="comment-bubble" @click="onClickBubble">
       <font-awesome-icon class="icon" icon="comment" :style="{ color: 'white' }" />
     </div>
-    <div v-if="toggled" class="group">
+    <div v-show="toggled" class="group">
       <span
         contenteditable="true"
         class="input"
@@ -34,6 +34,7 @@ import { ref, useTemplateRef, onMounted } from 'vue'
 import { SpinnerButton } from '@/components/common'
 import type { AddedOrEditedComment, CommentDto } from '@/DTO'
 import type { PropType } from 'vue'
+import { watch, nextTick } from 'vue'
 import guid from '@/utils/guid'
 import { usePostStore } from '@/stores'
 import { Guid } from 'guid-typescript'
@@ -60,14 +61,6 @@ const props = defineProps({
   placeholder: {
     type: String,
     default: '',
-  },
-  posX: {
-    type: Number,
-    default: 0,
-  },
-  posY: {
-    type: Number,
-    default: 0,
   },
   comment: {
     type: Object as PropType<CommentDto | AddedOrEditedComment>,
@@ -130,11 +123,20 @@ function onCancel() {
   }
 }
 
+watch(toggled, async (isOpen) => {
+  if (isOpen && input.value) {
+    await nextTick()
+    input.value.innerText = props.comment.text ?? ''
+    input.value.focus()
+  }
+})
+
 onMounted(() => {
   if (input.value) {
     // TODO: Fix, this is not focusing
     input.value.innerText = props.modelValue
     input.value.focus()
+    // input.valuesetSelectionRange(input.value.innerText.length, input.value.innerText.length)
   }
 })
 </script>

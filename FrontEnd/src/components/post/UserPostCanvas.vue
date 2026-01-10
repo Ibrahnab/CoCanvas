@@ -37,8 +37,6 @@
       <CanvasComment
         v-for="(comment, index) in comments"
         :key="index + comment.x + comment.y"
-        :posX="comment.x"
-        :posY="comment.y"
         v-model="comment.text"
         :comment="comment"
         :ref="comment.id"
@@ -47,22 +45,8 @@
       >
       </CanvasComment>
 
-      <!-- <CanvasComment
-        v-for="(unsavedComment, index) in unsavedComments"
-        :key="index + unsavedComment.x + unsavedComment.y"
-        :posX="unsavedComment.x"
-        :posY="unsavedComment.y"
-        v-model="unsavedComment.text"
-        :comment="unsavedComment"
-        :isUnsaved="true"
-        @send="addComment(unsavedComment)"
-        @delete="deleteComment"
-      ></CanvasComment> -->
-
       <CanvasComment
         v-if="unsavedComment"
-        :posX="unsavedComment.x"
-        :posY="unsavedComment.y"
         v-model="unsavedComment.text"
         :comment="unsavedComment"
         :isUnsaved="true"
@@ -74,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { SelectButton, TextBox } from '@/components/common'
+import { SelectButton } from '@/components/common'
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import type { PropType } from 'vue'
 import * as fabric from 'fabric'
