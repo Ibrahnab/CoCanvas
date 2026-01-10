@@ -47,8 +47,7 @@
       >
       </CanvasComment>
 
-      <!-- Unsaved comments -->
-      <CanvasComment
+      <!-- <CanvasComment
         v-for="(unsavedComment, index) in unsavedComments"
         :key="index + unsavedComment.x + unsavedComment.y"
         :posX="unsavedComment.x"
@@ -58,9 +57,8 @@
         :isUnsaved="true"
         @send="addComment(unsavedComment)"
         @delete="deleteComment"
-      ></CanvasComment>
+      ></CanvasComment> -->
 
-      <!-- New comment -->
       <CanvasComment
         v-if="unsavedComment"
         :posX="unsavedComment.x"

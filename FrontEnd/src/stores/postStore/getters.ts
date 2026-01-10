@@ -24,7 +24,10 @@ export function useGetters() {
     return currentUserId.value === state.critiques.value[id]?.userId || id === guid.zero()
   }
   function getUnsavedComments() {
-    return computed(() => state.addedOrEditedComments.value.filter((c) => c.clientId !== null))
+    return computed(() => {
+      if (!isCritiqueMine(state.selectedCritiqueId.value)) return []
+      return state.addedOrEditedComments.value.filter((c) => c.clientId !== null)
+    })
   }
 
   // TODO: This will trigger for all critique items, do pagination when rendering critiques
