@@ -2,8 +2,8 @@ import type { CritiqueDto, CommentDto, ReplyDto } from '@/DTO/critique'
 import guid from '@/utils/guid'
 
 const mockCritique: CritiqueDto = {
-  id: guid.zero(),
-  userId: guid.zero(),
+  id: '00000000-0000-0000-0000-000000000001',
+  userId: '00000000-0000-0000-0000-000000000001',
   username: 'Exathy',
   rating: 30,
   description: 'Here are my thoughts on your stuff, overall really good',
@@ -15,6 +15,13 @@ const mockCritique: CritiqueDto = {
       userId: guid.zero(),
       username: 'Blake',
       text: 'no',
+      createdAt: '2030-01-01T23:15:33.008Z',
+    },
+    {
+      id: guid.zero(),
+      userId: guid.zero(),
+      username: 'Exathy',
+      text: 'ok, got it',
       createdAt: '2030-01-01T23:15:33.008Z',
     },
     {
@@ -44,8 +51,8 @@ const mockCritique: CritiqueDto = {
 }
 
 const mockCritique2: CritiqueDto = {
-  id: '00000000-0000-0000-0000-000000000001',
-  userId: '00000000-0000-0000-0000-000000000001',
+  id: '00000000-0000-0000-0000-000000000002',
+  userId: '00000000-0000-0000-0000-000000000002',
   username: 'Someone',
   rating: 10,
   description: 'pretty good',

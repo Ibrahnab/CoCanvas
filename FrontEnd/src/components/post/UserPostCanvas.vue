@@ -2,7 +2,7 @@
   <div class="canvas-container">
     <!-- TODO: Make a component around this -->
     <!--TODO: Make sure if the user is signed out, it doesnt show -->
-    <div v-if="postStore.isSelectedCritiqueMine()" class="tools">
+    <div v-if="postStore.isCritiqueMine(selectedCritiqueId)" class="tools">
       <!-- TODO: Add selectable colors and width for the pen -->
       <SelectButton
         icon="pen"
@@ -110,6 +110,7 @@ const iconColor = ref('white')
 // const unsavedComments = ref<CommentDto[]>([])
 const expandedCommentId = ref<string>()
 const unsavedComment = ref<AddedOrEditedComment | null>()
+const { selectedCritiqueId } = storeToRefs(postStore)
 // const { unsavedComments } = storeToRefs(postStore)
 
 const unsavedComments = postStore.getUnsavedComments()
@@ -133,9 +134,6 @@ const props = defineProps({
   },
   selectedCritique: {
     type: Object as PropType<CritiqueDto>,
-  },
-  selectedCritiqueId: {
-    type: String,
   },
 })
 

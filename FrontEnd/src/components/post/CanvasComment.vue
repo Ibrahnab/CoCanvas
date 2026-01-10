@@ -15,7 +15,6 @@
         style="min-width: 200px; max-width: 200px"
         @input="onInput"
       >
-        {{ comment.text }}
       </span>
 
       <div class="tools-container">
@@ -82,7 +81,6 @@ const props = defineProps({
 
 function onInput(event: Event) {
   const target = event.target as HTMLInputElement | null
-  console.log('input pressed', event)
   if (target) {
     emit('update:modelValue', target.innerText)
   }
@@ -135,6 +133,7 @@ function onCancel() {
 onMounted(() => {
   if (input.value) {
     // TODO: Fix, this is not focusing
+    input.value.innerText = props.modelValue
     input.value.focus()
   }
 })

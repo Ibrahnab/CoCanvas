@@ -8,23 +8,31 @@
     <TextArea
       :placeholder="'Write your general feedback here, add specific comments from the toolbox'"
     ></TextArea>
+
+    <div class="comment-wrapper" v-for="(comment, comIndex) in comments" :key="comIndex">
+      <div class="pb-2">
+        {{ comment.text }}
+      </div>
+    </div>
     <SpinnerButton class="mt-3">Publish</SpinnerButton>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { TextBox, TextArea, SpinnerButton } from '@/components/common'
-import type { CreateCritiqueDto } from '@/DTO'
+// import type { CreateCritiqueDto } from '@/DTO'
 import { useUserStore, usePostStore } from '@/stores'
 import { getAxiosInstance } from '@/apiCaller'
 import { storeToRefs } from 'pinia'
 import guid from '@/utils/guid'
+import { watch } from 'vue'
 
 const userStore = useUserStore()
 const postStore = usePostStore()
 const axios = getAxiosInstance()
 
 const { selectedCritiqueId } = storeToRefs(postStore)
+const comments = postStore.getAllComments(guid.zero())
 
 async function publishCritique() {
   try {
@@ -33,8 +41,13 @@ async function publishCritique() {
 }
 
 function setSelected() {
+  console.log('setting selected')
   postStore.setSelectedCritiqueId(guid.zero())
 }
+
+// watch(comments.value, (newValue) => {
+//   console.log('new state value: ', newValue)
+// })
 </script>
 
 <style lang="scss" scoped>

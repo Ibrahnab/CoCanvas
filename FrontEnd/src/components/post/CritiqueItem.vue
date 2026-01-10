@@ -1,38 +1,41 @@
 <template>
+  <!-- TODO: Add skeletonloading -->
   <div
     v-if="critique"
     class="critique-wrapper"
-    :class="{ toggled: selectedCritiqueId === critique.id }"
+    :class="{ toggled: selectedCritiqueId === critiqueId }"
   >
     <!-- TODO: Add slots to the below with options -->
     <RateableUserHeader
-      :rateable-item-id="critique.id"
+      :rateable-item-id="critiqueId"
       :user-image-url="'defaultProfilePicture.jpg'"
       :username="critique.username"
       :created-at="critique.createdAt"
       :rating="critique.rating"
     ></RateableUserHeader>
 
+    <div class="p-3">
+      {{ critique.description }}
+    </div>
+
     <div>
-      <div class="comment-wrapper" v-for="(comment, comIndex) in critique.comments" :key="comIndex">
-        <div class="pb-2" @click="setSelected(critique.id)">
+      <div class="comment-wrapper" v-for="(comment, comIndex) in comments" :key="comIndex">
+        <div class="pb-2" @click="setSelected(critiqueId)">
           {{ comment.text }}
         </div>
       </div>
 
-      <div class="mt-3" v-if="selectedCritiqueId === critique.id">
-        <div v-for="(reply, replyIndex) in critique.replies" :key="replyIndex">
-          <UserReply :reply="reply" :image-url="'TODO: Add url to reply dto'" />
-        </div>
-        <div class="replytools-container">
+      <div class="mt-3">
+        <div class="replytools-container mb-3">
           <TextBox :placeholder="'Add a reply'" />
           <SpinnerButton class="reply-button"> Reply </SpinnerButton>
         </div>
+        <div v-for="(reply, replyIndex) in visibleReplies" :key="replyIndex">
+          <UserReply :reply="reply" :image-url="'TODO: Add url to reply dto'" />
+        </div>
       </div>
-      <div class="bottom" @click="setSelected(critique.id)">
-        <font-awesome-icon
-          :icon="selectedCritiqueId === critique.id ? 'fa-chevron-up' : 'fa-chevron-down'"
-        />
+      <div class="bottom" @click="toggleCritique()">
+        <font-awesome-icon :icon="isExpanded ? 'fa-chevron-up' : 'fa-chevron-down'" />
       </div>
     </div>
   </div>
@@ -40,27 +43,46 @@
 <script setup lang="ts">
 import type { CritiqueDto } from '@/DTO/critique'
 import type { PropType } from 'vue'
-import { watch, onMounted, ref } from 'vue'
+import { watch, onMounted, ref, computed } from 'vue'
 import { getAxiosInstance } from '@/apiCaller'
 import UserReply from '@/components/post/UserReply.vue'
 import RateableUserHeader from '@/components/post/RateableUserHeader.vue'
 import { TextBox, AvatarCircle, SpinnerButton } from '@/components/common'
+import { usePostStore } from '@/stores'
+import { storeToRefs } from 'pinia'
 
 const axios = getAxiosInstance()
+const postStore = usePostStore()
 const userImage = ref<string>()
 
 const emit = defineEmits(['selected'])
 
 const props = defineProps({
-  critique: {
-    type: Object as PropType<CritiqueDto>,
-  },
-  selectedCritiqueId: {
+  // critique: {
+  //   type: Object as PropType<CritiqueDto>,
+  //   required: true,
+  // },
+  // selectedCritiqueId: {
+  //   type: String,
+  //   default: '',
+  // },
+  critiqueId: {
     type: String,
-    default: '',
+    required: true,
   },
 })
 
+const comments = postStore.getAllComments(props.critiqueId)
+const critique = postStore.getCritique(props.critiqueId)
+
+const isExpanded = ref(false)
+
+// TODO: Instead of binary, expand more until reached the end?
+const visibleReplies = computed(() => {
+  return isExpanded.value ? critique.value.replies : critique.value.replies.slice(0, 2)
+})
+
+const { selectedCritiqueId } = storeToRefs(postStore)
 async function loadData() {
   try {
     // TODO: Load User Profile images, use a default one for now
@@ -75,24 +97,33 @@ async function loadData() {
   }
 }
 
+function toggleCritique() {
+  isExpanded.value = !isExpanded.value
+}
+
 onMounted(() => {
   // loadData()
 })
 
-watch(
-  () => props.critique,
-  (newValue) => {
-    if (newValue) {
-      // loadData()
-    }
-  },
-)
+// watch(
+//   () => critique,
+//   (newValue) => {
+//     if (newValue) {
+//       // loadData()
+//       console.log(newValue)
+//     }
+//   },
+// )
+
+// watch(comments, (newValue) => {
+//   console.log('new state value: ', newValue)
+// })
 
 // TODO: Create a pinia store since this is going 2 layers up now
 // And use the store for other stuff in this Post view
 function setSelected(id: string) {
   console.log('selected id: ', id)
-  if (props.selectedCritiqueId === props.critique?.id) {
+  if (selectedCritiqueId.value === props.critiqueId) {
     emit('selected', '')
     return
   }
@@ -158,7 +189,7 @@ function setSelected(id: string) {
 .reply-wrapper {
   display: flex;
   flex-direction: row;
-  border-top: solid 1px rgb(201, 201, 201);
+  border-bottom: solid 1px rgb(201, 201, 201);
 
   gap: 10px;
 }

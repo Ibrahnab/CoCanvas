@@ -4,8 +4,8 @@
       <UserPostCanvas
         :imageUrl="imageUrl"
         :critiques="critiques"
-        :selectedCritique="selectedCritique"
-        :selectedCritiqueId="selectedCritiqueId"
+        :selected-critique="selectedCritique"
+        :selected-critique-id="selectedCritiqueId"
         :myCritique="myCritique"
       />
     </div>
@@ -52,17 +52,23 @@ const postData = ref<PostDto>()
 const imageUrl = ref<string>('')
 
 // TODO: Set the one with highest rating?
-function setSelectedCritique() {
-  if (critiques.value.length > 0) {
-    selectedCritique.value = critiques.value[0]
-    // selectedCritiqueId.value = critiques.value[0].id
-  }
-}
+// function setSelectedCritique() {
+//   if (critiques.value.length > 0) {
+//     selectedCritique.value = critiques.value[0]
+//     // selectedCritiqueId.value = critiques.value[0].id
+//   }
+// }
 
 function mapData(post: PostDto) {
   postData.value = post
   imageUrl.value = post.imageUrl
-  postStore.setPost(post)
+
+  // TODO: Remove the temporary critique, just for testing purposes now
+
+  const tempPost = { ...post }
+  tempPost.critiques.push(...mockCritiques)
+  postStore.initialize(tempPost)
+  // postStore.setCritiques(tempPost.critiques)
 }
 
 async function getData() {

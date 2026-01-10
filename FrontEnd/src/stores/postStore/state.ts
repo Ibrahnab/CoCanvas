@@ -6,10 +6,11 @@ import type {
   CommentDto,
   AddedOrEditedComment,
 } from '@/DTO'
+import guid from '@/utils/guid'
 import { useUserStore } from '../userStore'
 
 const currentPost = ref<PostDto>()
-const currentCritique = ref<CritiqueDto>()
+// const currentCritique = ref<CritiqueDto>()
 const selectedCritiqueId = ref<string>('')
 const critiques = ref<Record<string, CritiqueDto>>({})
 const deletedCommentIds = ref<string[]>([])
@@ -30,7 +31,7 @@ export function useState() {
   composedCritique.value.userId = userStore.currentUserId
   return {
     currentPost,
-    currentCritique,
+    // currentCritique,
     selectedCritiqueId,
     critiques,
     composedCritique,

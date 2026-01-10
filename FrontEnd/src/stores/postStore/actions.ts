@@ -4,51 +4,44 @@ import guid from '@/utils/guid'
 
 export function useActions() {
   const state = useState()
-  return {
-    setPost: (post: PostDto) => {
-      state.currentPost.value = post
-    },
-    setSelectedCritiqueId: (id: string) => {
-      if (id === state.selectedCritiqueId.value) {
-        state.selectedCritiqueId.value = ''
-        return
-      }
-      state.selectedCritiqueId.value = id
-    },
-    setSelectedCritique: (critique: CritiqueDto) => {
-      state.currentCritique.value = critique
-    },
-    setCritiques: (critiques: CritiqueDto[]) => {
-      critiques.forEach((c) => {
-        state.critiques.value[c.id] = c
-      })
-    },
-    addComment: (comment: AddedOrEditedComment) => {
-      console.log('adding: ', comment)
-      // if (state.selectedCritiqueId.value === guid.zero()) {
-      //   state.composedCritique.value.comments.push(comment)
-      // } else {
-      //   state.critiques.value[state.selectedCritiqueId.value].comments.push(comment)
-      // }
-      // state.unsavedComments.value.push(comment)
-      console.log('adding comment')
-      state.addedOrEditedComments.value.push(comment)
-      console.log('adding comment', state.addedOrEditedComments.value)
-    },
-    removeUnsavedComment: (id: string) => {
-      // state.unsavedComments.value.filter((comment) => comment.id !== id)
-    },
 
-    // TODO: Simplify, by using record maybe
-    deleteComment: (id: string) => {
-      // Remove
-      // state.critiques.value[state.selectedCritiqueId.value].comments.filter((c) => c.id !== id)
-      // //Add to removed list
-      // const selectedCritique = state.critiques.value[state.selectedCritiqueId.value]
-      // const commentToPush = selectedCritique.comments.find((c) => c.id == id)
-      // if (commentToPush !== undefined) {
-      //   state.deletedComments.value.push(commentToPush)
-      // }
-    },
+  function setSelectedCritiqueId(id: string) {
+    if (id === state.selectedCritiqueId.value) {
+      state.selectedCritiqueId.value = ''
+      return
+    }
+    console.log('setting to ', id)
+    state.selectedCritiqueId.value = id
+  }
+  function setCritiques(critiques: CritiqueDto[]) {
+    critiques.forEach((c) => {
+      state.critiques.value[c.id] = c
+    })
+  }
+
+  function addComment(comment: AddedOrEditedComment) {
+    console.log('adding: ', comment)
+    state.addedOrEditedComments.value.push(comment)
+  }
+  function removeUnsavedComment(id: string) {}
+
+  // TODO: Simplify, by using record maybe
+  function deleteComment(id: string) {}
+
+  function clearStore() {}
+
+  // TODO: Extend
+  function initialize(post: PostDto) {
+    state.currentPost.value = post
+    setCritiques(post.critiques)
+  }
+  return {
+    setSelectedCritiqueId,
+    setCritiques,
+    addComment,
+    removeUnsavedComment,
+    deleteComment,
+    clearStore,
+    initialize,
   }
 }

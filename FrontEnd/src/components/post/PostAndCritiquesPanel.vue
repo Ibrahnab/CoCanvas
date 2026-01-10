@@ -8,11 +8,7 @@
     <CritiqueCompose />
     <div class="critiques-container">
       <div v-for="(critique, critIndex) in post.critiques" :key="critIndex">
-        <CritiqueItem
-          :critique="critique"
-          :selected-critique-id="selectedCritiqueId"
-          @selected="setSelected($event)"
-        />
+        <CritiqueItem :critique-id="critique.id" />
       </div>
     </div>
   </div>
