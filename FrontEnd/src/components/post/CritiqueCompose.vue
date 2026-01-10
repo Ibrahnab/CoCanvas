@@ -4,11 +4,11 @@
     :class="{ toggled: selectedCritiqueId === guid.zero() }"
     @click="setSelected"
   >
-    <!-- TOOD: Maybe remove and just use CritiqueItem -->
     <TextArea
       :placeholder="'Write your general feedback here, add specific comments from the toolbox'"
     ></TextArea>
 
+    <!-- TODO: Make a component and extend  -->
     <div class="comment-wrapper" v-for="(comment, comIndex) in comments" :key="comIndex">
       <div class="pb-2">
         {{ comment.text }}
@@ -61,6 +61,15 @@ function setSelected() {
     transition: all 0.5s ease;
     box-shadow: 0 0 10px rgba(94, 58, 255, 0.3);
   }
+}
+
+.comment-wrapper {
+  display: flex;
+  flex-direction: column;
+  background-color: $color-gray-200;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 10px;
 }
 
 .toggled {
