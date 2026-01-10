@@ -4,6 +4,7 @@
     v-if="critique"
     class="critique-wrapper"
     :class="{ toggled: selectedCritiqueId === critiqueId }"
+    @click="postStore.setSelectedCritiqueId(critiqueId)"
   >
     <!-- TODO: Add slots to the below with options -->
     <RateableUserHeader
@@ -20,7 +21,7 @@
 
     <div>
       <div class="comment-wrapper" v-for="(comment, comIndex) in comments" :key="comIndex">
-        <div class="pb-2" @click="setSelected(critiqueId)">
+        <div class="pb-2">
           {{ comment.text }}
         </div>
       </div>
@@ -58,14 +59,6 @@ const userImage = ref<string>()
 const emit = defineEmits(['selected'])
 
 const props = defineProps({
-  // critique: {
-  //   type: Object as PropType<CritiqueDto>,
-  //   required: true,
-  // },
-  // selectedCritiqueId: {
-  //   type: String,
-  //   default: '',
-  // },
   critiqueId: {
     type: String,
     required: true,
@@ -104,31 +97,6 @@ function toggleCritique() {
 onMounted(() => {
   // loadData()
 })
-
-// watch(
-//   () => critique,
-//   (newValue) => {
-//     if (newValue) {
-//       // loadData()
-//       console.log(newValue)
-//     }
-//   },
-// )
-
-// watch(comments, (newValue) => {
-//   console.log('new state value: ', newValue)
-// })
-
-// TODO: Create a pinia store since this is going 2 layers up now
-// And use the store for other stuff in this Post view
-function setSelected(id: string) {
-  console.log('selected id: ', id)
-  if (selectedCritiqueId.value === props.critiqueId) {
-    emit('selected', '')
-    return
-  }
-  emit('selected', id)
-}
 </script>
 
 <style scoped lang="scss">

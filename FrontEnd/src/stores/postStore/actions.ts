@@ -6,10 +6,11 @@ export function useActions() {
   const state = useState()
 
   function setSelectedCritiqueId(id: string) {
-    if (id === state.selectedCritiqueId.value) {
-      state.selectedCritiqueId.value = ''
-      return
-    }
+    // TODO: Provide a way to unselect, so the user can see the image on its own, maybe from the user post component?
+    // if (id === state.selectedCritiqueId.value) {
+    //   state.selectedCritiqueId.value = ''
+    //   return
+    // }
     console.log('setting to ', id)
     state.selectedCritiqueId.value = id
   }
