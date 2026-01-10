@@ -7,16 +7,15 @@ import type {
   AddedOrEditedComment,
 } from '@/DTO'
 import guid from '@/utils/guid'
+import { storeToRefs } from 'pinia'
+
 import { useUserStore } from '../userStore'
 
 const currentPost = ref<PostDto>()
-// const currentCritique = ref<CritiqueDto>()
 const selectedCritiqueId = ref<string>('')
 const critiques = ref<Record<string, CritiqueDto>>({})
 const deletedCommentIds = ref<string[]>([])
 const addedOrEditedComments = ref<AddedOrEditedComment[]>([])
-// const unsavedComments = ref<CommentDto[]>([])
-// const deletedComments = ref<CommentDto[]>([])
 
 const composedCritique = ref<CreateOrEditCritiqueDto>({
   userId: '',
@@ -28,16 +27,15 @@ const composedCritique = ref<CreateOrEditCritiqueDto>({
 
 export function useState() {
   const userStore = useUserStore()
-  composedCritique.value.userId = userStore.currentUserId
+
+  const { currentUserId } = storeToRefs(userStore)
+  composedCritique.value.userId = currentUserId.value
   return {
     currentPost,
-    // currentCritique,
     selectedCritiqueId,
     critiques,
     composedCritique,
     deletedCommentIds,
     addedOrEditedComments,
-    // unsavedComments,
-    // deletedComments,
   }
 }

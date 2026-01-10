@@ -1,7 +1,7 @@
-import { useState } from './state'
 import { useUserStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
+import { useState } from './state'
 import type { AddedOrEditedComment, CommentDto } from '@/DTO'
 import guid from '@/utils/guid'
 
@@ -31,15 +31,18 @@ export function useGetters() {
   function getAllComments(critId: string) {
     return computed(() => {
       console.log('getter triggered with id: ', critId)
+      if (critId === '') {
+        return []
+      }
       // const selectedCritiqueId = state.selectedCritiqueId.value
       let resultCommentList: (CommentDto | AddedOrEditedComment)[] = []
       // Get the comments saved in the critique, skip if composing critique
       if (critId !== guid.zero()) {
-        resultCommentList = [...state.critiques.value[critId].comments]
+        resultCommentList = [...state.critiques.value[critId]?.comments]
       }
       // If no critique is selected
       if (critId === '') {
-        console.log('returning empty')
+        console.log('returning this: ', resultCommentList)
         return resultCommentList
       }
 
@@ -49,9 +52,15 @@ export function useGetters() {
         )
         resultCommentList = [...addedOrEditedComments, ...resultCommentList]
       }
-      console.log('hello world', resultCommentList)
+      console.log('returning this: ', resultCommentList)
       // Get added or edited comments, this applies only to the user who is viewing the posts
       return resultCommentList
+    })
+  }
+
+  function getCurrentComments() {
+    return computed(() => {
+      return getAllComments(state.selectedCritiqueId.value).value
     })
   }
 
@@ -61,5 +70,6 @@ export function useGetters() {
     isCritiqueMine,
     getUnsavedComments,
     getAllComments,
+    getCurrentComments,
   }
 }

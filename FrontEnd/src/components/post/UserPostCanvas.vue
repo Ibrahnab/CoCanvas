@@ -33,9 +33,10 @@
     <div class="imageContainer">
       <canvas ref="canvasEl"></canvas>
       <!--TODO: DRY  -->
+      <!-- Saved Comments -->
       <CanvasComment
-        v-for="(comment, index) in critiques?.find((c) => c.id === selectedCritiqueId)?.comments"
-        :key="index"
+        v-for="(comment, index) in comments"
+        :key="index + comment.x + comment.y"
         :posX="comment.x"
         :posY="comment.y"
         v-model="comment.text"
@@ -46,9 +47,10 @@
       >
       </CanvasComment>
 
+      <!-- Unsaved comments -->
       <CanvasComment
         v-for="(unsavedComment, index) in unsavedComments"
-        :key="index"
+        :key="index + unsavedComment.x + unsavedComment.y"
         :posX="unsavedComment.x"
         :posY="unsavedComment.y"
         v-model="unsavedComment.text"
@@ -58,6 +60,7 @@
         @delete="deleteComment"
       ></CanvasComment>
 
+      <!-- New comment -->
       <CanvasComment
         v-if="unsavedComment"
         :posX="unsavedComment.x"
@@ -102,16 +105,9 @@ enum tools {
 
 const selected = ref(tools.PEN)
 const iconColor = ref('white')
-// const critiques = ref<Critique[]>([]) // TODO: Get from backend
-// const selectedCritiqueId = ref<string>(guid.zero())
-// const selectedCritique = ref<Critique>()
-// const myCritique = ref<Critique>()
 
-// const unsavedComments = ref<CommentDto[]>([])
-const expandedCommentId = ref<string>()
 const unsavedComment = ref<AddedOrEditedComment | null>()
 const { selectedCritiqueId } = storeToRefs(postStore)
-// const { unsavedComments } = storeToRefs(postStore)
 
 const unsavedComments = postStore.getUnsavedComments()
 
@@ -138,6 +134,8 @@ const props = defineProps({
 })
 
 function commentExpand() {}
+
+const comments = postStore.getCurrentComments()
 
 async function createCanvas() {
   if (!canvasEl.value) return
