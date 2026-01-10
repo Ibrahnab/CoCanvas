@@ -21,7 +21,7 @@ export function useGetters() {
   }
   function isCritiqueMine(id: string) {
     const { currentUserId } = storeToRefs(userStore)
-    return id === currentUserId.value || id === guid.zero()
+    return currentUserId.value === state.critiques.value[id]?.userId || id === guid.zero()
   }
   function getUnsavedComments() {
     return computed(() => state.addedOrEditedComments.value.filter((c) => c.clientId !== null))
@@ -32,7 +32,7 @@ export function useGetters() {
     return computed(() => {
       console.log('getter triggered with id: ', critId)
       // const selectedCritiqueId = state.selectedCritiqueId.value
-      let resultCommentList: CommentDto[] | AddedOrEditedComment[] = []
+      let resultCommentList: (CommentDto | AddedOrEditedComment)[] = []
       // Get the comments saved in the critique, skip if composing critique
       if (critId !== guid.zero()) {
         resultCommentList = [...state.critiques.value[critId].comments]
@@ -47,7 +47,7 @@ export function useGetters() {
         const addedOrEditedComments = state.addedOrEditedComments.value.filter(
           (c) => c.clientId !== null,
         )
-        resultCommentList = [...addedOrEditedComments]
+        resultCommentList = [...addedOrEditedComments, ...resultCommentList]
       }
       console.log('hello world', resultCommentList)
       // Get added or edited comments, this applies only to the user who is viewing the posts
