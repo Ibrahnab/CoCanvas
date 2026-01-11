@@ -14,7 +14,7 @@
         {{ comment.text }}
       </div>
     </div>
-    <SpinnerButton class="mt-3">Publish</SpinnerButton>
+    <SpinnerButton class="mt-3" @click="publishCritique">Publish</SpinnerButton>
   </div>
 </template>
 
@@ -37,6 +37,8 @@ const comments = postStore.getAllComments(guid.zero())
 async function publishCritique() {
   try {
     // TODO: Implement endpoint in backend for creating one
+
+    await axios.post(`api/Posts/${'asd'}/critiques`)
   } catch (error) {}
 }
 

@@ -53,10 +53,12 @@ builder.Services.AddDbContext<CCDbContext>(options => options.UseSqlServer(build
 // Repositories from infrastructure
 builder.Services.AddScoped<IPostsRepository, PostsRepository>();
 builder.Services.AddScoped<ITagRepository, TagRepository >();
+builder.Services.AddScoped<ICritiqueRepository, CritiqueRepository >();
 
 // Application services
 
 builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<CritiqueRepository>();
 builder.Services.AddScoped<PostsService>();
 
 var app = builder.Build();

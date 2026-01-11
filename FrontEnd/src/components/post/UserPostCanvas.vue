@@ -219,6 +219,9 @@ function createCommentMarker(posx: number, posy: number) {
 // TODO: Consider canvas.freeDrawingBrush.decimate = 8; // try 4–10
 // For optimization
 function saveAnnotations() {
+  canvas.isDrawingMode = true
+  // canvas.freeDrawingBrush = new fabric.PencilBrush(canvas)
+  // canvas.freeDrawingBrush.decimate = 4
   const data = canvas.toJSON()
   console.log('Annotations:', data)
   // TODO: Send to backend
@@ -227,6 +230,7 @@ function saveAnnotations() {
 function eraseMode() {
   // TODO: Implement
   selected.value = tools.ERASE
+  saveAnnotations()
 }
 
 // TODO: Do this with html elements instead

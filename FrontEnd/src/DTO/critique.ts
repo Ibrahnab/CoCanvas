@@ -8,6 +8,7 @@ export interface CritiqueDto {
   replies: ReplyDto[]
   comments: CommentDto[]
   createdAt: string
+  critiqueCanvas: string
 }
 
 export interface CreateOrEditCritiqueDto {

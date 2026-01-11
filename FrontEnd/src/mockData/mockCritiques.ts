@@ -1,5 +1,6 @@
 import type { CritiqueDto, CommentDto, ReplyDto } from '@/DTO/critique'
 import guid from '@/utils/guid'
+import mockCanvas from './mockCanvas.json'
 
 const mockCritique: CritiqueDto = {
   id: '00000000-0000-0000-0000-000000000001',
@@ -9,6 +10,7 @@ const mockCritique: CritiqueDto = {
   description: 'Here are my thoughts on your stuff, overall really good',
   published: true,
   createdAt: '2030-01-01T23:15:33.008Z',
+  critiqueCanvas: JSON.stringify(mockCanvas),
   replies: [
     {
       id: guid.zero(),
@@ -59,6 +61,7 @@ const mockCritique2: CritiqueDto = {
   published: true,
   replies: [],
   createdAt: '2030-01-01T23:15:33.008Z',
+  critiqueCanvas: '',
   comments: [
     {
       id: guid.zero(),

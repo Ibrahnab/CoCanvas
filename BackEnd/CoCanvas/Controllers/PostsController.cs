@@ -1,4 +1,5 @@
 ﻿using CoCanvas.Application.DTO;
+using CoCanvas.Application.DTO.Critique;
 using CoCanvas.Application.Interfaces;
 using CoCanvas.Application.Mappers;
 using CoCanvas.Application.Services;
@@ -29,7 +30,7 @@ namespace CoCanvas.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<PostDto>> CreatePost([FromForm] IFormFile image, [FromForm] CreatePostDto dto)
         {
-
+            // TODO: Remove UserId from DTO!
             // TODO: Handle errors
             var postDto = await _postsService.CreatePost(image, dto);
             
@@ -73,5 +74,22 @@ namespace CoCanvas.Api.Controllers
                 return Ok(result);
             }
         }
+
+        // Put because idempotency, user is not allowed to create multiple critiques on same post
+        [HttpPost("{postId}/critiques")]
+        public async Task<IActionResult> CreateCritique(Guid postId, CreateCritiqueDto dto)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            
+            if (userId == null) {
+
+                return Unauthorized();
+            }
+
+            await _postsService.CreateCritique(postId, userId, dto);
+
+            return Ok();
+        }
+
     }
 }

@@ -11,8 +11,9 @@ namespace CoCanvas.Application.DTO
     {
         public Guid Id { get; set; }
         public int Rating { get; set; }
-        public string UserId { get; set; } = string.Empty;
+        public string UserId { get; set; } = null!;
         public string Username { get; set; } = null!;
+        public string Description { get; set; } = String.Empty;
         public DateTime CreatedAt { get; set; }
         public List<CommentDto> Comments { get; set; } = new();
         public List<ReplyDto> Replies { get; set; } = new();

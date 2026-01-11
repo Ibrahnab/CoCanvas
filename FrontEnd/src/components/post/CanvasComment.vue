@@ -4,7 +4,7 @@
     class="comment-container"
     :style="{ top: comment.y + 'px', left: comment.x + 'px' }"
   >
-    <div class="comment-bubble p-2" ref="comment-bubble" @click="onClickBubble">
+    <div class="comment-bubble p-2" ref="comment-bubble" @click="onToggled">
       <font-awesome-icon class="icon" icon="comment" :style="{ color: 'white' }" />
     </div>
     <div v-show="toggled" class="group">
@@ -79,16 +79,14 @@ function onInput(event: Event) {
   }
 }
 
-function onClickBubble() {
+function onToggled() {
   toggled.value = !toggled.value
 }
 
 // TODO: Improve? not biggest priority though
 function onUpdate() {
-  console.log(props.comment.text, props.modelValue)
   if (props.isUnsaved) {
     if (props.comment?.id === guid.zero()) {
-      // emit('add')
       postStore.addComment({
         clientId: Guid.create().toString(),
         id: guid.zero(),
@@ -97,6 +95,7 @@ function onUpdate() {
         text: props.comment.text,
         isDeleted: false,
       })
+      onToggled()
     } else {
       emit('update-unsaved')
       postStore.removeUnsavedComment(props.comment.id)
